@@ -8,6 +8,7 @@ interface Props {
   type?: 'website' | 'article';
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  markdownUrl?: string;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   type = 'website',
   noindex = false,
   jsonLd,
+  markdownUrl,
 } = Astro.props;
 
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site.url).toString();
@@ -55,6 +57,9 @@ const ogImage = new URL('/og-default.png', site.url).toString();
 <meta name="twitter:creator" content={site.twitter} />
 
 <link rel="alternate" type="application/rss+xml" title={`${site.name} — RSS`} href="/rss.xml" />
+{markdownUrl && (
+  <link rel="alternate" type="text/markdown" title={`${title} — Markdown source`} href={markdownUrl} />
+)}
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="author" href="/humans.txt" />
 

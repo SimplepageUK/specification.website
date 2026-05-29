@@ -24,6 +24,15 @@ export const GET: APIRoute = async () => {
   );
   lines.push('');
   lines.push(
+    'Every individual spec page is also served as raw Markdown — append `.md` to any spec URL. ' +
+      'For example, ' +
+      site.url +
+      '/spec/security/content-security-policy/ is also available at ' +
+      site.url +
+      '/spec/security/content-security-policy.md.',
+  );
+  lines.push('');
+  lines.push(
     'For the full content of every spec page concatenated into one file, see ' +
       site.url +
       '/llms-full.txt.',

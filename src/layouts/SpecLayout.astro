@@ -31,6 +31,7 @@ const {
 
 const cat = categoryFor(category);
 const canonical = new URL(`/spec/${category}/${slug}/`, site.url).toString();
+const markdownUrl = new URL(`/spec/${category}/${slug}.md`, site.url).toString();
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
@@ -63,7 +64,14 @@ const breadcrumbJsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={summary} canonical={canonical} type="article" jsonLd={[articleJsonLd, breadcrumbJsonLd]}>
+<BaseLayout
+  title={title}
+  description={summary}
+  canonical={canonical}
+  type="article"
+  jsonLd={[articleJsonLd, breadcrumbJsonLd]}
+  markdownUrl={markdownUrl}
+>
   <article class="mx-auto max-w-4xl px-4 py-10">
     <Breadcrumbs
       crumbs={[
@@ -127,9 +135,10 @@ const breadcrumbJsonLd = {
           <div id="toc" class="mt-2 space-y-1 text-sm leading-snug"></div>
         </div>
         <div class="mt-4 rounded-lg border border-ink-200 bg-ink-50 p-4 text-xs text-ink-600">
-          <p class="font-semibold text-ink-800">Spot a problem?</p>
-          <p class="mt-1">All pages are editable.</p>
-          <a class="mt-2 inline-block text-accent-700 underline" href={`${site.repo}/edit/main/src/content/spec/${category}/${slug}.md`} rel="external">
+          <p class="font-semibold text-ink-800">For agents &amp; tools</p>
+          <p class="mt-1">This page is also available as <a class="text-accent-700 underline" href={markdownUrl}>raw Markdown</a> (append <code class="rounded bg-white px-1 py-0.5 ring-1 ring-inset ring-ink-200">.md</code> to any spec URL).</p>
+          <p class="mt-3 font-semibold text-ink-800">Spot a problem?</p>
+          <a class="mt-1 inline-block text-accent-700 underline" href={`${site.repo}/edit/main/src/content/spec/${category}/${slug}.md`} rel="external">
             Edit this page on GitHub →
           </a>
         </div>

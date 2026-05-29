@@ -14,6 +14,8 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /** When true, suppress the default page header (for landing-style pages). */
   bare?: boolean;
+  /** Absolute URL of the markdown source for this page, if one exists. */
+  markdownUrl?: string;
 }
 
 const {
@@ -24,6 +26,7 @@ const {
   noindex = false,
   jsonLd,
   bare = false,
+  markdownUrl,
 } = Astro.props;
 
 const websiteJsonLd = {
@@ -55,6 +58,7 @@ const finalJsonLd = jsonLd
       type={type}
       noindex={noindex}
       jsonLd={finalJsonLd}
+      markdownUrl={markdownUrl}
     />
     {import.meta.env.PROD && (
       <script

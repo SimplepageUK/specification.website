@@ -36,3 +36,8 @@
 
 /humans.txt
   Content-Type: text/plain; charset=utf-8
+
+# Per-page Markdown source served from /spec/<category>/<slug>.md
+/spec/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=3600
