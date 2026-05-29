@@ -24,12 +24,15 @@ export const GET: APIRoute = async () => {
   );
   lines.push('');
   lines.push(
-    'Every individual spec page is also served as raw Markdown — append `.md` to any spec URL. ' +
-      'For example, ' +
+    'Every individual spec page is available as raw Markdown two ways:',
+  );
+  lines.push(
+    '  1. Append `.md` to any spec URL — e.g. ' +
       site.url +
-      '/spec/security/content-security-policy/ is also available at ' +
-      site.url +
-      '/spec/security/content-security-policy.md.',
+      '/spec/security/content-security-policy.md',
+  );
+  lines.push(
+    '  2. Send `Accept: text/markdown` to the canonical (slash-terminated) URL — the same page returns Markdown with `Content-Location` pointing at the .md path and `Vary: Accept` set for caches.',
   );
   lines.push('');
   lines.push(
