@@ -33,6 +33,11 @@
           "href": "https://specification.website/.well-known/security.txt",
           "type": "text/plain",
           "title": "Security contact (RFC 9116)"
+        },
+        {
+          "href": "https://specification.website/.well-known/agent-skills/index.json",
+          "type": "application/json",
+          "title": "Agent Skills discovery index (RFC v0.2.0)"
         }
       ],
       "license": [
