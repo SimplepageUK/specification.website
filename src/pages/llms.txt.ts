@@ -41,6 +41,22 @@ export const GET: APIRoute = async () => {
       '/llms-full.txt.',
   );
   lines.push('');
+  lines.push(
+    'For richer access, two named surfaces are available:',
+  );
+  lines.push(
+    '  - MCP server at `https://mcp.specification.website/mcp` — stateless Streamable HTTP, no auth, with `search`, `list_topics`, `get_topic`, `get_checklist`, and `audit_url` tools. Server card: ' +
+      site.url +
+      '/.well-known/mcp/server-card.json.',
+  );
+  lines.push(
+    '  - Agent Skill at ' +
+      site.url +
+      '/.well-known/agent-skills/specification-website/SKILL.md — discoverable via ' +
+      site.url +
+      '/.well-known/agent-skills/index.json. Teaches a compatible agent when and how to query the spec.',
+  );
+  lines.push('');
 
   for (const c of categories) {
     const items = grouped[c.slug] ?? [];
@@ -62,6 +78,10 @@ export const GET: APIRoute = async () => {
   lines.push(`- [About](${site.url}/about/): What the spec is and how it is built.`);
   lines.push(`- [Contribute](${site.url}/contribute/): How to propose changes.`);
   lines.push(`- [Checklist](${site.url}/checklist/): The whole spec as a flat checklist.`);
+  lines.push(`- [MCP server](${site.url}/mcp/): How to connect an MCP client to the spec.`);
+  lines.push(
+    `- [Agent Skill](${site.url}/.well-known/agent-skills/specification-website/SKILL.md): Packaged skill teaching an agent when and how to query the spec.`,
+  );
   lines.push(`- [Source on GitHub](${site.repo}): MIT licensed, open for pull requests.`);
   lines.push('');
 
