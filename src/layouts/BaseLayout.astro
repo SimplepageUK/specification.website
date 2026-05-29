@@ -1,0 +1,68 @@
+---
+import '~/styles/global.css';
+import { site } from '~/lib/site';
+import HeadMeta from '~/components/HeadMeta.astro';
+import SiteHeader from '~/components/SiteHeader.astro';
+import SiteFooter from '~/components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** When true, suppress the default page header (for landing-style pages). */
+  bare?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  type = 'website',
+  noindex = false,
+  jsonLd,
+  bare = false,
+} = Astro.props;
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: site.url,
+  description: site.description,
+  inLanguage: 'en',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${site.url}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const finalJsonLd = jsonLd
+  ? Array.isArray(jsonLd) ? [websiteJsonLd, ...jsonLd] : [websiteJsonLd, jsonLd]
+  : websiteJsonLd;
+---
+
+<!doctype html>
+<html lang="en-GB" dir="ltr">
+  <head>
+    <HeadMeta
+      title={title}
+      description={description}
+      canonical={canonical}
+      type={type}
+      noindex={noindex}
+      jsonLd={finalJsonLd}
+    />
+  </head>
+  <body class="bg-white text-ink-800">
+    <a href="#main" class="skip-link">Skip to main content</a>
+    {!bare && <SiteHeader />}
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security issue
+    url: https://github.com/jdevalk/specification.website/security/advisories/new
+    about: Please report security issues privately.
+  - name: Question or discussion
+    url: https://github.com/jdevalk/specification.website/discussions
+    about: For open-ended questions, use Discussions.

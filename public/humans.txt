@@ -1,0 +1,16 @@
+/* TEAM */
+Author: Joost de Valk
+Site: https://joost.blog
+GitHub: @jdevalk
+From: Amsterdam, Netherlands
+
+/* THANKS */
+Every standards body whose work the spec leans on: WHATWG, W3C, IETF, IANA, WCAG,
+schema.org, sitemaps.org, llmstxt.org.
+The maintainers of MDN Web Docs, web.dev, and the Yoast Developer Portal.
+
+/* SITE */
+Last update: 2026-05-29
+Standards: HTML5, CSS3, JSON-LD, WCAG 2.2, RFC 9116, RFC 8615
+Components: Astro, Tailwind CSS
+Software: Vite, Node.js

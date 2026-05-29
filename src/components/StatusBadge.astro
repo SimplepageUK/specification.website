@@ -1,0 +1,17 @@
+---
+import { statusColor, statusLabel } from '~/lib/site';
+
+interface Props {
+  status: 'required' | 'recommended' | 'optional' | 'avoid';
+  size?: 'sm' | 'md';
+}
+
+const { status, size = 'sm' } = Astro.props;
+const sizeClasses = size === 'sm'
+  ? 'text-xs px-2 py-0.5'
+  : 'text-sm px-2.5 py-1';
+---
+
+<span class:list={['inline-flex items-center rounded-full border font-medium', statusColor[status], sizeClasses]}>
+  {statusLabel[status]}
+</span>

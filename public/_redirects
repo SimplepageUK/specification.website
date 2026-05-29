@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects
+# Helpful aliases — short URLs people guess.
+
+/security.txt           /.well-known/security.txt   301
+/change-password        /.well-known/change-password 301
+/sitemap.xml            /sitemap-index.xml          301
+/spec/index             /spec/                      301

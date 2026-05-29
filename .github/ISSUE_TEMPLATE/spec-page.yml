@@ -1,0 +1,63 @@
+name: Propose a new spec page
+description: Suggest a topic to add to the specification.
+title: "[Spec] "
+labels: ["new-topic"]
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      description: Short title for the page.
+      placeholder: "e.g. Cross-Origin Embedder Policy"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - foundations
+        - seo
+        - accessibility
+        - security
+        - well-known
+        - agent-readiness
+        - performance
+        - privacy
+        - resilience
+        - i18n
+    validations:
+      required: true
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Proposed status
+      options:
+        - required
+        - recommended
+        - optional
+        - avoid
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: One-paragraph summary
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: At least one canonical reference (RFC, MDN, W3C, schema.org, etc).
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why this belongs in the spec

@@ -1,0 +1,30 @@
+name: Fix or change an existing page
+description: Report a problem with an existing spec page.
+title: "[Fix] "
+labels: ["fix"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      placeholder: "https://specification.website/spec/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested change
+      description: Optional. If you can include the corrected text and a source link, even better.
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources for the change
