@@ -68,7 +68,7 @@ body {
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 7rem;
 }
 .prose-spec > :first-child,
 .prose-spec h2:first-child,
@@ -81,7 +81,7 @@ body {
   color: var(--color-ink-900);
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 7rem;
 }
 .prose-spec h4 {
   font-size: 1rem;
