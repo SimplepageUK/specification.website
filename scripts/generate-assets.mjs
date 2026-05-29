@@ -74,7 +74,7 @@ const maskableSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 51
   ${WCheck(256, 256, 5, 36)}
 </svg>`;
 
-// ---- Shared OG building blocks (1200×630) ----
+// ---- Shared OG building blocks (1200×675) ----
 
 const FONT_SANS = 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
 const FONT_MONO = 'ui-monospace, Menlo, Consolas, monospace';
@@ -86,8 +86,8 @@ const baseDefs = `
       <stop offset="1" stop-color="#ffffff"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="0" y="0" width="12" height="630" fill="${accent}"/>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="0" y="0" width="12" height="675" fill="${accent}"/>
 `;
 
 // Brand row: icon + brand name + tagline ("What a good website does.")
@@ -103,10 +103,10 @@ const brandHeader = `
 `;
 
 const footer = `
-  <g transform="translate(80,570)" font-family="${FONT_MONO}" font-size="22" fill="#5b5b66">
+  <g transform="translate(80,615)" font-family="${FONT_MONO}" font-size="22" fill="#5b5b66">
     <text x="0" y="0">specification.website</text>
   </g>
-  <g transform="translate(1120,570)" font-family="${FONT_MONO}" font-size="22" fill="#5b5b66" text-anchor="end">
+  <g transform="translate(1120,615)" font-family="${FONT_MONO}" font-size="22" fill="#5b5b66" text-anchor="end">
     <text x="0" y="0">MIT · CC BY 4.0</text>
   </g>
 `;
@@ -171,12 +171,12 @@ function homepageOgSvg(topicCount) {
     return `${checkBox(x + 16, 0, 28, true)}
             <text x="${x + 50}" y="10" font-weight="600" font-size="28" fill="#0e0e13">${esc(label)}</text>`;
   };
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img">
     ${baseDefs}
     ${brandHeader}
 
     <g transform="translate(80,260)" fill="#0e0e13" font-family="${FONT_SANS}">
-      <text x="0" y="0" font-size="56" font-weight="700" letter-spacing="-1.5">The open checklist for the modern web.</text>
+      <text x="0" y="0" font-size="48" font-weight="700" letter-spacing="-1.2">The open checklist for the modern web.</text>
     </g>
 
     <g transform="translate(80,${rowY(0)})" font-family="${FONT_SANS}">
@@ -227,7 +227,7 @@ function specPageOgSvg({ title, summary, category, status }) {
 
   const summaryLines = wrapLines(summary, 60, 3);
 
-  const pillY = 190;
+  const pillY = 235;
   const pillH = 33;
   // Title's top of caps sits ~0.75 * fontSize above the baseline, so the
   // first baseline needs that much clearance below the pill bottom.
@@ -247,7 +247,7 @@ function specPageOgSvg({ title, summary, category, status }) {
     fontSize: 18,
   });
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img">
     ${baseDefs}
     ${brandHeader}
 
@@ -279,12 +279,12 @@ function eyebrowOgSvg({ eyebrow, title, subtitle, footnote }) {
   const titleLineH = titleSize * 1.15;
   const subtitleLines = wrapLines(subtitle, 56, 2);
 
-  const eyebrowY = 230;
-  const titleStartY = 300;
+  const eyebrowY = 275;
+  const titleStartY = 345;
   const subtitleStartY = titleStartY + (titleLines.length - 1) * titleLineH + 56;
   const footnoteY = subtitleStartY + (subtitleLines.length - 1) * 42 + 50;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img">
     ${baseDefs}
     ${brandHeader}
 
@@ -383,7 +383,7 @@ async function png(svg, size, file) {
 
 async function ogPng(svg, file) {
   await sharp(Buffer.from(svg))
-    .resize(1200, 630)
+    .resize(1200, 675)
     .png({ quality: 90, compressionLevel: 9 })
     .toFile(join(out, file));
 }
@@ -428,7 +428,7 @@ const specs = await loadAllSpecs();
 console.log(`  found ${specs.length} spec entries`);
 
 await ogPng(homepageOgSvg(specs.length), 'og-default.png');
-console.log('  wrote /og-default.png (homepage, 1200×630)');
+console.log('  wrote /og-default.png (homepage, 1200×675)');
 
 // Per-category
 const byCategory = {};

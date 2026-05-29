@@ -18,6 +18,9 @@ sources:
   - title: "X — About Cards"
     url: "https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards"
     publisher: "X"
+  - title: "Google Search Central — Google Discover and your website"
+    url: "https://developers.google.com/search/docs/appearance/google-discover"
+    publisher: "Google"
 ---
 
 ## What it is
@@ -29,7 +32,7 @@ Open Graph (OG) is a set of `<meta>` tags, originally introduced by Facebook in 
 <meta property="og:description" content="Set a valid BCP 47 language tag on <html> so screen readers, translators, and search engines know what language the page is in." />
 <meta property="og:image" content="https://example.com/og/html-lang.png" />
 <meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image:height" content="675" />
 <meta property="og:url" content="https://example.com/foundations/html-lang" />
 <meta property="og:type" content="article" />
 ```
@@ -52,7 +55,12 @@ Five tags do most of the work:
 - **`og:url`** — the canonical absolute URL of the page. Match your `<link rel="canonical">`.
 - **`og:type`** — the kind of object: `website` for the homepage, `article` for posts, `product` for shop items.
 
-For the image, the dominant size is **1200 × 630** pixels, a 1.91:1 aspect ratio. It works on Facebook, LinkedIn, Slack, Discord, iMessage, Bluesky, and Mastodon. Constraints to follow:
+For the image, there are two sensible sizes:
+
+- **1200 × 630** (1.91:1) — the historical Open Graph default. Works on Facebook, LinkedIn, Slack, Discord, iMessage, Bluesky, and Mastodon.
+- **1200 × 675** (16:9) — also works on every OG platform, *and* satisfies [Google Discover](https://developers.google.com/search/docs/appearance/google-discover), which only surfaces large-format cards when the image is at least 1200 px wide and roughly 16:9. If you care about appearing in Discover (and you should, if your content is Discover-eligible), 1200 × 675 is the more portable choice — and you also need `<meta name="robots" content="max-image-preview:large">` for Google to use the full-width version.
+
+Other constraints, regardless of which size you pick:
 
 - File size under 5 MB; under 1 MB is safer.
 - JPEG or PNG. Some platforms accept WebP, many do not.
@@ -78,7 +86,8 @@ Generate the image per page when you can. A unique illustration or screenshot pe
 
 - Using `name="og:title"` instead of `property="og:title"`. The protocol requires `property`.
 - Relative URLs in `og:image` or `og:url`. Always absolute, always HTTPS.
-- Image dimensions that drift from 1.91:1 — cropped badly on every platform.
+- Image dimensions that drift from 1.91:1 or 16:9 — cropped badly on every platform.
+- Shipping a 1200 × 630 image *and* wanting Google Discover traffic. Discover wants 16:9 at ≥ 1200 px wide; 1200 × 675 satisfies both worlds.
 - Missing `og:image:width` and `og:image:height`. Some platforms skip the image entirely without them.
 - One generic OG image reused on every page. Works, but missing an opportunity.
 - `og:url` that does not match the canonical URL. The two should agree.
