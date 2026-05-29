@@ -7,6 +7,7 @@
 
 name = "specification-website-mcp"
 main = "src/index.ts"
+account_id = "c53e64d218c83cb220b523a637ffd079"
 compatibility_date = "2026-05-29"
 compatibility_flags = ["nodejs_compat"]
 

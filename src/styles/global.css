@@ -70,6 +70,11 @@ body {
   letter-spacing: -0.01em;
   scroll-margin-top: 5rem;
 }
+.prose-spec > :first-child,
+.prose-spec h2:first-child,
+.prose-spec h3:first-child {
+  margin-top: 0;
+}
 .prose-spec h3 {
   font-size: 1.175rem;
   font-weight: 600;
