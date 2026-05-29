@@ -6,7 +6,7 @@ summary: "Declare the preferred URL for a page so search engines and crawlers co
 status: recommended
 order: 70
 appliesTo: [all]
-relatedSlugs: [title, meta-description, open-graph]
+relatedSlugs: [title, meta-description, open-graph, no-vary-search]
 updated: "2026-05-29"
 sources:
   - title: "RFC 6596 — The Canonical Link Relation"

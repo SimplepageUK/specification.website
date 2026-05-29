@@ -75,9 +75,12 @@ Anthropic's documentation, Stripe's, and a growing number of others ship the `.m
 HTTP/1.1 200 OK
 Content-Type: text/markdown; charset=utf-8
 Cache-Control: public, max-age=3600
+X-Markdown-Tokens: 1240
 ```
 
 Include a YAML frontmatter block with the page's metadata so agents get structured context alongside the prose: `title`, `url` (the canonical HTML URL), `updated`, `sources`, `licence`. Don't ship implementation details an agent doesn't need (build timestamps, internal IDs).
+
+**Hint the size.** Add an `X-Markdown-Tokens` response header carrying a rough token-count estimate for the body (any reasonable tokeniser — `tiktoken`'s `cl100k_base` is a fine default). The header is not a registered standard, but a growing number of agent-friendly sites ship it because it lets a caller decide whether to inline the page into a prompt, summarise it first, or skip it for a smaller one — without downloading the body. Recompute it whenever the Markdown changes; do not invent the number.
 
 **Advertise it in `<head>`.** Add a discovery link to the HTML version so crawlers and tools find the Markdown without guessing the URL pattern.
 

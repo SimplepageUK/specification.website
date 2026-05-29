@@ -2,8 +2,8 @@
 title: "/.well-known/change-password"
 slug: change-password
 category: well-known
-summary: "A standard redirect endpoint that points password managers and users at your real change-password page. Tiny to ship, useful for every site with logins."
-status: recommended
+summary: "A standard redirect endpoint that points password managers and users at your real change-password page. Only applicable if the site has user accounts — sites without logins have nothing to point at and should not implement it."
+status: optional
 order: 20
 appliesTo: [all]
 relatedSlugs: [well-known-overview]
@@ -25,6 +25,8 @@ sources:
 `/.well-known/change-password` is a fixed URL that resolves, by redirect, to the page where a user can change their password. The W3C Web Application Security Working Group defined it so that password managers, browsers and security tooling can jump a user from a breach alert or rotation prompt to the right form in one click.
 
 It is not a form itself. It is a discoverable pointer.
+
+**Applies only if your site has user accounts.** A marketing site, documentation site, or any other site without a login flow has no change-password page to point at and should not implement this URL — see the note at the end of the implementation section.
 
 ## Why it matters
 
@@ -53,7 +55,7 @@ Rules:
 - The destination should work for an unauthenticated user too: redirect them to sign in first, then back to the change-password page.
 - Do not return **404**. A 404 tells password managers the feature is not supported.
 
-If you do not have accounts at all (a static marketing site), you do not need this URL.
+If you do not have accounts at all (a static marketing site, a documentation site, a brochure-ware site), do not implement this URL. There is nothing for it to redirect to, and a broken or placeholder destination is worse than the absence of the endpoint — password managers treat a 404 here as "feature unsupported" and move on, which is the correct outcome for a site without logins.
 
 ## Common mistakes
 

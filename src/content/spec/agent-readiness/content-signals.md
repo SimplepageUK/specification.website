@@ -6,7 +6,7 @@ summary: "Add Content-Signal directives to robots.txt to declare whether AI craw
 status: optional
 order: 42
 appliesTo: [all]
-relatedSlugs: [robots-for-ai-crawlers, robots-txt, agent-readiness-overview]
+relatedSlugs: [robots-for-ai-crawlers, robots-txt, agent-readiness-overview, web-bot-auth]
 updated: "2026-05-29"
 sources:
   - title: "IETF AI Preferences WG (aipref) — drafts"

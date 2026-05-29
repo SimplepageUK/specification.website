@@ -6,7 +6,7 @@ summary: "Tell the browser which links to prefetch or prerender before the user 
 status: recommended
 order: 95
 appliesTo: [all]
-relatedSlugs: [core-web-vitals, preload-prefetch-preconnect, view-transitions, http3, resource-hints]
+relatedSlugs: [core-web-vitals, preload-prefetch-preconnect, view-transitions, http3, resource-hints, no-vary-search]
 updated: "2026-05-29"
 sources:
   - title: "MDN — Speculation Rules API"

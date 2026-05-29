@@ -6,7 +6,7 @@ summary: "Cache-Control tells browsers and CDNs how long to keep a response. Use
 status: required
 order: 50
 appliesTo: [all]
-relatedSlugs: [compression, core-web-vitals]
+relatedSlugs: [compression, core-web-vitals, no-vary-search]
 updated: "2026-05-29"
 sources:
   - title: "RFC 9111 — HTTP Caching"
