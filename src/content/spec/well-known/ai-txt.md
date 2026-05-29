@@ -2,48 +2,62 @@
 title: "/.well-known/ai.txt"
 slug: ai-txt
 category: well-known
-summary: "An emerging convention for declaring opt-outs and policies around AI training and content use. Not yet an IETF standard, not yet in the IANA registry."
-status: optional
+summary: "A non-standard, non-registered convention for declaring AI training opt-outs. The original Spawning proposal site no longer serves the spec, and the file is not in the IANA well-known registry. Prefer robots.txt directives for AI crawlers and llms.txt for positive guidance."
+status: avoid
 order: 80
 appliesTo: [all]
-relatedSlugs: [well-known-overview, llms-txt]
+relatedSlugs: [well-known-overview, llms-txt, robots-for-ai-crawlers, robots-txt]
 updated: "2026-05-29"
 sources:
-  - title: "Spawning — ai.txt"
-    url: "https://spawning.ai/ai-txt"
-    publisher: "Spawning"
-  - title: "IANA — Well-Known URIs Registry"
+  - title: "IANA — Well-Known URIs Registry (ai.txt is not listed)"
     url: "https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml"
     publisher: "IANA"
+  - title: "Spawning — ai.txt proposal (archived; the live URL no longer resolves)"
+    url: "https://web.archive.org/web/2024/https://spawning.ai/ai-txt"
+    publisher: "Internet Archive"
   - title: "llms.txt convention"
     url: "https://llmstxt.org/"
-    publisher: "Answer.AI"
+    publisher: "llmstxt.org"
+  - title: "ai.robots.txt — community-maintained robots.txt for AI crawlers"
+    url: "https://github.com/ai-robots-txt/ai.robots.txt"
+    publisher: "ai-robots-txt (GitHub)"
 ---
 
 ## What it is
 
-`ai.txt` is a proposed text file, served from `/.well-known/ai.txt` or sometimes from the document root, that declares how a site owner wants AI systems to treat their content. The most widely used variant is the one published by Spawning, which uses a syntax modelled on `robots.txt` to allow or disallow data-mining and model-training use of specific paths.
+`ai.txt` was a 2023 proposal from Spawning AI for a text file at `/.well-known/ai.txt` (or, in some variants, the document root) that would declare a site's policy on AI training, dataset inclusion, and model use. The syntax was modelled on `robots.txt`.
 
-It is **not** an IETF standard. It is **not** in the IANA well-known URIs registry. Compliance is voluntary, inconsistent, and largely depends on whether the crawler operator has chosen to honour it.
+Three things have happened since.
 
-## Why it matters
+1. **It never reached an RFC and never entered the IANA Well-Known URIs registry.** Confirm for yourself: open the [IANA registry](https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml) and search for `ai.txt`. It is not there.
+2. **The original proposer's specification page no longer resolves.** `spawning.ai/ai-txt` returns an error. The only canonical reference is the [Internet Archive snapshot](https://web.archive.org/web/2024/https://spawning.ai/ai-txt).
+3. **The conventions that actually work in practice** are `robots.txt` with AI-crawler user-agent directives (see [robots.txt for AI crawlers](/spec/agent-readiness/robots-for-ai-crawlers/)) and `llms.txt` (see [/llms.txt](/spec/agent-readiness/llms-txt/)). Both are honoured by mainstream model providers; neither requires inventing a new well-known path.
 
-- **A signal of intent.** Even without legal force, publishing `ai.txt` documents that you do not consent to certain uses of your content. Several jurisdictions (notably the EU, under the Copyright in the Digital Single Market Directive) require machine-readable opt-outs for text-and-data-mining exceptions.
-- **Some crawlers honour it.** Spawning's crawler, Common Crawl's optional filters, and a handful of model providers respect it. Others do not.
-- **It complements `robots.txt`.** `robots.txt` controls indexing for search; `ai.txt` is specifically about model training and dataset inclusion.
+This page exists for completeness — sites that still serve `/.well-known/ai.txt` should know what they are and are not signing up for.
 
-Because the convention is unsettled, treat `ai.txt` as a useful signal layered on top of stronger controls (server-side blocks of known AI crawler user agents, licence terms in your Terms of Service), not as a sole defence.
+## Why this is now "avoid"
 
-## How to implement
+- **No standards-track home.** Without IETF registration, well-known URI conflicts and parser disagreements are possible.
+- **No live canonical source.** A spec whose authoritative page does not load is, in practice, not a spec.
+- **Better alternatives exist.** Every AI crawler that respects `ai.txt` also respects `robots.txt` directives targeted at its user-agent — which **is** in the [IETF-standardised](https://www.rfc-editor.org/rfc/rfc9309.html) registry. The `robots.txt` approach is strictly more compatible.
+- **Shipping it implies a contract you cannot enforce.** Visitors and crawler operators reading your `ai.txt` may infer obligations on your side that you have no mechanism to deliver on.
 
-The Spawning format looks like this:
+If your motivation is "I want AI bots not to train on this content", do this instead, in this order:
+
+1. **`robots.txt`** with explicit `User-agent` blocks for the major AI crawlers — GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, Applebot-Extended, PerplexityBot, CCBot, Bytespider. See [robots-txt for AI crawlers](/spec/agent-readiness/robots-for-ai-crawlers/) for the current list. The [ai.robots.txt](https://github.com/ai-robots-txt/ai.robots.txt) community list is kept up to date.
+2. **Server- or CDN-level blocks** of those same user agents for crawlers that ignore `robots.txt`. Cloudflare, Fastly, and Vercel all expose AI-bot blocking rules.
+3. **A `Terms of Service` clause** if you also want a legal hook. None of the technical files have legal force on their own.
+
+If your motivation is "I want LLMs to use my content *well*", ship [`/llms.txt`](/spec/agent-readiness/llms-txt/) and [per-page Markdown source endpoints](/spec/agent-readiness/markdown-source-endpoints/). Both are recommended.
+
+## What sites that still ship ai.txt look like
+
+The widely-copied syntax, for reference only — *not* a recommendation to deploy it:
 
 ```
 User-Agent: *
 Disallow: /
 ```
-
-A more granular example, allowing one section while disallowing the rest:
 
 ```
 User-Agent: *
@@ -51,30 +65,15 @@ Disallow: /
 Allow: /public-docs/
 ```
 
-Rules:
-
-- Serve as **`Content-Type: text/plain; charset=utf-8`** over **HTTPS**.
-- Place at **`/.well-known/ai.txt`** — although some publishers also mirror it at `/ai.txt`, prefer the well-known location for future compatibility.
-- Keep the syntax close to `robots.txt`. Crawlers reuse their parsers.
-- Pair it with `robots.txt` directives that block specific AI crawler user agents (GPTBot, ClaudeBot, Google-Extended, CCBot, PerplexityBot, Bytespider) if you want a stronger signal.
-
-## Related but separate: llms.txt
-
-`llms.txt` is a different convention, proposed by Answer.AI, for offering a curated, plain-text summary of a site that LLM-powered assistants can ingest **at query time**. It is about helping language models understand your site, not about opting out of training. See [the llms.txt page](/spec/agent-readiness/llms-txt/) for the full treatment.
-
-The two files are complementary: `ai.txt` says "do not train on this", `llms.txt` says "here is what this site is".
+If you do ship it (matching what some sites already have for continuity with crawlers that look for it), serve it as `Content-Type: text/plain; charset=utf-8` over HTTPS at `/.well-known/ai.txt`, and treat it as supplementary signal on top of the working `robots.txt` and edge-level blocks.
 
 ## Common mistakes
 
-- Treating `ai.txt` as legally binding. It is not. It is a request.
-- Assuming any crawler will obey it. Many will not. Block known bad actors at the server or CDN layer.
-- Confusing `ai.txt` (training opt-out) with `llms.txt` (assistant-friendly summary). They have different purposes.
-- Serving `ai.txt` only from the root and not from `/.well-known/`, then being surprised when newer tools cannot find it.
+- Treating `ai.txt` as a substitute for `robots.txt`. It is not, and the major crawlers do not parse it.
+- Assuming it has legal force. It is a request; no court has tested it as a contract.
+- Citing `spawning.ai/ai-txt` as the canonical source. Use the [Internet Archive snapshot](https://web.archive.org/web/2024/https://spawning.ai/ai-txt) and note the spec has not been actively maintained.
+- Inferring from "well-known" in the path that it is IETF-registered. It is not.
 
 ## Verification
 
-```
-curl -s https://example.com/.well-known/ai.txt
-```
-
-Confirm a plain-text response and parse it with a `robots.txt`-compatible library. Note the limits: this verifies the file exists and is syntactically valid. It does not verify that any crawler will respect it.
+`curl -s https://example.com/.well-known/ai.txt` returns a plain-text file. That confirms the file is served correctly — nothing more. No verification step exists that confirms any crawler will honour it.

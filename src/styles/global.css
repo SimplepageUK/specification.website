@@ -202,3 +202,73 @@ body {
   header, footer, nav, .no-print { display: none; }
   body { font-size: 11pt; }
 }
+
+/* ⌘K search overlay */
+.search-overlay {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  width: min(640px, calc(100vw - 2rem));
+  max-height: 80vh;
+  margin: 6vh auto auto;
+  color: var(--color-ink-800);
+}
+.search-overlay::backdrop {
+  background: rgba(14, 14, 19, 0.45);
+  backdrop-filter: blur(2px);
+}
+.search-overlay__inner {
+  background: white;
+  border: 1px solid var(--color-ink-200);
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 50px -10px rgba(14, 14, 19, 0.25);
+  overflow: hidden;
+}
+.search-overlay__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-ink-100);
+  background: var(--color-ink-50);
+}
+.search-overlay__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 0.6rem 0.9rem;
+  border-top: 1px solid var(--color-ink-100);
+  background: var(--color-ink-50);
+  font-size: 0.75rem;
+  color: var(--color-ink-500);
+}
+.search-overlay__foot kbd {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  border: 1px solid var(--color-ink-200);
+  background: white;
+  border-radius: 0.25rem;
+  color: var(--color-ink-600);
+  margin-right: 0.25rem;
+}
+#search-overlay-mount {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+/* Make Pagefind UI fit the overlay nicely */
+#search-overlay-mount .pagefind-ui {
+  --pagefind-ui-primary: var(--color-accent-700);
+  --pagefind-ui-text: var(--color-ink-800);
+  --pagefind-ui-background: white;
+  --pagefind-ui-border: var(--color-ink-200);
+  --pagefind-ui-tag: var(--color-ink-100);
+  --pagefind-ui-border-radius: 0.5rem;
+  --pagefind-ui-font: var(--font-sans);
+  padding: 0.5rem 0.75rem;
+}
+#search-overlay-mount .pagefind-ui__form::before {
+  /* Hide the default search icon since we already have one in the trigger */
+  opacity: 0.5;
+}
