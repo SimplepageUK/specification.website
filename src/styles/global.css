@@ -30,6 +30,9 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* Reserve scrollbar space so layout doesn't shift on pages that don't
+     overflow. Avoids horizontal jank between short and tall pages. */
+  scrollbar-gutter: stable;
 }
 
 body {
