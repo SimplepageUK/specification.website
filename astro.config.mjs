@@ -67,8 +67,6 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      changefreq: 'weekly',
-      priority: 0.7,
       serialize(item) {
         const lastmod = lastmodByUrl.get(item.url);
         if (lastmod) item.lastmod = new Date(`${lastmod}T00:00:00Z`).toISOString();
