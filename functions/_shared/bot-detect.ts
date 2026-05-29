@@ -121,7 +121,10 @@ export function logBot(context: { request: Request; env: BotEnv }): void {
 
     if (!sigAgent && !verified && !matchedBot && !wantsMarkdown) return;
 
-    // Precedence: a named identity beats an anonymous one.
+    // Precedence: a named identity beats an anonymous one. For anonymous
+    // requests (cf-verified or accept-markdown only) we use the raw UA as
+    // identity so the dashboard can attribute them, rather than bucketing
+    // everything into "markdown-client" / "verified-other".
     let source: string;
     let identity: string;
     if (sigAgent) {
@@ -132,10 +135,10 @@ export function logBot(context: { request: Request; env: BotEnv }): void {
       identity = matchedBot;
     } else if (verified) {
       source = 'cf-verified';
-      identity = 'verified-other';
+      identity = ua.slice(0, 96) || 'verified-other';
     } else {
       source = 'accept-markdown';
-      identity = 'markdown-client';
+      identity = ua.slice(0, 96) || 'markdown-client';
     }
 
     dataset.writeDataPoint({
@@ -149,7 +152,7 @@ export function logBot(context: { request: Request; env: BotEnv }): void {
         cf?.country || '', // blob7
         req.method, // blob8
         source, // blob9
-        wantsMarkdown ? '1' : '', // blob10
+        wantsMarkdown ? 'markdown' : 'html', // blob10 (requested mime)
       ],
       indexes: [identity],
     });

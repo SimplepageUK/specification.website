@@ -52,22 +52,22 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       ORDER BY hour ASC
     `,
     agent_top24h: `
-      SELECT index1 AS bot, SUM(_sample_interval) AS count
+      SELECT index1 AS bot, blob10 AS mime, SUM(_sample_interval) AS count
       FROM ${AGENT}
       WHERE timestamp > NOW() - INTERVAL '1' DAY
-      GROUP BY bot ORDER BY count DESC LIMIT 50
+      GROUP BY bot, mime ORDER BY count DESC LIMIT 50
     `,
     agent_top7d: `
-      SELECT index1 AS bot, SUM(_sample_interval) AS count
+      SELECT index1 AS bot, blob10 AS mime, SUM(_sample_interval) AS count
       FROM ${AGENT}
       WHERE timestamp > NOW() - INTERVAL '7' DAY
-      GROUP BY bot ORDER BY count DESC LIMIT 50
+      GROUP BY bot, mime ORDER BY count DESC LIMIT 50
     `,
     agent_top30d: `
-      SELECT index1 AS bot, SUM(_sample_interval) AS count
+      SELECT index1 AS bot, blob10 AS mime, SUM(_sample_interval) AS count
       FROM ${AGENT}
       WHERE timestamp > NOW() - INTERVAL '30' DAY
-      GROUP BY bot ORDER BY count DESC LIMIT 50
+      GROUP BY bot, mime ORDER BY count DESC LIMIT 50
     `,
     agent_sources: `
       SELECT blob9 AS source, SUM(_sample_interval) AS count
@@ -76,10 +76,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       GROUP BY source ORDER BY count DESC
     `,
     agent_topPaths: `
-      SELECT index1 AS bot, blob4 AS path, SUM(_sample_interval) AS count
+      SELECT index1 AS bot, blob4 AS path, blob10 AS mime, SUM(_sample_interval) AS count
       FROM ${AGENT}
       WHERE timestamp > NOW() - INTERVAL '7' DAY
-      GROUP BY bot, path ORDER BY count DESC LIMIT 200
+      GROUP BY bot, path, mime ORDER BY count DESC LIMIT 200
     `,
     // --- MCP / A2A --------------------------------------------------------
     mcp_hourly: `
@@ -237,6 +237,20 @@ function renderTable(headers: string[], rows: AeRow[], opts: TableOptions = {}):
 }
 
 const countCol: TableOptions = { numeric: ['count'], formatters: { count: (v) => fmtNum(v) } };
+
+// blob10 was '1' | '' before the schema change; new rows write 'markdown' | 'html'.
+// Coalesce so old and new rows render the same label during the overlap window.
+function fmtMime(v: unknown): string {
+  const s = String(v ?? '');
+  if (s === 'markdown' || s === '1') return 'markdown';
+  if (s === 'html' || s === '') return 'html';
+  return esc(s);
+}
+
+const botMimeCountCols: TableOptions = {
+  numeric: ['count'],
+  formatters: { mime: fmtMime, count: (v) => fmtNum(v) },
+};
 
 // Stable-ish palette for the stacked hourly chart. First N keys by volume get
 // a colour; the rest fold into 'other' (gray).
@@ -495,9 +509,9 @@ function renderDashboard(results: QueryResults, errors: QueryErrors): string {
             <button type="button" class="tab" data-tab="bots-30d">30d</button>
           </div>
         </div>
-        <div id="bots-24h" class="tab-pane">${renderTable(['bot', 'count'], rowsOrEmpty(results.agent_top24h), countCol)}</div>
-        <div id="bots-7d" class="tab-pane" hidden>${renderTable(['bot', 'count'], rowsOrEmpty(results.agent_top7d), countCol)}</div>
-        <div id="bots-30d" class="tab-pane" hidden>${renderTable(['bot', 'count'], rowsOrEmpty(results.agent_top30d), countCol)}</div>
+        <div id="bots-24h" class="tab-pane">${renderTable(['bot', 'mime', 'count'], rowsOrEmpty(results.agent_top24h), botMimeCountCols)}</div>
+        <div id="bots-7d" class="tab-pane" hidden>${renderTable(['bot', 'mime', 'count'], rowsOrEmpty(results.agent_top7d), botMimeCountCols)}</div>
+        <div id="bots-30d" class="tab-pane" hidden>${renderTable(['bot', 'mime', 'count'], rowsOrEmpty(results.agent_top30d), botMimeCountCols)}</div>
       </div>
     </div>
 
@@ -517,10 +531,11 @@ function renderDashboard(results: QueryResults, errors: QueryErrors): string {
       <span class="filter-stats" data-filter-stats></span>
     </div>
     <div id="agent-paths-table">
-      ${renderTable(['bot', 'path', 'count'], rowsOrEmpty(results.agent_topPaths), {
+      ${renderTable(['bot', 'path', 'mime', 'count'], rowsOrEmpty(results.agent_topPaths), {
         numeric: ['count'],
         formatters: {
           path: (v) => `<span class="path">${esc(v)}</span>`,
+          mime: fmtMime,
           count: (v) => fmtNum(v),
         },
       })}
