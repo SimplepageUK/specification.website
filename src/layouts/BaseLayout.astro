@@ -44,7 +44,10 @@ const websiteJsonLd = {
   inLanguage: 'en',
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${site.url}/?q={search_term_string}`,
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${site.url}/search/?q={search_term_string}`,
+    },
     'query-input': 'required name=search_term_string',
   },
 };
@@ -57,6 +60,11 @@ const finalJsonLd = jsonLd
 <!doctype html>
 <html lang="en-GB" dir="ltr">
   <head>
+    {/* Restore the stored theme override before paint to avoid FOUC.
+        Hash-allowed by _headers CSP — DO NOT edit this script's bytes (or
+        whitespace) without recomputing the sha256. Source pattern documented
+        in /spec/foundations/color-scheme/. */}
+    <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
     <HeadMeta
       title={title}
       description={description}
@@ -113,7 +121,7 @@ const finalJsonLd = jsonLd
     })} />
     <slot name="head" />
   </head>
-  <body class="bg-white text-ink-800">
+  <body class="bg-ink-50 text-ink-800">
     <a href="#main" class="skip-link">Skip to main content</a>
     {!bare && <SiteHeader />}
     <main id="main">
@@ -143,6 +151,7 @@ const finalJsonLd = jsonLd
       </div>
     </dialog>
     <script src="/search-overlay.js" type="text/javascript" defer></script>
+    <script src="/theme-toggle.js" type="text/javascript" defer></script>
     <script src="/webmcp.js" type="text/javascript" defer></script>
   </body>
 </html>

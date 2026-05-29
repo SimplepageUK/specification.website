@@ -34,7 +34,8 @@ const ogImage = new URL(ogImageOverride ?? '/og-default.png', site.url).toString
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
-<meta name="theme-color" content={site.themeColor} />
+<meta name="theme-color" content={site.themeColor} media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content={site.themeColorDark} media="(prefers-color-scheme: dark)" />
 <meta name="generator" content={Astro.generator} />
 
 <title>{fullTitle}</title>

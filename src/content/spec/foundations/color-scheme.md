@@ -41,6 +41,8 @@ The CSS property sets it on any element (and is the only form that participates 
 
 Ship both. The meta tag takes effect before any stylesheet parses, so it prevents the white flash dark-mode users would otherwise see during page load. The CSS property is the authoritative source once styles arrive, and lets you scope schemes to subtrees if you ever need to.
 
+**This site ships it.** [`HeadMeta.astro`](https://github.com/jdevalk/specification.website/blob/main/src/components/HeadMeta.astro) emits `<meta name="color-scheme" content="light dark">` plus a matched pair of `theme-color` tags with `media="(prefers-color-scheme: ...)"`, and [`global.css`](https://github.com/jdevalk/specification.website/blob/main/src/styles/global.css) flips the `--color-ink-*` token scale inside `@media (prefers-color-scheme: dark)` so every utility that references those tokens — backgrounds, borders, body text, code blocks — switches with the user's OS preference. Accent green is held constant and lifted for text contrast on dark surfaces.
+
 ## Why it matters
 
 Without `color-scheme`, the browser assumes the page is light-only. A dark-mode user opening your site sees a blink of white background before your CSS paints — even if your stylesheet is perfectly dark-mode-ready. Native form controls, date pickers, and scrollbars also stay in their light defaults until you restyle every one by hand.
