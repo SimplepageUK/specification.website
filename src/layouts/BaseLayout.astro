@@ -56,6 +56,13 @@ const finalJsonLd = jsonLd
       noindex={noindex}
       jsonLd={finalJsonLd}
     />
+    {import.meta.env.PROD && (
+      <script
+        defer
+        data-domain={site.plausibleDomain}
+        src={`${site.plausibleHost}/js/script.js`}
+      />
+    )}
   </head>
   <body class="bg-white text-ink-800">
     <a href="#main" class="skip-link">Skip to main content</a>

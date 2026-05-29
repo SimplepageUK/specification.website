@@ -17,9 +17,9 @@ const updated = '2026-05-29';
 
       <p>
         This site is a static, publicly readable reference. There are no user accounts, no comments, no
-        forms, and no transactions. The honest summary is: we do not collect, share, or store personal
-        data. This page exists because the spec lists a privacy policy as <strong>required</strong> — so we
-        publish one. It happens to be very short.
+        forms, and no transactions. We collect a small amount of aggregate analytics — see below — and
+        nothing else. This page exists because the spec lists a privacy policy as <strong>required</strong>,
+        and because honest disclosure is the only kind worth publishing.
       </p>
 
       <h2 id="data-controller">Data controller</h2>
@@ -29,13 +29,32 @@ const updated = '2026-05-29';
       </p>
 
       <h2 id="what-we-collect">What we collect</h2>
-      <p><strong>Nothing about you that we control.</strong> Specifically:</p>
+      <p>The site sets <strong>no cookies</strong> and stores nothing in your browser. The only data we
+      collect is aggregate page-view analytics via <a href="https://plausible.io" rel="external">Plausible</a>:</p>
+      <ul>
+        <li>URL of the page you loaded.</li>
+        <li>HTTP referrer (which site sent you, if any).</li>
+        <li>Browser, operating system, and device type — derived from the User-Agent string and discarded after the request.</li>
+        <li>Country, derived from your IP address. <strong>Your IP address itself is never stored.</strong></li>
+      </ul>
+      <p>What Plausible deliberately does not do:</p>
+      <ul>
+        <li>No cookies, no localStorage, no fingerprinting.</li>
+        <li>No cross-site tracking. No identifier follows you to another site.</li>
+        <li>No personal data, no profiles, no advertising. The data is aggregated and cannot be used to identify you.</li>
+      </ul>
+      <p>
+        Plausible is GDPR, CCPA, and PECR compliant by design and does not require a cookie banner.
+        See <a href="https://plausible.io/data-policy" rel="external">Plausible's data policy</a> and
+        <a href="https://plausible.io/privacy" rel="external">privacy policy</a> for the full detail.
+        Aggregate statistics are stored on EU servers operated by Plausible Insights OÜ in Estonia.
+      </p>
+      <p>Beyond analytics:</p>
       <ul>
         <li>No accounts, no login, no profile data.</li>
-        <li>No cookies. <em>Zero</em>. The site sets no cookie of any kind.</li>
-        <li>No tracking pixels, no fingerprinting, no third-party scripts.</li>
-        <li>No analytics. We have no idea what is popular, and that is fine.</li>
         <li>No forms — there is nothing to submit.</li>
+        <li>No third-party scripts other than the single Plausible request to <code>plausible.io/js/script.js</code>.</li>
+        <li>No advertising network.</li>
       </ul>
 
       <h2 id="logs-and-hosting">Logs and hosting</h2>
@@ -57,8 +76,8 @@ const updated = '2026-05-29';
 
       <h2 id="signals-we-respect">Signals we respect</h2>
       <ul>
-        <li><strong>Do Not Track / <a href="/spec/privacy/global-privacy-control/">Global Privacy Control</a>:</strong> not applicable — we do not track in the first place.</li>
-        <li><strong>Browser content blockers:</strong> nothing to block. The site ships no third-party requests.</li>
+        <li><strong>Do Not Track / <a href="/spec/privacy/global-privacy-control/">Global Privacy Control</a>:</strong> Plausible does not respect DNT or GPC because the analytics it runs do not constitute the kind of tracking those signals were designed to stop. If you disagree, block <code>plausible.io</code> in your browser or use an extension such as uBlock Origin — the site continues to work without it.</li>
+        <li><strong>Browser content blockers:</strong> the Plausible request is blocked by all common content blockers. We notice no difference; you get the same site.</li>
       </ul>
 
       <h2 id="children">Children</h2>

@@ -13,6 +13,8 @@ export const site = {
   },
   themeColor: '#163fa6',
   twitter: '@jdevalk',
+  plausibleDomain: 'specification.website',
+  plausibleHost: 'https://plausible.io',
 } as const;
 
 export const categories = [
