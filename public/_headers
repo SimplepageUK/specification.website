@@ -12,6 +12,7 @@
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-site
   X-Frame-Options: DENY
+  Link: </llms.txt>; rel="describedby"; type="text/markdown"; title="Site index for LLMs", </llms-full.txt>; rel="alternate"; type="text/markdown"; title="Full content as Markdown", </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </sitemap-index.xml>; rel="sitemap"; type="application/xml", </rss.xml>; rel="alternate"; type="application/rss+xml", </.well-known/security.txt>; rel="security"; type="text/plain"
 
 # Long cache for fingerprinted assets
 /_astro/*
@@ -40,4 +41,9 @@
 # Per-page Markdown source served from /spec/<category>/<slug>.md
 /spec/*.md
   Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# RFC 9727 — Publishing Organisation API Information
+/.well-known/api-catalog
+  Content-Type: application/linkset+json; charset=utf-8
   Cache-Control: public, max-age=3600

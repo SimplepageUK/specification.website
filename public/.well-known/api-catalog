@@ -1,0 +1,67 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://specification.website/",
+      "describedby": [
+        {
+          "href": "https://specification.website/llms.txt",
+          "type": "text/markdown",
+          "title": "Site index for LLMs"
+        },
+        {
+          "href": "https://specification.website/llms-full.txt",
+          "type": "text/markdown",
+          "title": "Full spec content as Markdown"
+        }
+      ],
+      "alternate": [
+        {
+          "href": "https://specification.website/rss.xml",
+          "type": "application/rss+xml",
+          "title": "Feed of spec changes"
+        }
+      ],
+      "sitemap": [
+        {
+          "href": "https://specification.website/sitemap-index.xml",
+          "type": "application/xml",
+          "title": "URL sitemap"
+        }
+      ],
+      "service-meta": [
+        {
+          "href": "https://specification.website/.well-known/security.txt",
+          "type": "text/plain",
+          "title": "Security contact (RFC 9116)"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://creativecommons.org/licenses/by/4.0/",
+          "title": "Content licence (CC BY 4.0)"
+        },
+        {
+          "href": "https://github.com/jdevalk/specification.website/blob/main/LICENSE",
+          "title": "Code licence (MIT)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://specification.website/spec/",
+      "describedby": [
+        {
+          "href": "https://specification.website/sitemap-index.xml",
+          "type": "application/xml",
+          "title": "All spec URLs"
+        }
+      ],
+      "alternate": [
+        {
+          "href": "https://specification.website/llms-full.txt",
+          "type": "text/markdown",
+          "title": "Every spec page concatenated as Markdown"
+        }
+      ]
+    }
+  ]
+}

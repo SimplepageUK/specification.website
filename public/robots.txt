@@ -2,9 +2,12 @@
 # https://specification.website/spec/seo/robots-txt/
 #
 # Allow everything. This is a public, open spec.
+# Content Signals declare how we want our content treated downstream
+# (IETF AI Preferences draft / IAB Tech Lab Content Signals proposal).
 
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 # AI / LLM crawlers — explicitly allowed.
 # The spec is meant to be read by agents.

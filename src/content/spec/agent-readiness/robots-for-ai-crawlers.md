@@ -6,7 +6,7 @@ summary: "Major AI vendors publish named user-agents for their crawlers. Setting
 status: recommended
 order: 40
 appliesTo: [all]
-relatedSlugs: [robots-txt, agent-readiness-overview, llms-txt]
+relatedSlugs: [robots-txt, content-signals, agent-readiness-overview, llms-txt]
 updated: "2026-05-29"
 sources:
   - title: "OpenAI — GPTBot"

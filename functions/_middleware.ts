@@ -24,31 +24,22 @@ function prefersMarkdown(accept: string): boolean {
   return /text\/markdown/i.test(accept);
 }
 
-export const onRequest: PagesFunction<Env> = async (context) => {
-  const { request, next, env } = context;
-  const url = new URL(request.url);
+async function serveAsMarkdown(env: Env, url: URL, mdPath: string): Promise<Response> {
+  const upstream = await env.ASSETS.fetch(new URL(mdPath, url).toString());
+  const headers = new Headers(upstream.headers);
+  // Force the negotiated content type — agents asked for text/markdown
+  // and our upstreams (.md files and llms.txt) are Markdown either way.
+  headers.set('Content-Type', 'text/markdown; charset=utf-8');
+  headers.set('Vary', 'Accept');
+  headers.set('Content-Location', mdPath);
+  return new Response(upstream.body, {
+    status: upstream.status,
+    statusText: upstream.statusText,
+    headers,
+  });
+}
 
-  const match = url.pathname.match(SPEC_PAGE);
-  if (!match) return next();
-
-  const [, category, slug] = match;
-  const mdPath = `/spec/${category}/${slug}.md`;
-  const accept = request.headers.get('accept') ?? '';
-
-  if (prefersMarkdown(accept)) {
-    const mdUrl = new URL(mdPath, url);
-    const upstream = await env.ASSETS.fetch(mdUrl.toString());
-    const headers = new Headers(upstream.headers);
-    headers.set('Vary', 'Accept');
-    headers.set('Content-Location', mdPath);
-    return new Response(upstream.body, {
-      status: upstream.status,
-      statusText: upstream.statusText,
-      headers,
-    });
-  }
-
-  const response = await next();
+function withVaryAccept(response: Response): Response {
   const headers = new Headers(response.headers);
   headers.append('Vary', 'Accept');
   return new Response(response.body, {
@@ -56,4 +47,29 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     statusText: response.statusText,
     headers,
   });
+}
+
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const { request, next, env } = context;
+  const url = new URL(request.url);
+  const accept = request.headers.get('accept') ?? '';
+  const wantsMarkdown = prefersMarkdown(accept);
+
+  // Site root: agents asking for Markdown get llms.txt (the site index).
+  if (url.pathname === '/' || url.pathname === '') {
+    if (wantsMarkdown) return serveAsMarkdown(env, url, '/llms.txt');
+    return withVaryAccept(await next());
+  }
+
+  // Individual spec pages: agents get the per-page .md source.
+  const match = url.pathname.match(SPEC_PAGE);
+  if (match) {
+    const [, category, slug] = match;
+    const mdPath = `/spec/${category}/${slug}.md`;
+    if (wantsMarkdown) return serveAsMarkdown(env, url, mdPath);
+    return withVaryAccept(await next());
+  }
+
+  // Everything else: pass through.
+  return next();
 };
