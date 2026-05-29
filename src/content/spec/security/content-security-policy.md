@@ -3,7 +3,7 @@ title: "Content Security Policy (CSP)"
 slug: content-security-policy
 category: security
 summary: "A CSP tells browsers which sources of script, style, image, and frame content to trust. A good policy stops most XSS and data-exfiltration attacks dead."
-status: required
+status: recommended
 order: 30
 appliesTo: [all]
 relatedSlugs: [https-tls, frame-ancestors, subresource-integrity, permissions-policy]
