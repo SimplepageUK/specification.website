@@ -32,7 +32,7 @@ The status field is the user-facing contract. Use it precisely.
 - **`required`** — the web platform contract breaks, or a clear class of users is harmed, without it. Examples: `<title>`, `<meta charset>`, HTTPS, image alt text, custom 404 returning 404.
 - **`recommended`** — a modern site should do it. Examples: CSP, HSTS, structured data, Open Graph, security.txt, /llms.txt.
 - **`optional`** — depends on context. Examples: image sitemaps, OpenID Configuration, IDN support.
-- **`avoid`** — outdated, harmful, or superseded by a working alternative. Examples: soft-404, empty links/buttons, `/.well-known/ai.txt`.
+- **`avoid`** — outdated, harmful, or superseded by a working alternative. Examples: soft-404, empty links/buttons.
 
 When in doubt, default to `recommended`, not `required`. The bar for `required` is "the platform breaks without it", not "we strongly suggest it".
 
@@ -96,7 +96,7 @@ npm run assets   # regenerate icons + OG image
 
 1. Edit the `status` field on the spec entry.
 2. Rebuild — the badge changes on the spec page, the category page, the checklist, and the llms.txt summary all at once.
-3. If you are *downgrading* something we ship (e.g. dropping `/.well-known/ai.txt` because the underlying convention turned out defunct), also remove the asset from `public/` and update `CLAUDE.md` if the change is structural.
+3. If you are *downgrading* or removing something because the underlying convention turned out non-existent or defunct (the spec's job is to be honest about this — see the deleted `/.well-known/ai.txt` history), also delete any matching asset under `public/`, any cross-references in other spec pages' `relatedSlugs`, and update `CLAUDE.md` if the change is structural.
 
 ## Things this site does that you should not break
 
