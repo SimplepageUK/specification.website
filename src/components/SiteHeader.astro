@@ -6,7 +6,22 @@ const { pathname } = Astro.url;
 <header class="border-b border-ink-200 bg-white">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4">
     <a href="/" class="flex items-center gap-3 font-semibold text-ink-900 no-underline">
-      <span class="grid h-9 w-9 place-items-center rounded-md bg-accent-700 font-mono text-sm text-white" aria-hidden="true">W/</span>
+      <svg
+        class="h-9 w-9 rounded-md bg-accent-700"
+        viewBox="0 0 64 64"
+        role="img"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M8 22 L20 46 L30 28 L40 46 L58 12"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
       <span class="leading-tight">
         <span class="block text-base">{site.shortName}</span>
         <span class="block text-xs font-normal text-ink-500">specification.website</span>

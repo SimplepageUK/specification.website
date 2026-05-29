@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="The Website Specification">
-  <rect width="64" height="64" rx="12" fill="#163fa6"/>
-  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
-    fill="#ffffff" font-family="ui-monospace, Menlo, Consolas, monospace"
-    font-weight="700" font-size="30" letter-spacing="-1">W/</text>
+  <rect width="64" height="64" rx="12" fill="#15803d"/>
+  <path d="M8 22 L20 46 L30 28 L40 46 L58 12"
+    fill="none" stroke="#ffffff" stroke-width="6"
+    stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

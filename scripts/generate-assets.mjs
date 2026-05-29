@@ -8,27 +8,45 @@ const root = new URL('..', import.meta.url).pathname;
 const out = join(root, 'public');
 await mkdir(out, { recursive: true });
 
-const accent = '#163fa6';
+const accent = '#15803d';      // green-700 — base
+const accentLight = '#f0fdf4'; // green-50  — OG background tint
+
+// The mark: a W whose final upstroke shoots past cap height to form a
+// checkmark tail. Single stroked path, round caps & joins for a clean
+// icon read. Path is on a 0..64 grid and scaled per size.
+//
+//   M (top-left)  L (valley 1)  L (mid peak)  L (valley 2)  L (check tail)
+const WCheck = (cx, cy, scale, stroke) => {
+  const pt = (x, y) => `${cx + (x - 32) * scale},${cy + (y - 32) * scale}`;
+  // Path on 64x64 reference grid:
+  // 8,22 → 20,46 → 30,28 → 40,46 → 58,12
+  const d = [
+    `M${pt(8, 22)}`,
+    `L${pt(20, 46)}`,
+    `L${pt(30, 28)}`,
+    `L${pt(40, 46)}`,
+    `L${pt(58, 12)}`,
+  ].join(' ');
+  return `<path d="${d}" fill="none" stroke="#ffffff" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round"/>`;
+};
 
 const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img">
   <rect width="512" height="512" rx="96" fill="${accent}"/>
-  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
-    fill="#ffffff" font-family="ui-monospace, Menlo, Consolas, monospace"
-    font-weight="700" font-size="220" letter-spacing="-8">W/</text>
+  ${WCheck(256, 256, 7.5, 48)}
 </svg>`;
 
-// Maskable: same mark on a safe-zone padded background per W3C maskable spec.
+// Maskable: per W3C maskable spec, the mark must fit inside an inscribed
+// circle of ~80% diameter, leaving safe zone for launcher masks. Same
+// shape, smaller scale.
 const maskableSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img">
   <rect width="512" height="512" fill="${accent}"/>
-  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
-    fill="#ffffff" font-family="ui-monospace, Menlo, Consolas, monospace"
-    font-weight="700" font-size="160" letter-spacing="-6">W/</text>
+  ${WCheck(256, 256, 5, 36)}
 </svg>`;
 
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img">
   <defs>
     <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#eef4ff"/>
+      <stop offset="0" stop-color="${accentLight}"/>
       <stop offset="1" stop-color="#ffffff"/>
     </linearGradient>
   </defs>
@@ -36,9 +54,7 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" ro
   <rect x="0" y="0" width="12" height="630" fill="${accent}"/>
   <g transform="translate(80,110)">
     <rect width="92" height="92" rx="16" fill="${accent}"/>
-    <text x="46" y="46" text-anchor="middle" dominant-baseline="central"
-      fill="#ffffff" font-family="ui-monospace, Menlo, Consolas, monospace"
-      font-weight="700" font-size="42" letter-spacing="-2">W/</text>
+    ${WCheck(46, 46, 1.35, 8)}
   </g>
   <g transform="translate(80,250)" fill="#0e0e13" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
     <text x="0" y="0" font-size="72" font-weight="800" letter-spacing="-2">What a good website does.</text>

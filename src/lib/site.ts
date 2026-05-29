@@ -11,7 +11,7 @@ export const site = {
     url: 'https://joost.blog',
     handle: 'jdevalk',
   },
-  themeColor: '#163fa6',
+  themeColor: '#15803d',
   twitter: '@jdevalk',
   plausibleDomain: 'specification.website',
   plausibleHost: 'https://plausible.io',
