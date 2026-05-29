@@ -3,7 +3,7 @@
 # Publish DNS-AID (DNS for AI Discovery) records on specification.website.
 # Reference: draft-mozleywilliams-dnsop-dnsaid (IETF) + RFC 9460 (SVCB/HTTPS).
 #
-# Records created:
+# Records managed (idempotent — created on first run, updated on later runs):
 #   _index._agents.specification.website  HTTPS  1 specification.website. alpn="h3,h2" port=443
 #   _mcp._agents.specification.website    HTTPS  1 mcp.specification.website. alpn="h3,h2" port=443 mandatory="alpn,port"
 #
@@ -33,18 +33,43 @@ ZONE_ID=$(curl -sS -H "${H_AUTH}" "${API}/zones?name=${ZONE}" \
   | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['result'][0]['id']) if d.get('result') else sys.exit('zone not found')")
 echo "  zone_id=${ZONE_ID}"
 
-create_record() {
+upsert_record() {
   local name=$1 target=$2 mandatory=$3
-  local content
+  local fqdn="${name}.${ZONE}"
+  local value
   if [[ -n "${mandatory}" ]]; then
-    content="1 ${target}. alpn=\"h3,h2\" port=443 mandatory=\"${mandatory}\""
+    value="alpn=\"h3,h2\" port=443 mandatory=\"${mandatory}\""
   else
-    content="1 ${target}. alpn=\"h3,h2\" port=443"
+    value="alpn=\"h3,h2\" port=443"
   fi
-  echo "→ Creating HTTPS ${name}.${ZONE} → ${target}…"
-  curl -sS -X POST "${API}/zones/${ZONE_ID}/dns_records" \
+
+  # Look up an existing HTTPS record with this exact name. Cloudflare returns
+  # at most one match for (zone, type, name).
+  local existing_id
+  existing_id=$(curl -sS -H "${H_AUTH}" \
+    "${API}/zones/${ZONE_ID}/dns_records?type=HTTPS&name=${fqdn}" \
+    | python3 -c 'import json,sys; d=json.load(sys.stdin); r=d.get("result") or []; print(r[0]["id"] if r else "")')
+
+  # Cloudflare wants a structured `data` object for HTTPS/SVCB, not a packed
+  # zone-file string. Single-quote the python so the shell does not
+  # brace-expand the dict literal; args become sys.argv[1..3].
+  local payload
+  payload=$(python3 -c 'import json,sys; print(json.dumps({"type":"HTTPS","name":sys.argv[1],"data":{"priority":1,"target":sys.argv[2],"value":sys.argv[3]},"ttl":3600,"comment":"DNS-AID — agent discovery"}))' "${fqdn}" "${target}" "${value}")
+
+  local method url verb
+  if [[ -n "${existing_id}" ]]; then
+    method=PUT
+    url="${API}/zones/${ZONE_ID}/dns_records/${existing_id}"
+    verb="Updating"
+  else
+    method=POST
+    url="${API}/zones/${ZONE_ID}/dns_records"
+    verb="Creating"
+  fi
+  echo "→ ${verb} HTTPS ${fqdn} → ${target}…"
+  curl -sS -X "${method}" "${url}" \
     -H "${H_AUTH}" -H "${H_TYPE}" \
-    --data "$(python3 -c "import json,sys; print(json.dumps({'type':'HTTPS','name':sys.argv[1],'content':sys.argv[2],'ttl':3600,'comment':'DNS-AID — agent discovery'}))" "${name}" "${content}")" \
+    --data "${payload}" \
     | python3 -c "
 import json,sys
 d=json.load(sys.stdin)
@@ -58,8 +83,8 @@ else:
 "
 }
 
-create_record "_index._agents" "specification.website" ""
-create_record "_mcp._agents"   "mcp.specification.website" "alpn,port"
+upsert_record "_index._agents" "specification.website" ""
+upsert_record "_mcp._agents"   "mcp.specification.website" "alpn,port"
 
 if [[ "${ENABLE_DNSSEC:-0}" == "1" ]]; then
   echo "→ Enabling DNSSEC on the zone…"
