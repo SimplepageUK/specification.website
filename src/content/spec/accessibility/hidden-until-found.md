@@ -2,16 +2,19 @@
 title: "Hidden until found"
 slug: hidden-until-found
 category: accessibility
-summary: "Use hidden=\"until-found\" (or content-visibility: hidden) for collapsible content so that browser find-in-page, assistive tech, and search engines can still reach the text and auto-expand it."
+summary: "Use hidden=\"until-found\" for collapsible content so that browser find-in-page, assistive tech, and search engines can still reach the text and auto-expand it."
 status: recommended
 order: 150
 appliesTo: [all]
 relatedSlugs: [semantic-html, keyboard-navigation, aria-usage, heading-hierarchy]
-updated: "2026-05-29T16:40:22.000Z"
+updated: "2026-05-31T17:50:00.000Z"
 sources:
   - title: "HTML Standard — The hidden attribute"
     url: "https://html.spec.whatwg.org/multipage/interaction.html#the-hidden-attribute"
     publisher: "WHATWG"
+  - title: "CSS Containment Module Level 2 — Using content-visibility: hidden"
+    url: "https://www.w3.org/TR/css-contain-2/#using-cv-hidden"
+    publisher: "W3C"
   - title: "MDN — hidden global attribute"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden"
     publisher: "MDN"
@@ -24,7 +27,7 @@ sources:
 
 `hidden="until-found"` is a value of the global `hidden` attribute defined in the HTML Standard. An element marked this way renders as if hidden — it takes up no visible space — but the browser's find-in-page (Ctrl/Cmd+F), the fragment-directive scroll-to-text, and `scrollIntoView()` still walk through it. When a match is found inside, the browser fires a `beforematch` event on the element, removes the `hidden` attribute, and scrolls the match into view.
 
-Under the hood it is implemented through `content-visibility: hidden`, which behaves the same way: skipped for rendering, still reachable for find-in-page. Anything you can do with the attribute you can do with the CSS property — pick whichever fits your component.
+The browser's user-agent stylesheet applies `content-visibility: hidden` to elements in the until-found state, and the find-in-page algorithm has a specific exception for that state — when a match would land inside the subtree, it walks the element, removes the `hidden` attribute, and scrolls into view. **Applying `content-visibility: hidden` directly in author CSS does not get you the same behaviour.** Per the CSS Containment specification, contents in that state are skipped from rendering *and* are not visible to screen readers, find-in-page, or other tools. The reachability is a property of the HTML attribute, not the CSS property.
 
 ## Why it matters
 
@@ -52,19 +55,12 @@ panel.addEventListener('beforematch', () => {
 });
 ```
 
-The CSS equivalent, for components that already have their own toggle class:
-
-```css
-.accordion-panel[data-collapsed] {
-  content-visibility: hidden;
-}
-```
-
 **Prefer `<details>/<summary>` where you can.** For the everyday "click a heading to expand a panel" pattern, the native disclosure element gives you focus management, keyboard handling, and find-in-page reachability with zero JavaScript. Reach for `hidden="until-found"` when you need a custom widget that `<details>` cannot model — a search-driven FAQ, a complex tab strip, an off-screen mega-menu that must still be findable.
 
 ## Common mistakes
 
 - Using `display: none` on accordion panels and then wondering why users cannot find the content they remember reading. Switch the closed state to `hidden="until-found"`.
+- Substituting `content-visibility: hidden` in author CSS as a "CSS equivalent" of the attribute. It is not — author-applied `content-visibility: hidden` hides content from find-in-page and screen readers in exactly the way the attribute is meant to avoid.
 - Using `hidden="until-found"` for content that should be permanently hidden — error messages, off-screen utility nodes, suppressed admin tools. Use plain `hidden` or `display: none` instead.
 - Forgetting to update `aria-expanded` and the visual chevron state in the `beforematch` handler. The panel opens but the button still claims it is collapsed.
 - Treating it as a layout primitive. The element still participates in DOM order and document outline — it is hidden, not removed.
