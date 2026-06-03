@@ -6,4 +6,4 @@ Contact: https://github.com/jdevalk/specification.website/security/advisories/ne
 Expires: 2027-05-29T00:00:00.000Z
 Preferred-Languages: en
 Canonical: https://specification.website/.well-known/security.txt
-Policy: https://specification.website/.well-known/security-policy
+Policy: https://github.com/jdevalk/specification.website/security/policy
