@@ -7,7 +7,7 @@ status: recommended
 order: 90
 appliesTo: [all]
 relatedSlugs: [color-scheme, favicons, meta-viewport, open-graph]
-updated: "2026-05-29T15:19:28.000Z"
+updated: "2026-06-08T00:00:00.000Z"
 sources:
   - title: "MDN — <meta name=\"theme-color\">"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name/theme-color"
@@ -68,18 +68,31 @@ For an installed PWA, the manifest's `theme_color` and `background_color` are us
 
 The manifest value is used once at install/launch time; the meta tag is consulted on every page load. They can differ if you want a different colour during the splash than during normal browsing, but matching them avoids a visible jump.
 
-If your site updates colour scheme based on user choice (a theme switcher independent of OS), update the meta tag dynamically:
+### When you ship a manual theme toggle
+
+The `media`-based tags follow the **operating system**, not an in-page switcher. If you let users force dark mode independently of the OS, a visitor on a light OS who picks dark gets a dark page with a *light* address bar — the `(prefers-color-scheme: light)` tag still matches. The chrome and the content disagree.
+
+Fix it in script: write a single `theme-color` value that reflects the *resolved* theme, and make sure it wins. Browsers read the **first** `theme-color` meta in document order whose `media` matches, so insert your dynamic tag ahead of the media ones:
 
 ```js
-document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0b1020');
+function syncThemeColor(theme) {
+  let m = document.querySelector('meta[name="theme-color"]:not([media])');
+  if (!m) {
+    m = document.createElement('meta');
+    m.name = 'theme-color';
+    document.head.prepend(m); // ahead of the media-based tags, so it wins
+  }
+  m.content = theme === 'dark' ? '#0b1020' : '#ffffff';
+}
 ```
 
-Some browsers re-read the tag on change; others cache it per navigation. Either way, server-rendering the correct initial value is the most reliable approach.
+Set it **before paint** in the same inline script that restores the stored theme, then keep it in sync whenever the user toggles. Leave the two `media` tags in place as the no-JS fallback. This site does exactly that — see the early-init script in `BaseLayout.astro` and `theme-toggle.js`.
 
 ## Common mistakes
 
 - A theme colour with low contrast against the address-bar text. Safari and Chrome render the URL in dark or light text based on the luminance of `theme-color`; an unreadable URL is a real bug.
 - Setting only the dark-mode value, so light-mode users see the default grey.
+- Relying on the `media`-based tags alone while shipping an in-page dark-mode toggle. They track the OS, so a manual override leaves the chrome out of step — drive `theme-color` from the resolved theme instead.
 - Forgetting to update the value when redesigning. The address bar starts looking off-brand months before anyone notices.
 - Animating it on scroll. It is metadata, not a paint surface — leave it static.
 - Putting hex values with alpha (`#0b1020aa`). Browsers ignore the alpha channel; use an opaque colour.

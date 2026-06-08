@@ -60,11 +60,13 @@ const finalJsonLd = jsonLd
 <!doctype html>
 <html lang="en-GB" dir="ltr">
   <head>
-    {/* Restore the stored theme override before paint to avoid FOUC.
-        Hash-allowed by _headers CSP — DO NOT edit this script's bytes (or
-        whitespace) without recomputing the sha256. Source pattern documented
-        in /spec/foundations/color-scheme/. */}
-    <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
+    {/* Restore the stored theme override before paint to avoid FOUC, and set a
+        theme-color meta that tracks the resolved theme (not just the OS), so the
+        browser chrome matches a manually toggled dark mode. theme-toggle.js keeps
+        it in sync at runtime. Hash-allowed by _headers CSP — DO NOT edit this
+        script's bytes (or whitespace) without recomputing the sha256. Source
+        pattern documented in /spec/foundations/color-scheme/. */}
+    <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);var m=document.createElement("meta");m.name="theme-color";m.id="theme-color-meta";m.content=t==="dark"?"#0e0e13":"#15803d";document.head.appendChild(m)}catch(e){}})();</script>
     <HeadMeta
       title={title}
       description={description}

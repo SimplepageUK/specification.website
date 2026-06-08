@@ -28,6 +28,26 @@
       try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) { /* ignore */ }
     }
     syncButtons(theme);
+    syncThemeColor(theme);
+  }
+
+  // Keep the browser-chrome colour in step with the resolved theme. The two
+  // media-based <meta name=theme-color> tags only follow the OS; a manual dark
+  // toggle on a light OS would otherwise leave the address bar light. The
+  // early-init script inserts #theme-color-meta first so it wins; here we just
+  // update its content. Colours are read from the media metas to avoid drift.
+  function syncThemeColor(theme) {
+    var meta = document.getElementById('theme-color-meta');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'theme-color');
+      meta.id = 'theme-color-meta';
+      document.head.insertBefore(meta, document.head.firstChild);
+    }
+    var pick = document.querySelector(
+      '[name="theme-color"][media*="' + (theme === 'dark' ? 'dark' : 'light') + '"]'
+    );
+    if (pick) meta.setAttribute('content', pick.getAttribute('content'));
   }
 
   function syncButtons(theme) {
@@ -42,6 +62,7 @@
 
   function init() {
     syncButtons(resolved());
+    syncThemeColor(resolved());
 
     document.addEventListener('click', function (e) {
       var t = e.target;
