@@ -96,6 +96,12 @@
   Cache-Control: public, max-age=3600
   Access-Control-Allow-Origin: *
 
+# Glama MCP connector ownership claim (glama.ai)
+/.well-known/glama.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+  Access-Control-Allow-Origin: *
+
 /.well-known/agent-skills/*/SKILL.md
   Content-Type: text/markdown; charset=utf-8
   Cache-Control: public, max-age=3600

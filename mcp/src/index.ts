@@ -50,6 +50,15 @@ const JSON_HEADERS = {
   ...CORS_HEADERS,
 };
 
+// Glama MCP connector ownership claim, served at /.well-known/glama.json so
+// glama.ai can verify the maintainer of this connector. Mirrored as a static
+// file on the Pages site; both origins are served because Glama checks the
+// connector's own origin (mcp.specification.website).
+const GLAMA_CLAIM = {
+  $schema: 'https://glama.ai/mcp/schemas/connector.json',
+  maintainers: [{ email: 'joost@altha.nl' }],
+};
+
 function ok(id: string | number | null | undefined, result: unknown): RpcResponse {
   return { jsonrpc: '2.0', id: id ?? null, result };
 }
@@ -440,6 +449,8 @@ export default {
         return metadata();
       case '/.well-known/agent-card.json':
         return agentCardResponse();
+      case '/.well-known/glama.json':
+        return new Response(JSON.stringify(GLAMA_CLAIM, null, 2), { headers: JSON_HEADERS });
       case '/health':
         return new Response('ok', { headers: { 'Content-Type': 'text/plain', ...CORS_HEADERS } });
       default:
