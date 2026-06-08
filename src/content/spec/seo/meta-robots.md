@@ -6,7 +6,7 @@ summary: "Every page must have an explicit, correct indexing policy — either i
 status: required
 order: 75
 appliesTo: [all]
-relatedSlugs: [robots-txt, canonical-url, redirects, soft-404, xml-sitemaps]
+relatedSlugs: [robots-txt, canonical-url, redirects, soft-404, xml-sitemaps, server-side-rendering]
 updated: "2026-05-29T09:55:11.000Z"
 sources:
   - title: "HTML Living Standard — Standard metadata names: robots"

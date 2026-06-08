@@ -6,7 +6,7 @@ summary: "A page that looks like a 'not found' message to a user but returns 200
 status: avoid
 order: 70
 appliesTo: [all]
-relatedSlugs: [redirects, url-structure]
+relatedSlugs: [redirects, url-structure, server-side-rendering]
 updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Soft 404 errors"
