@@ -6,21 +6,21 @@
 // One-shot tool: re-run after a large content import or when migrating from
 // date-only `updated:` values to full datetimes.
 
-import { execFileSync } from 'node:child_process';
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { join, relative } from 'node:path';
+import { execFileSync } from "node:child_process";
+import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { join, relative } from "node:path";
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url));
-const SPEC_DIR = join(ROOT, 'src/content/spec');
-const DRY_RUN = process.argv.includes('--dry-run');
+const ROOT = fileURLToPath(new URL("..", import.meta.url));
+const SPEC_DIR = join(ROOT, "src/content/spec");
+const DRY_RUN = process.argv.includes("--dry-run");
 
 function gitMtime(absPath) {
   try {
     const iso = execFileSync(
-      'git',
-      ['log', '-1', '--follow', '--format=%cI', '--', absPath],
-      { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+      "git",
+      ["log", "-1", "--follow", "--format=%cI", "--", absPath],
+      { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
     ).trim();
     return iso || null;
   } catch {
@@ -39,9 +39,9 @@ function fsMtime(absPath) {
 function isDirty(absPath) {
   try {
     const status = execFileSync(
-      'git',
-      ['status', '--porcelain', '--', absPath],
-      { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+      "git",
+      ["status", "--porcelain", "--", absPath],
+      { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
     );
     return status.trim().length > 0;
   } catch {
@@ -56,7 +56,9 @@ function isDirty(absPath) {
  * - Untracked: fs mtime.
  */
 function lastTouched(absPath) {
-  const raw = isDirty(absPath) ? fsMtime(absPath) : (gitMtime(absPath) ?? fsMtime(absPath));
+  const raw = isDirty(absPath)
+    ? fsMtime(absPath)
+    : (gitMtime(absPath) ?? fsMtime(absPath));
   if (!raw) return null;
   return new Date(raw).toISOString();
 }
@@ -81,7 +83,7 @@ for (const file of files) {
     skipped++;
     continue;
   }
-  const src = readFileSync(file, 'utf8');
+  const src = readFileSync(file, "utf8");
   const re = /^updated:.*$/m;
   if (!re.test(src)) {
     console.warn(`SKIP (no updated:)    ${relative(ROOT, file)}`);
@@ -95,7 +97,11 @@ for (const file of files) {
   }
   if (!DRY_RUN) writeFileSync(file, next);
   updated++;
-  console.log(`${DRY_RUN ? 'WOULD UPDATE' : 'UPDATED     '} ${relative(ROOT, file)} → ${iso}`);
+  console.log(
+    `${DRY_RUN ? "WOULD UPDATE" : "UPDATED     "} ${relative(ROOT, file)} → ${iso}`,
+  );
 }
 
-console.log(`\n${DRY_RUN ? 'DRY RUN: ' : ''}${updated} updated, ${skipped} skipped`);
+console.log(
+  `\n${DRY_RUN ? "DRY RUN: " : ""}${updated} updated, ${skipped} skipped`,
+);

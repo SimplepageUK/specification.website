@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
-import Breadcrumbs from '~/components/Breadcrumbs.astro';
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Breadcrumbs from "~/components/Breadcrumbs.astro";
 
-const updated = '2026-05-29';
+const updated = "2026-05-29";
 ---
 
 <BaseLayout
@@ -11,116 +11,203 @@ const updated = '2026-05-29';
   ogImage="/og/privacy.png"
 >
   <div class="mx-auto max-w-3xl px-4 py-10">
-    <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy' }]} />
+    <Breadcrumbs
+      crumbs={[{ label: "Home", href: "/" }, { label: "Privacy" }]}
+    />
     <article class="prose-spec mt-6">
-      <h1 class="text-4xl font-bold tracking-tight text-ink-900">Privacy policy</h1>
+      <h1 class="text-4xl font-bold tracking-tight text-ink-900">
+        Privacy policy
+      </h1>
       <p class="text-sm text-ink-500">Last updated {updated}</p>
 
       <p>
-        This site is a static, publicly readable reference. There are no user accounts, no comments, no
-        forms, and no transactions. We collect a small amount of aggregate analytics — see below — and
-        nothing else. This page exists because the spec lists a privacy policy as <strong>required</strong>,
-        and because honest disclosure is the only kind worth publishing.
+        This site is a static, publicly readable reference. There are no user
+        accounts, no comments, no forms, and no transactions. We collect a small
+        amount of aggregate analytics — see below — and nothing else. This page
+        exists because the spec lists a privacy policy as <strong
+          >required</strong
+        >, and because honest disclosure is the only kind worth publishing.
       </p>
 
       <h2 id="data-controller">Data controller</h2>
       <p>
-        Joost de Valk (<a href="https://joost.blog" rel="external">joost.blog</a>) operates this site as a
-        personal open-source project. For privacy questions, email <a href="mailto:privacy@specification.website">privacy@specification.website</a>.
+        Joost de Valk (<a href="https://joost.blog" rel="external">joost.blog</a
+        >) operates this site as a personal open-source project. For privacy
+        questions, email <a href="mailto:privacy@specification.website"
+          >privacy@specification.website</a
+        >.
       </p>
 
       <h2 id="what-we-collect">What we collect</h2>
-      <p>The site sets <strong>no cookies</strong> and stores nothing in your browser. For ordinary
-      browser visits, the only data we collect is aggregate page-view analytics via
-      <a href="https://plausible.io" rel="external">Plausible</a> (separate server-side aggregate logging
-      for crawlers and MCP / A2A calls is described under <a href="#logs-and-hosting">Logs and hosting</a>):</p>
+      <p>
+        The site sets <strong>no cookies</strong> and stores nothing in your browser.
+        For ordinary browser visits, the only data we collect is aggregate page-view
+        analytics via
+        <a href="https://plausible.io" rel="external">Plausible</a> (separate server-side
+        aggregate logging for crawlers and MCP / A2A calls is described under <a
+          href="#logs-and-hosting">Logs and hosting</a
+        >):
+      </p>
       <ul>
         <li>URL of the page you loaded.</li>
         <li>HTTP referrer (which site sent you, if any).</li>
-        <li>Browser, operating system, and device type — derived from the User-Agent string and discarded after the request.</li>
-        <li>Country, derived from your IP address. <strong>Your IP address itself is never stored.</strong></li>
+        <li>
+          Browser, operating system, and device type — derived from the
+          User-Agent string and discarded after the request.
+        </li>
+        <li>
+          Country, derived from your IP address. <strong
+            >Your IP address itself is never stored.</strong
+          >
+        </li>
       </ul>
       <p>What Plausible deliberately does not do:</p>
       <ul>
         <li>No cookies, no localStorage, no fingerprinting.</li>
-        <li>No cross-site tracking. No identifier follows you to another site.</li>
-        <li>No personal data, no profiles, no advertising. The data is aggregated and cannot be used to identify you.</li>
+        <li>
+          No cross-site tracking. No identifier follows you to another site.
+        </li>
+        <li>
+          No personal data, no profiles, no advertising. The data is aggregated
+          and cannot be used to identify you.
+        </li>
       </ul>
       <p>
-        Plausible is GDPR, CCPA, and PECR compliant by design and does not require a cookie banner.
-        See <a href="https://plausible.io/data-policy" rel="external">Plausible's data policy</a> and
-        <a href="https://plausible.io/privacy" rel="external">privacy policy</a> for the full detail.
-        Aggregate statistics are stored on EU servers operated by Plausible Insights OÜ in Estonia.
+        Plausible is GDPR, CCPA, and PECR compliant by design and does not
+        require a cookie banner. See <a
+          href="https://plausible.io/data-policy"
+          rel="external">Plausible's data policy</a
+        > and
+        <a href="https://plausible.io/privacy" rel="external">privacy policy</a> for
+        the full detail. Aggregate statistics are stored on EU servers operated by
+        Plausible Insights OÜ in Estonia.
       </p>
       <p>Beyond analytics:</p>
       <ul>
         <li>No accounts, no login, no profile data.</li>
         <li>No forms — there is nothing to submit.</li>
-        <li>No third-party scripts other than the single Plausible request to <code>plausible.io/js/script.js</code>.</li>
+        <li>
+          No third-party scripts other than the single Plausible request to <code
+            >plausible.io/js/script.js</code
+          >.
+        </li>
         <li>No advertising network.</li>
       </ul>
 
       <h2 id="logs-and-hosting">Logs and hosting</h2>
       <p>
-        The site is hosted on <a href="https://pages.cloudflare.com/" rel="external">Cloudflare Pages</a>.
-        Cloudflare may process request metadata (IP address, user-agent, requested URL, timestamp) as a
-        normal part of serving the site and protecting it from abuse, governed by Cloudflare's own
-        <a href="https://www.cloudflare.com/privacypolicy/" rel="external">privacy policy</a>. We do not
-        receive a copy of that data and do not use it for analytics.
+        The site is hosted on <a
+          href="https://pages.cloudflare.com/"
+          rel="external">Cloudflare Pages</a
+        >. Cloudflare may process request metadata (IP address, user-agent,
+        requested URL, timestamp) as a normal part of serving the site and
+        protecting it from abuse, governed by Cloudflare's own
+        <a href="https://www.cloudflare.com/privacypolicy/" rel="external"
+          >privacy policy</a
+        >. We do not receive a copy of that data and do not use it for
+        analytics.
       </p>
       <p>
-        We do record aggregate request metadata for two non-human traffic streams in
-        <a href="https://developers.cloudflare.com/analytics/analytics-engine/" rel="external">Cloudflare Analytics Engine</a>
-        — an internal dashboard at <code>/admin/stats</code> (gated by Cloudflare Access) reads it:
+        We do record aggregate request metadata for two non-human traffic
+        streams in
+        <a
+          href="https://developers.cloudflare.com/analytics/analytics-engine/"
+          rel="external">Cloudflare Analytics Engine</a
+        >
+        — an internal dashboard at <code>/admin/stats</code> (gated by Cloudflare
+        Access) reads it:
       </p>
       <ul>
-        <li><strong>Crawler / AI-agent traffic:</strong> when a request matches a known AI / LLM / search crawler User-Agent, carries a <code>Signature-Agent</code> header, is verified-bot per Cloudflare, or asks for <code>text/markdown</code>, we record the bot name, path, country, method, referer, and User-Agent (truncated). No IP address is stored.</li>
-        <li><strong>MCP / A2A calls</strong> to <code>mcp.specification.website</code>: we record the JSON-RPC method, tool name, the first 500 bytes of arguments, client name/version, protocol version, country, and User-Agent (truncated). No IP address is stored.</li>
+        <li>
+          <strong>Crawler / AI-agent traffic:</strong> when a request matches a known
+          AI / LLM / search crawler User-Agent, carries a <code
+            >Signature-Agent</code
+          > header, is verified-bot per Cloudflare, or asks for <code
+            >text/markdown</code
+          >, we record the bot name, path, country, method, referer, and
+          User-Agent (truncated). No IP address is stored.
+        </li>
+        <li>
+          <strong>MCP / A2A calls</strong> to <code
+            >mcp.specification.website</code
+          >: we record the JSON-RPC method, tool name, the first 500 bytes of
+          arguments, client name/version, protocol version, country, and
+          User-Agent (truncated). No IP address is stored.
+        </li>
       </ul>
       <p>
-        Neither stream covers ordinary browser visits. Both are kept to understand which agents use the
-        spec and the MCP server, and how. The data lives in Cloudflare's Analytics Engine under our
-        account; retention follows Cloudflare's defaults.
+        Neither stream covers ordinary browser visits. Both are kept to
+        understand which agents use the spec and the MCP server, and how. The
+        data lives in Cloudflare's Analytics Engine under our account; retention
+        follows Cloudflare's defaults.
       </p>
 
       <h2 id="content-hosting">GitHub</h2>
       <p>
-        Source content lives on <a href="https://github.com/jdevalk/specification.website" rel="external">GitHub</a>.
-        If you open an issue or pull request, that interaction is governed by
-        <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="external">GitHub's privacy statement</a>,
-        not this one.
+        Source content lives on <a
+          href="https://github.com/jdevalk/specification.website"
+          rel="external">GitHub</a
+        >. If you open an issue or pull request, that interaction is governed by
+        <a
+          href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+          rel="external">GitHub's privacy statement</a
+        >, not this one.
       </p>
 
       <h2 id="signals-we-respect">Signals we respect</h2>
       <ul>
-        <li><strong>Do Not Track / <a href="/spec/privacy/global-privacy-control/">Global Privacy Control</a>:</strong> Plausible does not respect DNT or GPC because the analytics it runs do not constitute the kind of tracking those signals were designed to stop. If you disagree, block <code>plausible.io</code> in your browser or use an extension such as uBlock Origin — the site continues to work without it.</li>
-        <li><strong>Browser content blockers:</strong> the Plausible request is blocked by all common content blockers. We notice no difference; you get the same site.</li>
+        <li>
+          <strong
+            >Do Not Track / <a href="/spec/privacy/global-privacy-control/"
+              >Global Privacy Control</a
+            >:</strong
+          > Plausible does not respect DNT or GPC because the analytics it runs do
+          not constitute the kind of tracking those signals were designed to stop.
+          If you disagree, block <code>plausible.io</code> in your browser or use
+          an extension such as uBlock Origin — the site continues to work without
+          it.
+        </li>
+        <li>
+          <strong>Browser content blockers:</strong> the Plausible request is blocked
+          by all common content blockers. We notice no difference; you get the same
+          site.
+        </li>
       </ul>
 
       <h2 id="children">Children</h2>
       <p>
-        The site is a public technical reference. It is suitable for anyone, including under-13s, because
-        it collects no personal data and has no interactive features.
+        The site is a public technical reference. It is suitable for anyone,
+        including under-13s, because it collects no personal data and has no
+        interactive features.
       </p>
 
       <h2 id="changes">Changes to this policy</h2>
       <p>
-        If the site ever changes in a way that adds data collection (it should not), we will update the
-        date at the top of this page and announce the change in the
-        <a href="https://github.com/jdevalk/specification.website" rel="external">repository</a>.
+        If the site ever changes in a way that adds data collection (it should
+        not), we will update the date at the top of this page and announce the
+        change in the
+        <a
+          href="https://github.com/jdevalk/specification.website"
+          rel="external">repository</a
+        >.
       </p>
 
       <h2 id="your-rights">Your rights</h2>
       <p>
-        Under the UK GDPR and EU GDPR you have the right to access, correct, delete, restrict, and port any
-        personal data we hold on you. Because we hold none, the practical answer to any such request is
-        “we have nothing on you”. If you believe we are mistaken, email us and we will investigate within
-        30 days.
+        Under the UK GDPR and EU GDPR you have the right to access, correct,
+        delete, restrict, and port any personal data we hold on you. Because we
+        hold none, the practical answer to any such request is “we have nothing
+        on you”. If you believe we are mistaken, email us and we will
+        investigate within 30 days.
       </p>
 
       <h2 id="related">Related</h2>
       <ul>
-        <li><a href="/spec/privacy/privacy-policy/">The spec page on privacy policies</a> — what this page is required to cover, and why.</li>
+        <li>
+          <a href="/spec/privacy/privacy-policy/"
+            >The spec page on privacy policies</a
+          > — what this page is required to cover, and why.
+        </li>
         <li><a href="/spec/privacy/">All privacy-category spec pages</a>.</li>
       </ul>
     </article>

@@ -22,7 +22,7 @@ sources:
 
 ## What it is
 
-When a site serves more than one language or region, every localised page needs its own stable URL. Three patterns are in common use, all compatible with [hreflang](/i18n/hreflang) and standard crawling:
+When a site serves more than one language or region, every localised page needs its own stable URL. Three patterns are in common use, all compatible with [hreflang](/spec/i18n/hreflang/) and standard crawling:
 
 ```
 ccTLD:        https://example.de/
@@ -34,7 +34,7 @@ A fourth pattern — a query parameter such as `https://example.com/?loc=de` —
 
 ## Why it matters
 
-The URL pattern is the foundation everything else in your internationalisation stack annotates. [hreflang](/i18n/hreflang), [sitemap hreflang entries](/i18n/sitemap-hreflang), the [language switcher](/i18n/language-switcher), canonical tags, and analytics segmentation all reference the same URLs. Change the pattern later and every one of those has to be rebuilt, with 301 redirects to preserve link equity.
+The URL pattern is the foundation everything else in your internationalisation stack annotates. [hreflang](/spec/i18n/hreflang/), [sitemap hreflang entries](/spec/i18n/sitemap-hreflang/), the [language switcher](/spec/i18n/language-switcher/), canonical tags, and analytics segmentation all reference the same URLs. Change the pattern later and every one of those has to be rebuilt, with 301 redirects to preserve link equity.
 
 The pattern also signals locality to users and search engines. A `.de` domain reads as German to a visitor before the page loads. A `/de/` path reads as "the German section of an international site". Neither is wrong; they communicate different things.
 
@@ -56,15 +56,15 @@ Choose by what dominates the decision:
 
 Then:
 
-- **Pair every canonical URL with [hreflang](/i18n/hreflang).** The URL pattern identifies the resource; hreflang tells search engines which locale it serves.
+- **Pair every canonical URL with [hreflang](/spec/i18n/hreflang/).** The URL pattern identifies the resource; hreflang tells search engines which locale it serves.
 - **Localise the slug where it adds clarity.** `/about/` to `/sobre/` is helpful for Spanish readers; `/api/v1/` is not worth translating. Consistency matters more than translation: localise all slugs in a section, or none.
 - **Keep slug rules from the general [URL structure](/spec/seo/url-structure) page.** Lowercase, hyphenated, ASCII-where-possible, stable.
-- **Set the locale from the URL, not from the `Accept-Language` header.** The W3C recommends against silent language negotiation because it breaks sharing — see [avoid auto geo redirects](/i18n/avoid-auto-geo-redirects).
+- **Set the locale from the URL, not from the `Accept-Language` header.** The W3C recommends against silent language negotiation because it breaks sharing — see [avoid auto geo redirects](/spec/i18n/avoid-auto-geo-redirects/).
 
 ## Common mistakes
 
 - Mixing patterns within one site (`example.com/de/` for German, `fr.example.com` for French). Pick one.
 - Using a query parameter (`?lang=de`, `?country=de`) as the locale identifier. Search engines treat it as the same URL.
 - Using a country code as a language indicator: `/uk/` for English-language content served to the UK is fine as a *region* path, but should not be confused with the BCP 47 language tag (`en-GB`).
-- Redirecting the root URL based on IP — see [avoid auto geo redirects](/i18n/avoid-auto-geo-redirects). Serve a language picker or an `x-default` page instead.
+- Redirecting the root URL based on IP — see [avoid auto geo redirects](/spec/i18n/avoid-auto-geo-redirects/). Serve a language picker or an `x-default` page instead.
 - Localising slugs inconsistently, so half the German site lives at `/de/about/` and half at `/de/uber-uns/`.

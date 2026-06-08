@@ -74,7 +74,7 @@ The full set includes `margin-inline-*`, `padding-inline-*`, `border-inline-*`, 
 
 `<bdi>` is the one most sites forget. Without it, an RTL username injected into an LTR template can flip surrounding punctuation and timestamps; the page looks broken and the fix is one element.
 
-For vertical scripts (Japanese, Mongolian) and CJK line breaking, see [writing-modes](/i18n/writing-modes). Direction (`dir`) is about LTR vs RTL; `writing-mode` is about horizontal vs vertical. They are separate axes.
+For vertical scripts (Japanese, Mongolian) and CJK line breaking, see [writing-modes](/spec/i18n/writing-modes/). Direction (`dir`) is about LTR vs RTL; `writing-mode` is about horizontal vs vertical. They are separate axes.
 
 ## Common mistakes
 

@@ -1,13 +1,15 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { site } from '~/lib/site';
-import type { APIContext } from 'astro';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { site } from "~/lib/site";
+import type { APIContext } from "astro";
 
 export async function GET(context: APIContext) {
-  const entries = await getCollection('spec', ({ data }) => !data.draft);
-  entries.sort((a, b) => (b.data.updated ?? '').localeCompare(a.data.updated ?? ''));
+  const entries = await getCollection("spec", ({ data }) => !data.draft);
+  entries.sort((a, b) =>
+    (b.data.updated ?? "").localeCompare(a.data.updated ?? ""),
+  );
   const siteUrl = context.site?.toString() ?? site.url;
-  const feedUrl = new URL('/rss.xml', siteUrl).toString();
+  const feedUrl = new URL("/rss.xml", siteUrl).toString();
   const lastBuild = entries[0]?.data.updated
     ? new Date(entries[0].data.updated)
     : new Date();
@@ -16,11 +18,11 @@ export async function GET(context: APIContext) {
     description: site.description,
     site: siteUrl,
     xmlns: {
-      atom: 'http://www.w3.org/2005/Atom',
-      sy: 'http://purl.org/rss/1.0/modules/syndication/',
+      atom: "http://www.w3.org/2005/Atom",
+      sy: "http://purl.org/rss/1.0/modules/syndication/",
     },
     items: entries.map((e) => {
-      const slug = e.data.slug ?? e.id.split('/').pop()!;
+      const slug = e.data.slug ?? e.id.split("/").pop()!;
       return {
         title: e.data.title,
         description: e.data.summary,
@@ -30,11 +32,11 @@ export async function GET(context: APIContext) {
       };
     }),
     customData: [
-      '<language>en-GB</language>',
+      "<language>en-GB</language>",
       `<atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />`,
       `<lastBuildDate>${lastBuild.toUTCString()}</lastBuildDate>`,
-      '<sy:updatePeriod>weekly</sy:updatePeriod>',
-      '<sy:updateFrequency>1</sy:updateFrequency>',
-    ].join(''),
+      "<sy:updatePeriod>weekly</sy:updatePeriod>",
+      "<sy:updateFrequency>1</sy:updateFrequency>",
+    ].join(""),
   });
 }

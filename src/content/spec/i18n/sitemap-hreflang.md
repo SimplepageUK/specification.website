@@ -22,7 +22,7 @@ sources:
 
 ## What it is
 
-The sitemap form of [hreflang](/i18n/hreflang). Instead of declaring language and regional alternates with `<link rel="alternate" hreflang="...">` in every HTML head, you list them once per URL inside the XML sitemap using the `<xhtml:link>` element. The namespace `xmlns:xhtml="http://www.w3.org/1999/xhtml"` is declared on the root `<urlset>`. The signal sent to search engines is identical to the inline form — only the delivery mechanism changes.
+The sitemap form of [hreflang](/spec/i18n/hreflang/). Instead of declaring language and regional alternates with `<link rel="alternate" hreflang="...">` in every HTML head, you list them once per URL inside the XML sitemap using the `<xhtml:link>` element. The namespace `xmlns:xhtml="http://www.w3.org/1999/xhtml"` is declared on the root `<urlset>`. The signal sent to search engines is identical to the inline form — only the delivery mechanism changes.
 
 ```xml
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -59,7 +59,7 @@ The signal is equivalent. Google, Bing and Yandex all read `<xhtml:link>` entrie
 
 ## How to implement
 
-- **Pick one delivery method per site.** Use either inline [hreflang](/i18n/hreflang) in the HTML head, the HTTP `Link` header, or sitemap `<xhtml:link>` — not several at once on the same URLs. Mixed signals get ignored or produce conflicts.
+- **Pick one delivery method per site.** Use either inline [hreflang](/spec/i18n/hreflang/) in the HTML head, the HTTP `Link` header, or sitemap `<xhtml:link>` — not several at once on the same URLs. Mixed signals get ignored or produce conflicts.
 - **Declare the namespace.** Add `xmlns:xhtml="http://www.w3.org/1999/xhtml"` on the root `<urlset>`.
 - **Group all alternates inside each `<url>`.** Every `<url>` entry lists every alternate URL in the group, including itself. The bidirectional rule still applies: if A lists B, B must list A.
 - **Self-reference always.** Each URL must include a `<xhtml:link>` pointing at itself with its own `hreflang`. Omitting it invalidates the entire cluster.

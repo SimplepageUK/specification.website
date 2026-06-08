@@ -1,17 +1,20 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
-import Breadcrumbs from '~/components/Breadcrumbs.astro';
-import SpecCard from '~/components/SpecCard.astro';
-import { categories, categoryFor } from '~/lib/site';
-import { getCollection } from 'astro:content';
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Breadcrumbs from "~/components/Breadcrumbs.astro";
+import SpecCard from "~/components/SpecCard.astro";
+import { categories } from "~/lib/site";
+import { getCollection } from "astro:content";
 
-const all = await getCollection('spec', ({ data }) => !data.draft);
+const all = await getCollection("spec", ({ data }) => !data.draft);
 const grouped: Record<string, typeof all> = {};
 for (const e of all) {
   (grouped[e.data.category] ??= []).push(e);
 }
 for (const k of Object.keys(grouped)) {
-  grouped[k].sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+  grouped[k].sort(
+    (a, b) =>
+      a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+  );
 }
 ---
 
@@ -21,43 +24,56 @@ for (const k of Object.keys(grouped)) {
   ogImage="/og/spec.png"
 >
   <div class="mx-auto max-w-6xl px-4 py-10">
-    <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Spec' }]} />
+    <Breadcrumbs crumbs={[{ label: "Home", href: "/" }, { label: "Spec" }]} />
     <header class="mt-5 border-b border-ink-200 pb-5">
-      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">All topics</h1>
-      <p class="mt-2 max-w-3xl text-ink-600">Everything in the spec, grouped by category. {all.length} topics total.</p>
+      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">
+        All topics
+      </h1>
+      <p class="mt-2 max-w-3xl text-ink-600">
+        Everything in the spec, grouped by category. {all.length} topics total.
+      </p>
     </header>
 
     <div class="mt-10 space-y-12">
-      {categories.map((c) => {
-        const items = grouped[c.slug] ?? [];
-        if (!items.length) return null;
-        return (
-          <section id={c.slug}>
-            <div class="flex items-end justify-between gap-3">
-              <h2 class="text-2xl font-bold text-ink-900">
-                <a href={`/spec/${c.slug}/`} class="text-ink-900 no-underline hover:text-accent-700">{c.title}</a>
-              </h2>
-              <span class="font-mono text-xs text-ink-500">{items.length} topics</span>
-            </div>
-            <p class="mt-1 text-sm text-ink-600">{c.summary}</p>
-            <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((entry) => {
-                const slug = entry.data.slug ?? entry.id.split('/').pop()!;
-                return (
-                  <li>
-                    <SpecCard
-                      href={`/spec/${entry.data.category}/${slug}/`}
-                      title={entry.data.title}
-                      summary={entry.data.summary}
-                      status={entry.data.status}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        );
-      })}
+      {
+        categories.map((c) => {
+          const items = grouped[c.slug] ?? [];
+          if (!items.length) return null;
+          return (
+            <section id={c.slug}>
+              <div class="flex items-end justify-between gap-3">
+                <h2 class="text-2xl font-bold text-ink-900">
+                  <a
+                    href={`/spec/${c.slug}/`}
+                    class="text-ink-900 no-underline hover:text-accent-700"
+                  >
+                    {c.title}
+                  </a>
+                </h2>
+                <span class="font-mono text-xs text-ink-500">
+                  {items.length} topics
+                </span>
+              </div>
+              <p class="mt-1 text-sm text-ink-600">{c.summary}</p>
+              <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {items.map((entry) => {
+                  const slug = entry.data.slug ?? entry.id.split("/").pop()!;
+                  return (
+                    <li>
+                      <SpecCard
+                        href={`/spec/${entry.data.category}/${slug}/`}
+                        title={entry.data.title}
+                        summary={entry.data.summary}
+                        status={entry.data.status}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          );
+        })
+      }
     </div>
   </div>
 </BaseLayout>

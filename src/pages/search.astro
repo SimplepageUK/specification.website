@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
-import Breadcrumbs from '~/components/Breadcrumbs.astro';
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Breadcrumbs from "~/components/Breadcrumbs.astro";
 ---
 
 <BaseLayout
@@ -13,24 +13,35 @@ import Breadcrumbs from '~/components/Breadcrumbs.astro';
   </Fragment>
 
   <div class="mx-auto max-w-3xl px-4 py-10">
-    <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Search' }]} />
+    <Breadcrumbs crumbs={[{ label: "Home", href: "/" }, { label: "Search" }]} />
 
     <header class="mt-5 border-b border-ink-200 pb-5">
-      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">Search</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">
+        Search
+      </h1>
       <p class="mt-2 text-ink-600">
-        Full-text search across every spec page. Type a topic, a header name, or a phrase — try
+        Full-text search across every spec page. Type a topic, a header name, or
+        a phrase — try
         <code class="rounded bg-ink-100 px-1.5 py-0.5 text-sm">CSP</code>,
-        <code class="rounded bg-ink-100 px-1.5 py-0.5 text-sm">aria-label</code>,
-        or <code class="rounded bg-ink-100 px-1.5 py-0.5 text-sm">cache-control</code>.
+        <code class="rounded bg-ink-100 px-1.5 py-0.5 text-sm">aria-label</code
+        >, or <code class="rounded bg-ink-100 px-1.5 py-0.5 text-sm"
+          >cache-control</code
+        >.
       </p>
     </header>
 
     <div id="search" class="mt-8" aria-label="Search spec pages"></div>
 
     <noscript>
-      <p class="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        Search requires JavaScript. With JS off, browse <a class="underline" href="/spec/">all topics</a> or use
-        <a class="underline" href="/llms-full.txt"><code>llms-full.txt</code></a> as a single searchable file.
+      <p
+        class="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+      >
+        Search requires JavaScript. With JS off, browse <a
+          class="underline"
+          href="/spec/">all topics</a
+        > or use
+        <a class="underline" href="/llms-full.txt"><code>llms-full.txt</code></a
+        > as a single searchable file.
       </p>
     </noscript>
 

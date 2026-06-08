@@ -18,72 +18,72 @@
 // patterns first (e.g. Applebot-Extended before Applebot).
 const BOT_UA_MATCHERS: ReadonlyArray<readonly [string, RegExp]> = [
   // OpenAI
-  ['GPTBot', /GPTBot/i],
-  ['ChatGPT-User', /ChatGPT-User/i],
-  ['OAI-SearchBot', /OAI-SearchBot/i],
+  ["GPTBot", /GPTBot/i],
+  ["ChatGPT-User", /ChatGPT-User/i],
+  ["OAI-SearchBot", /OAI-SearchBot/i],
   // Anthropic
-  ['ClaudeBot', /ClaudeBot/i],
-  ['Claude-Web', /Claude-Web/i],
-  ['Claude-User', /Claude-User/i],
-  ['Claude-SearchBot', /Claude-SearchBot/i],
-  ['anthropic-ai', /anthropic-ai/i],
+  ["ClaudeBot", /ClaudeBot/i],
+  ["Claude-Web", /Claude-Web/i],
+  ["Claude-User", /Claude-User/i],
+  ["Claude-SearchBot", /Claude-SearchBot/i],
+  ["anthropic-ai", /anthropic-ai/i],
   // Perplexity
-  ['PerplexityBot', /PerplexityBot/i],
-  ['Perplexity-User', /Perplexity-User/i],
+  ["PerplexityBot", /PerplexityBot/i],
+  ["Perplexity-User", /Perplexity-User/i],
   // Google AI / search
-  ['Google-Extended', /Google-Extended/i],
-  ['GoogleOther', /GoogleOther/i],
-  ['Googlebot', /Googlebot/i],
+  ["Google-Extended", /Google-Extended/i],
+  ["GoogleOther", /GoogleOther/i],
+  ["Googlebot", /Googlebot/i],
   // Meta
-  ['Meta-ExternalAgent', /Meta-ExternalAgent/i],
-  ['Meta-ExternalFetcher', /Meta-ExternalFetcher/i],
-  ['FacebookBot', /FacebookBot/i],
+  ["Meta-ExternalAgent", /Meta-ExternalAgent/i],
+  ["Meta-ExternalFetcher", /Meta-ExternalFetcher/i],
+  ["FacebookBot", /FacebookBot/i],
   // Apple
-  ['Applebot-Extended', /Applebot-Extended/i],
-  ['Applebot', /Applebot/i],
+  ["Applebot-Extended", /Applebot-Extended/i],
+  ["Applebot", /Applebot/i],
   // ByteDance
-  ['Bytespider', /Bytespider/i],
+  ["Bytespider", /Bytespider/i],
   // Amazon
-  ['Amazonbot', /Amazonbot/i],
+  ["Amazonbot", /Amazonbot/i],
   // Common Crawl (training data for many LLMs)
-  ['CCBot', /CCBot/i],
+  ["CCBot", /CCBot/i],
   // Cohere
-  ['cohere-training-data-crawler', /cohere-training-data-crawler/i],
-  ['cohere-ai', /cohere-ai/i],
+  ["cohere-training-data-crawler", /cohere-training-data-crawler/i],
+  ["cohere-ai", /cohere-ai/i],
   // DuckDuckGo
-  ['DuckAssistBot', /DuckAssistBot/i],
+  ["DuckAssistBot", /DuckAssistBot/i],
   // Mistral
-  ['MistralAI-User', /MistralAI-User/i],
+  ["MistralAI-User", /MistralAI-User/i],
   // You.com
-  ['YouBot', /YouBot/i],
+  ["YouBot", /YouBot/i],
   // Kagi
-  ['KagiBot', /KagiBot/i],
+  ["KagiBot", /KagiBot/i],
   // Webz.io (sells LLM training data)
-  ['omgilibot', /omgilibot/i],
-  ['omgili', /omgili/i],
+  ["omgilibot", /omgilibot/i],
+  ["omgili", /omgili/i],
   // Diffbot
-  ['Diffbot', /Diffbot/i],
+  ["Diffbot", /Diffbot/i],
   // Allen AI
-  ['AI2Bot', /AI2Bot/i],
+  ["AI2Bot", /AI2Bot/i],
   // Timpi
-  ['Timpibot', /Timpibot/i],
+  ["Timpibot", /Timpibot/i],
   // NICT (Japan)
-  ['ICC-Crawler', /ICC-Crawler/i],
+  ["ICC-Crawler", /ICC-Crawler/i],
   // Huawei
-  ['PetalBot', /PetalBot/i],
+  ["PetalBot", /PetalBot/i],
   // Imagesift (TheHive)
-  ['ImagesiftBot', /ImagesiftBot/i],
+  ["ImagesiftBot", /ImagesiftBot/i],
   // Search
-  ['Bingbot', /Bingbot/i],
-  ['YandexBot', /YandexBot/i],
+  ["Bingbot", /Bingbot/i],
+  ["YandexBot", /YandexBot/i],
 ];
 
 export function matchBotName(ua: string | null | undefined): string {
-  if (!ua) return '';
+  if (!ua) return "";
   for (const [name, pattern] of BOT_UA_MATCHERS) {
     if (pattern.test(ua)) return name;
   }
-  return '';
+  return "";
 }
 
 interface BotEnv {
@@ -103,21 +103,21 @@ export function logBot(context: { request: Request; env: BotEnv }): void {
     // The remote MCP server lives on mcp.specification.website (a separate
     // Worker) and logs itself to MCP_LOG, so it never reaches this middleware.
     // Skip the local /admin/* dashboard so reading it doesn't pollute the data.
-    if (path.startsWith('/admin/')) return;
+    if (path.startsWith("/admin/")) return;
 
     // Speculative loads (Speculation Rules: prerender / prefetch) come from a
     // real browser, not a crawler — and they fire on hover, so they'd vastly
     // outnumber real visits if we logged them.
-    if ((req.headers.get('sec-purpose') || '').includes('prefetch')) return;
+    if ((req.headers.get("sec-purpose") || "").includes("prefetch")) return;
 
     const cf = (req as Request & { cf?: IncomingRequestCfProperties }).cf;
-    const sigAgent = req.headers.get('signature-agent') || '';
-    const verified = cf?.verifiedBot ? 'verified' : '';
-    const ua = req.headers.get('user-agent') || '';
+    const sigAgent = req.headers.get("signature-agent") || "";
+    const verified = cf?.verifiedBot ? "verified" : "";
+    const ua = req.headers.get("user-agent") || "";
     const matchedBot = matchBotName(ua);
-    const wantsMarkdown = (req.headers.get('accept') || '')
+    const wantsMarkdown = (req.headers.get("accept") || "")
       .toLowerCase()
-      .includes('text/markdown');
+      .includes("text/markdown");
 
     if (!sigAgent && !verified && !matchedBot && !wantsMarkdown) return;
 
@@ -128,17 +128,17 @@ export function logBot(context: { request: Request; env: BotEnv }): void {
     let source: string;
     let identity: string;
     if (sigAgent) {
-      source = 'signature-agent';
+      source = "signature-agent";
       identity = sigAgent;
     } else if (matchedBot) {
-      source = 'ua-match';
+      source = "ua-match";
       identity = matchedBot;
     } else if (verified) {
-      source = 'cf-verified';
-      identity = ua.slice(0, 96) || 'verified-other';
+      source = "cf-verified";
+      identity = ua.slice(0, 96) || "verified-other";
     } else {
-      source = 'accept-markdown';
-      identity = ua.slice(0, 96) || 'markdown-client';
+      source = "accept-markdown";
+      identity = ua.slice(0, 96) || "markdown-client";
     }
 
     dataset.writeDataPoint({
@@ -148,11 +148,11 @@ export function logBot(context: { request: Request; env: BotEnv }): void {
         matchedBot, // blob3
         path, // blob4
         ua.slice(0, 500), // blob5
-        req.headers.get('referer') || '', // blob6
-        cf?.country || '', // blob7
+        req.headers.get("referer") || "", // blob6
+        cf?.country || "", // blob7
         req.method, // blob8
         source, // blob9
-        wantsMarkdown ? 'markdown' : 'html', // blob10 (requested mime)
+        wantsMarkdown ? "markdown" : "html", // blob10 (requested mime)
       ],
       indexes: [identity],
     });

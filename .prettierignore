@@ -1,0 +1,27 @@
+# Build output and caches
+dist/
+.astro/
+node_modules/
+public/pagefind/
+
+# Generated binary/text assets
+public/og/
+public/icons/
+
+# Authored spec content — hand-written prose, not formatter-owned.
+# Editing here is the source of truth (see CLAUDE.md); don't let Prettier rewrap it.
+src/content/
+
+# Discovery files with pinned integrity. SKILL.md's sha256 is recorded in
+# agent-skills/index.json; reformatting would break the digest and discovery.
+public/.well-known/
+
+# Separate package with its own toolchain.
+mcp/
+
+# Contains the byte-frozen pre-paint theme <script is:inline> whose sha256 is
+# pinned in the CSP (public/_headers). Prettier must not reformat its bytes.
+src/layouts/BaseLayout.astro
+
+# Lockfile
+package-lock.json

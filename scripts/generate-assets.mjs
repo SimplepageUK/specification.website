@@ -4,48 +4,79 @@
 // Per-page OG images for spec entries land at /og/spec/<category>/<slug>.png,
 // per-category OG images at /og/spec/<category>.png, and the homepage default
 // at /og-default.png.
-import sharp from 'sharp';
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import sharp from "sharp";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = fileURLToPath(new URL('..', import.meta.url));
-const out = join(root, 'public');
-const ogOut = join(out, 'og', 'spec');
-const contentRoot = join(root, 'src/content/spec');
+const root = fileURLToPath(new URL("..", import.meta.url));
+const out = join(root, "public");
+const ogOut = join(out, "og", "spec");
+const contentRoot = join(root, "src/content/spec");
 await mkdir(out, { recursive: true });
 await mkdir(ogOut, { recursive: true });
 
-const accent = '#15803d';      // green-700 — base
-const accentLight = '#f0fdf4'; // green-50  — OG background tint
+const accent = "#15803d"; // green-700 — base
+const accentLight = "#f0fdf4"; // green-50  — OG background tint
 
 // Category metadata — kept in sync with src/lib/site.ts. This script is a
 // pure node module run before Astro, so we can't import the TS module.
 const CATEGORIES = {
-  foundations:       { title: 'Foundations',          summary: 'The HTML, head, and document basics every page needs.' },
-  seo:               { title: 'SEO',                  summary: 'Search visibility — robots.txt, sitemaps, canonicals, structured data.' },
-  accessibility:     { title: 'Accessibility',        summary: 'WCAG-aligned rules so people of all abilities can use the site.' },
-  security:          { title: 'Security',             summary: 'Headers, transport, and policies that keep visitors safe.' },
-  'well-known':      { title: 'Well-Known URIs',      summary: 'Standard, agreed-upon paths under /.well-known/.' },
-  'agent-readiness': { title: 'Agent Readiness',      summary: 'Things that make a site legible to AI agents and crawlers.' },
-  performance:       { title: 'Performance',          summary: 'Core Web Vitals, caching, images, fonts, network behaviour.' },
-  privacy:           { title: 'Privacy',              summary: 'Consent, signals, and respecting visitor choice.' },
-  resilience:        { title: 'Resilience',           summary: 'Graceful failure — error pages, offline, redirects.' },
-  i18n:              { title: 'Internationalisation', summary: 'Language, locale, direction, and translated content.' },
+  foundations: {
+    title: "Foundations",
+    summary: "The HTML, head, and document basics every page needs.",
+  },
+  seo: {
+    title: "SEO",
+    summary:
+      "Search visibility — robots.txt, sitemaps, canonicals, structured data.",
+  },
+  accessibility: {
+    title: "Accessibility",
+    summary: "WCAG-aligned rules so people of all abilities can use the site.",
+  },
+  security: {
+    title: "Security",
+    summary: "Headers, transport, and policies that keep visitors safe.",
+  },
+  "well-known": {
+    title: "Well-Known URIs",
+    summary: "Standard, agreed-upon paths under /.well-known/.",
+  },
+  "agent-readiness": {
+    title: "Agent Readiness",
+    summary: "Things that make a site legible to AI agents and crawlers.",
+  },
+  performance: {
+    title: "Performance",
+    summary: "Core Web Vitals, caching, images, fonts, network behaviour.",
+  },
+  privacy: {
+    title: "Privacy",
+    summary: "Consent, signals, and respecting visitor choice.",
+  },
+  resilience: {
+    title: "Resilience",
+    summary: "Graceful failure — error pages, offline, redirects.",
+  },
+  i18n: {
+    title: "Internationalisation",
+    summary: "Language, locale, direction, and translated content.",
+  },
 };
 
 const STATUS_LABEL = {
-  required: 'Required',
-  recommended: 'Recommended',
-  optional: 'Optional',
-  avoid: 'Avoid',
+  required: "Required",
+  recommended: "Recommended",
+  optional: "Optional",
+  avoid: "Avoid",
 };
 // Pill colours mirror StatusBadge's bg/text/border classes, flattened to hex.
 const STATUS_PILL = {
-  required:    { bg: '#fef2f2', fg: '#991b1b', border: '#fecaca' }, // red-50 / red-800 / red-200
-  recommended: { bg: '#f0fdf4', fg: '#166534', border: '#bbf7d0' }, // accent-50 / accent-800 / accent-200
-  optional:    { bg: '#f1f1f3', fg: '#3f3f48', border: '#d4d4d8' }, // ink-100 / ink-700 / ink-200
-  avoid:       { bg: '#fffbeb', fg: '#92400e', border: '#fde68a' }, // amber-50 / amber-800 / amber-200
+  required: { bg: "#fef2f2", fg: "#991b1b", border: "#fecaca" }, // red-50 / red-800 / red-200
+  recommended: { bg: "#f0fdf4", fg: "#166534", border: "#bbf7d0" }, // accent-50 / accent-800 / accent-200
+  optional: { bg: "#f1f1f3", fg: "#3f3f48", border: "#d4d4d8" }, // ink-100 / ink-700 / ink-200
+  avoid: { bg: "#fffbeb", fg: "#92400e", border: "#fde68a" }, // amber-50 / amber-800 / amber-200
 };
 
 // The mark: a W whose final upstroke shoots past cap height to form a
@@ -59,7 +90,7 @@ const WCheck = (cx, cy, scale, stroke) => {
     `L${pt(30, 31)}`,
     `L${pt(38, 46)}`,
     `L${pt(52, 18)}`,
-  ].join(' ');
+  ].join(" ");
   return `<path d="${d}" fill="none" stroke="#ffffff" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round"/>`;
 };
 
@@ -77,8 +108,9 @@ const maskableSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 51
 
 // ---- Shared OG building blocks (1200×675) ----
 
-const FONT_SANS = 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
-const FONT_MONO = 'ui-monospace, Menlo, Consolas, monospace';
+const FONT_SANS =
+  "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+const FONT_MONO = "ui-monospace, Menlo, Consolas, monospace";
 
 const baseDefs = `
   <defs>
@@ -120,17 +152,17 @@ function checkBox(cx, cy, size, checked = true) {
     return `<rect x="${x}" y="${y}" width="${size}" height="${size}" rx="5" fill="#ffffff" stroke="#9ca3af" stroke-width="2"/>`;
   }
   return `<rect x="${x}" y="${y}" width="${size}" height="${size}" rx="5" fill="${accent}"/>
-          <path d="M ${x + size * 0.22} ${cy} L ${x + size * 0.43} ${y + size * 0.70} L ${x + size * 0.78} ${y + size * 0.28}"
+          <path d="M ${x + size * 0.22} ${cy} L ${x + size * 0.43} ${y + size * 0.7} L ${x + size * 0.78} ${y + size * 0.28}"
                 fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
 // XML escape for text emitted into SVG <text> nodes.
 function esc(s) {
   return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 // Greedy word-wrap. Returns up to maxLines; the last line gets an ellipsis
@@ -139,7 +171,7 @@ function esc(s) {
 function wrapLines(text, charsPerLine, maxLines) {
   const words = String(text).split(/\s+/).filter(Boolean);
   const lines = [];
-  let curr = '';
+  let curr = "";
   for (const w of words) {
     const next = curr ? `${curr} ${w}` : w;
     if (next.length > charsPerLine && curr) {
@@ -152,11 +184,11 @@ function wrapLines(text, charsPerLine, maxLines) {
   }
   if (lines.length < maxLines && curr) lines.push(curr);
   // Did we drop anything?
-  const consumed = lines.join(' ').replace(/\s+/g, ' ').trim();
-  const original = words.join(' ');
+  const consumed = lines.join(" ").replace(/\s+/g, " ").trim();
+  const original = words.join(" ");
   if (consumed.length < original.length) {
-    const last = lines[lines.length - 1] || '';
-    lines[lines.length - 1] = last.replace(/[.,;:!?…]?\s*$/, '') + '…';
+    const last = lines[lines.length - 1] || "";
+    lines[lines.length - 1] = last.replace(/[.,;:!?…]?\s*$/, "") + "…";
   }
   return lines;
 }
@@ -164,7 +196,14 @@ function wrapLines(text, charsPerLine, maxLines) {
 // ---- OG image templates ----
 
 function homepageOgSvg(topicCount) {
-  const sample = ['HTTPS', 'CSP', 'Accessibility', 'Sitemap', 'Open Graph', 'MCP server'];
+  const sample = [
+    "HTTPS",
+    "CSP",
+    "Accessibility",
+    "Sitemap",
+    "Open Graph",
+    "MCP server",
+  ];
   const more = Math.max(0, topicCount - sample.length);
   const rowY = (i) => 360 + i * 56;
   const rowItem = (label, i) => {
@@ -181,10 +220,16 @@ function homepageOgSvg(topicCount) {
     </g>
 
     <g transform="translate(80,${rowY(0)})" font-family="${FONT_SANS}">
-      ${sample.slice(0, 3).map((l, i) => rowItem(l, i)).join('\n')}
+      ${sample
+        .slice(0, 3)
+        .map((l, i) => rowItem(l, i))
+        .join("\n")}
     </g>
     <g transform="translate(80,${rowY(1)})" font-family="${FONT_SANS}">
-      ${sample.slice(3, 6).map((l, i) => rowItem(l, i)).join('\n')}
+      ${sample
+        .slice(3, 6)
+        .map((l, i) => rowItem(l, i))
+        .join("\n")}
     </g>
     <g transform="translate(80,${rowY(2)})" font-family="${FONT_SANS}">
       ${checkBox(16, 0, 28, false)}
@@ -236,15 +281,21 @@ function specPageOgSvg({ title, summary, category, status }) {
   const summaryStartY = titleStartY + (titleLines.length - 1) * lineHBig + 60;
 
   const catPill = pill({
-    x: 80, y: pillY,
+    x: 80,
+    y: pillY,
     label: (cat.title || category).toUpperCase(),
-    fg: '#ffffff', bg: accent, border: accent,
+    fg: "#ffffff",
+    bg: accent,
+    border: accent,
     fontSize: 18,
   });
   const statPill = pill({
-    x: 80 + catPill.width + 10, y: pillY,
+    x: 80 + catPill.width + 10,
+    y: pillY,
     label: (STATUS_LABEL[status] || status).toUpperCase(),
-    fg: stat.fg, bg: stat.bg, border: stat.border,
+    fg: stat.fg,
+    bg: stat.bg,
+    border: stat.border,
     fontSize: 18,
   });
 
@@ -256,15 +307,23 @@ function specPageOgSvg({ title, summary, category, status }) {
     ${statPill.svg}
 
     <g transform="translate(80,${titleStartY})" fill="#0e0e13" font-family="${FONT_SANS}">
-      ${titleLines.map((line, i) => `
+      ${titleLines
+        .map(
+          (line, i) => `
         <text x="0" y="${i * lineHBig}" font-size="${fontSizeBig}" font-weight="700" letter-spacing="-1.2">${esc(line)}</text>
-      `).join('')}
+      `,
+        )
+        .join("")}
     </g>
 
     <g transform="translate(80,${summaryStartY})" fill="#3f3f48" font-family="${FONT_SANS}">
-      ${summaryLines.map((line, i) => `
+      ${summaryLines
+        .map(
+          (line, i) => `
         <text x="0" y="${i * 38}" font-size="26" font-weight="500">${esc(line)}</text>
-      `).join('')}
+      `,
+        )
+        .join("")}
     </g>
 
     ${footer}
@@ -282,7 +341,8 @@ function eyebrowOgSvg({ eyebrow, title, subtitle, footnote }) {
 
   const eyebrowY = 275;
   const titleStartY = 345;
-  const subtitleStartY = titleStartY + (titleLines.length - 1) * titleLineH + 56;
+  const subtitleStartY =
+    titleStartY + (titleLines.length - 1) * titleLineH + 56;
   const footnoteY = subtitleStartY + (subtitleLines.length - 1) * 42 + 50;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img">
@@ -293,31 +353,43 @@ function eyebrowOgSvg({ eyebrow, title, subtitle, footnote }) {
       <text x="0" y="0" font-size="20" font-weight="700" letter-spacing="2">${esc(eyebrow)}</text>
     </g>
     <g transform="translate(80,${titleStartY})" fill="#0e0e13" font-family="${FONT_SANS}">
-      ${titleLines.map((line, i) => `
+      ${titleLines
+        .map(
+          (line, i) => `
         <text x="0" y="${i * titleLineH}" font-size="${titleSize}" font-weight="700" letter-spacing="-2">${esc(line)}</text>
-      `).join('')}
+      `,
+        )
+        .join("")}
     </g>
     <g transform="translate(80,${subtitleStartY})" fill="#3f3f48" font-family="${FONT_SANS}">
-      ${subtitleLines.map((line, i) => `
+      ${subtitleLines
+        .map(
+          (line, i) => `
         <text x="0" y="${i * 42}" font-size="30" font-weight="500">${esc(line)}</text>
-      `).join('')}
+      `,
+        )
+        .join("")}
     </g>
-    ${footnote ? `<g transform="translate(80,${footnoteY})" font-family="${FONT_SANS}">
+    ${
+      footnote
+        ? `<g transform="translate(80,${footnoteY})" font-family="${FONT_SANS}">
       ${checkBox(16, 0, 28, true)}
       <text x="50" y="10" font-weight="600" font-size="26" fill="${accent}">${esc(footnote)}</text>
-    </g>` : ''}
+    </g>`
+        : ""
+    }
 
     ${footer}
   </svg>`;
 }
 
 function categoryOgSvg({ category, count }) {
-  const cat = CATEGORIES[category] || { title: category, summary: '' };
+  const cat = CATEGORIES[category] || { title: category, summary: "" };
   return eyebrowOgSvg({
-    eyebrow: 'CATEGORY',
+    eyebrow: "CATEGORY",
     title: cat.title,
     subtitle: cat.summary,
-    footnote: `${count} topic${count === 1 ? '' : 's'} in this category`,
+    footnote: `${count} topic${count === 1 ? "" : "s"} in this category`,
   });
 }
 
@@ -335,7 +407,11 @@ function parseFrontmatter(text) {
     const [, key, rawVal] = kv;
     let val = rawVal.trim();
     if (val.startsWith('"') && val.endsWith('"') && val.length >= 2) {
-      try { val = JSON.parse(val); } catch { val = val.slice(1, -1); }
+      try {
+        val = JSON.parse(val);
+      } catch {
+        val = val.slice(1, -1);
+      }
     } else if (val.startsWith("'") && val.endsWith("'") && val.length >= 2) {
       val = val.slice(1, -1);
     }
@@ -347,25 +423,28 @@ function parseFrontmatter(text) {
 async function loadAllSpecs() {
   const specs = [];
   let dirs;
-  try { dirs = await readdir(contentRoot, { withFileTypes: true }); }
-  catch { return specs; }
+  try {
+    dirs = await readdir(contentRoot, { withFileTypes: true });
+  } catch {
+    return specs;
+  }
   for (const d of dirs) {
     if (!d.isDirectory()) continue;
     const catDir = join(contentRoot, d.name);
     const files = await readdir(catDir);
     for (const file of files) {
       if (!/\.mdx?$/.test(file)) continue;
-      const text = await readFile(join(catDir, file), 'utf8');
+      const text = await readFile(join(catDir, file), "utf8");
       const fm = parseFrontmatter(text);
       if (!fm) continue;
-      if (fm.draft === 'true' || fm.draft === true) continue;
-      const slug = fm.slug || file.replace(/\.mdx?$/, '');
+      if (fm.draft === "true" || fm.draft === true) continue;
+      const slug = fm.slug || file.replace(/\.mdx?$/, "");
       specs.push({
         slug,
         category: fm.category || d.name,
         title: fm.title || slug,
-        summary: fm.summary || '',
-        status: fm.status || 'recommended',
+        summary: fm.summary || "",
+        status: fm.status || "recommended",
       });
     }
   }
@@ -391,11 +470,11 @@ async function ogPng(svg, file) {
 
 // ---- Run ----
 
-console.log('Generating assets…');
-await png(iconSvg, 192, 'icon-192.png');
-await png(iconSvg, 512, 'icon-512.png');
-await png(maskableSvg, 512, 'icon-maskable-512.png');
-await png(iconSvg, 180, 'apple-touch-icon.png');
+console.log("Generating assets…");
+await png(iconSvg, 192, "icon-192.png");
+await png(iconSvg, 512, "icon-512.png");
+await png(maskableSvg, 512, "icon-maskable-512.png");
+await png(iconSvg, 180, "apple-touch-icon.png");
 
 // ICO: 16×16 + 32×32 PNGs packed by sharp.
 const ico16 = await sharp(Buffer.from(iconSvg)).resize(16, 16).png().toBuffer();
@@ -421,15 +500,15 @@ function ico(images) {
   });
   return Buffer.concat([dir, ...images]);
 }
-await writeFile(join(out, 'favicon.ico'), ico([ico16, ico32]));
-console.log('  wrote /favicon.ico (16+32)');
+await writeFile(join(out, "favicon.ico"), ico([ico16, ico32]));
+console.log("  wrote /favicon.ico (16+32)");
 
 // OG images
 const specs = await loadAllSpecs();
 console.log(`  found ${specs.length} spec entries`);
 
-await ogPng(homepageOgSvg(specs.length), 'og-default.png');
-console.log('  wrote /og-default.png (homepage, 1200×675)');
+await ogPng(homepageOgSvg(specs.length), "og-default.png");
+console.log("  wrote /og-default.png (homepage, 1200×675)");
 
 // Per-category
 const byCategory = {};
@@ -437,79 +516,98 @@ for (const s of specs) (byCategory[s.category] ||= []).push(s);
 
 for (const cat of Object.keys(CATEGORIES)) {
   const count = (byCategory[cat] || []).length;
-  await ogPng(categoryOgSvg({ category: cat, count }), join('og', 'spec', `${cat}.png`));
+  await ogPng(
+    categoryOgSvg({ category: cat, count }),
+    join("og", "spec", `${cat}.png`),
+  );
 }
-console.log(`  wrote ${Object.keys(CATEGORIES).length} category OG images → /og/spec/*.png`);
+console.log(
+  `  wrote ${Object.keys(CATEGORIES).length} category OG images → /og/spec/*.png`,
+);
 
 // Per spec page
 let written = 0;
 for (const s of specs) {
   const dir = join(ogOut, s.category);
   await mkdir(dir, { recursive: true });
-  await ogPng(specPageOgSvg(s), join('og', 'spec', s.category, `${s.slug}.png`));
+  await ogPng(
+    specPageOgSvg(s),
+    join("og", "spec", s.category, `${s.slug}.png`),
+  );
   written++;
 }
-console.log(`  wrote ${written} per-page OG images → /og/spec/<category>/<slug>.png`);
+console.log(
+  `  wrote ${written} per-page OG images → /og/spec/<category>/<slug>.png`,
+);
 
 // Marketing / standalone pages — each gets a bespoke OG with the same brand
 // frame so the set reads as a family on social timelines. Wired up by passing
 // `ogImage` to BaseLayout on the matching page.
 const marketingPages = [
   {
-    slug: 'spec',
-    eyebrow: 'ALL TOPICS',
-    title: 'Browse the specification.',
-    subtitle: 'Every topic, grouped by category. Required, recommended, optional, avoid.',
+    slug: "spec",
+    eyebrow: "ALL TOPICS",
+    title: "Browse the specification.",
+    subtitle:
+      "Every topic, grouped by category. Required, recommended, optional, avoid.",
     footnote: `${specs.length} topics across ${Object.keys(CATEGORIES).length} categories`,
   },
   {
-    slug: 'checklist',
-    eyebrow: 'CHECKLIST',
-    title: 'The printable checklist.',
-    subtitle: 'Every topic in one list. Tickable, filterable, print-friendly.',
+    slug: "checklist",
+    eyebrow: "CHECKLIST",
+    title: "The printable checklist.",
+    subtitle: "Every topic in one list. Tickable, filterable, print-friendly.",
     footnote: `${specs.length} items to tick off`,
   },
   {
-    slug: 'about',
-    eyebrow: 'ABOUT',
-    title: 'What this site is.',
-    subtitle: 'Platform-agnostic standards. Built in the open. Cited from primary sources.',
+    slug: "about",
+    eyebrow: "ABOUT",
+    title: "What this site is.",
+    subtitle:
+      "Platform-agnostic standards. Built in the open. Cited from primary sources.",
   },
   {
-    slug: 'contribute',
-    eyebrow: 'CONTRIBUTE',
-    title: 'Open a pull request.',
-    subtitle: 'Spot a gap, a stale fact, or a missing topic? Sources required, opinions optional.',
+    slug: "contribute",
+    eyebrow: "CONTRIBUTE",
+    title: "Open a pull request.",
+    subtitle:
+      "Spot a gap, a stale fact, or a missing topic? Sources required, opinions optional.",
   },
   {
-    slug: 'mcp',
-    eyebrow: 'MCP SERVER',
-    title: 'Query the spec.',
-    subtitle: 'Read-only MCP server at mcp.specification.website. No auth, no cookies.',
+    slug: "mcp",
+    eyebrow: "MCP SERVER",
+    title: "Query the spec.",
+    subtitle:
+      "Read-only MCP server at mcp.specification.website. No auth, no cookies.",
   },
   {
-    slug: 'privacy',
-    eyebrow: 'PRIVACY',
-    title: 'Almost nothing collected.',
-    subtitle: 'Cookieless analytics. No IP storage. No third-party scripts beyond Plausible.',
+    slug: "privacy",
+    eyebrow: "PRIVACY",
+    title: "Almost nothing collected.",
+    subtitle:
+      "Cookieless analytics. No IP storage. No third-party scripts beyond Plausible.",
   },
   {
-    slug: 'search',
-    eyebrow: 'SEARCH',
-    title: 'Search the spec.',
-    subtitle: 'Full-text search over every topic. Powered by Pagefind, in the browser.',
+    slug: "search",
+    eyebrow: "SEARCH",
+    title: "Search the spec.",
+    subtitle:
+      "Full-text search over every topic. Powered by Pagefind, in the browser.",
   },
   {
-    slug: '404',
-    eyebrow: '404',
-    title: 'Page not found.',
-    subtitle: 'The page you tried to reach does not exist. Try the checklist or the search.',
+    slug: "404",
+    eyebrow: "404",
+    title: "Page not found.",
+    subtitle:
+      "The page you tried to reach does not exist. Try the checklist or the search.",
   },
 ];
 
 for (const p of marketingPages) {
-  await ogPng(eyebrowOgSvg(p), join('og', `${p.slug}.png`));
+  await ogPng(eyebrowOgSvg(p), join("og", `${p.slug}.png`));
 }
-console.log(`  wrote ${marketingPages.length} marketing OG images → /og/<slug>.png`);
+console.log(
+  `  wrote ${marketingPages.length} marketing OG images → /og/<slug>.png`,
+);
 
-console.log('Done.');
+console.log("Done.");

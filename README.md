@@ -16,7 +16,7 @@ The web is a layer cake of standards: WHATWG defines HTML, W3C ratifies WCAG, th
 
 This site collects the slices into one platform-agnostic specification — sources cited on every page.
 
-It is *not* a framework. It is *not* a tutorial. It is a spec, in the same way the HTML Living Standard is a spec: outcomes, requirements, references.
+It is _not_ a framework. It is _not_ a tutorial. It is a spec, in the same way the HTML Living Standard is a spec: outcomes, requirements, references.
 
 ## What this is not
 

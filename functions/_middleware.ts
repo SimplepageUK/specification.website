@@ -15,7 +15,7 @@
  * Analytics Engine dataset (read by /admin/stats).
  */
 
-import { logBot } from './_shared/bot-detect';
+import { logBot } from "./_shared/bot-detect";
 
 type Env = {
   ASSETS: Fetcher;
@@ -31,14 +31,18 @@ function prefersMarkdown(accept: string): boolean {
   return /text\/markdown/i.test(accept);
 }
 
-async function serveAsMarkdown(env: Env, url: URL, mdPath: string): Promise<Response> {
+async function serveAsMarkdown(
+  env: Env,
+  url: URL,
+  mdPath: string,
+): Promise<Response> {
   const upstream = await env.ASSETS.fetch(new URL(mdPath, url).toString());
   const headers = new Headers(upstream.headers);
   // Force the negotiated content type — agents asked for text/markdown
   // and our upstreams (.md files and llms.txt) are Markdown either way.
-  headers.set('Content-Type', 'text/markdown; charset=utf-8');
-  headers.set('Vary', 'Accept');
-  headers.set('Content-Location', mdPath);
+  headers.set("Content-Type", "text/markdown; charset=utf-8");
+  headers.set("Vary", "Accept");
+  headers.set("Content-Location", mdPath);
   return new Response(upstream.body, {
     status: upstream.status,
     statusText: upstream.statusText,
@@ -48,7 +52,7 @@ async function serveAsMarkdown(env: Env, url: URL, mdPath: string): Promise<Resp
 
 function withVaryAccept(response: Response): Response {
   const headers = new Headers(response.headers);
-  headers.append('Vary', 'Accept');
+  headers.append("Vary", "Accept");
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -63,12 +67,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   const { request, next, env } = context;
   const url = new URL(request.url);
-  const accept = request.headers.get('accept') ?? '';
+  const accept = request.headers.get("accept") ?? "";
   const wantsMarkdown = prefersMarkdown(accept);
 
   // Site root: agents asking for Markdown get llms.txt (the site index).
-  if (url.pathname === '/' || url.pathname === '') {
-    if (wantsMarkdown) return serveAsMarkdown(env, url, '/llms.txt');
+  if (url.pathname === "/" || url.pathname === "") {
+    if (wantsMarkdown) return serveAsMarkdown(env, url, "/llms.txt");
     return withVaryAccept(await next());
   }
 

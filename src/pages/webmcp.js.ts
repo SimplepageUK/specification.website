@@ -1,6 +1,6 @@
-import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import { categories, site } from '~/lib/site';
+import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
+import { categories, site } from "~/lib/site";
 
 // Browser-side WebMCP registration. Exposes the spec as agent-callable tools via
 // `navigator.modelContext` (or `document.modelContext`, depending on UA), so a
@@ -14,11 +14,11 @@ import { categories, site } from '~/lib/site';
 // Spec context: https://webmachinelearning.github.io/webmcp/
 
 export const GET: APIRoute = async () => {
-  const entries = await getCollection('spec', ({ data }) => !data.draft);
+  const entries = await getCollection("spec", ({ data }) => !data.draft);
 
   const manifest = entries
     .map((e) => {
-      const slug = e.data.slug ?? e.id.split('/').pop()!;
+      const slug = e.data.slug ?? e.id.split("/").pop()!;
       return {
         slug,
         title: e.data.title,
@@ -45,7 +45,7 @@ export const GET: APIRoute = async () => {
   }));
 
   const CATEGORY_ENUM = categories.map((c) => c.slug);
-  const STATUS_ENUM = ['required', 'recommended', 'optional', 'avoid'];
+  const STATUS_ENUM = ["required", "recommended", "optional", "avoid"];
 
   const data = JSON.stringify({
     site: { name: site.name, url: site.url },
@@ -299,8 +299,8 @@ export const GET: APIRoute = async () => {
 
   return new Response(body, {
     headers: {
-      'Content-Type': 'text/javascript; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
+      "Content-Type": "text/javascript; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
     },
   });
 };

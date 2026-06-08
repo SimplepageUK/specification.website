@@ -9,23 +9,31 @@
 //   - for users who haven't touched it yet, mirrors OS preference changes
 //     onto data-theme in real time.
 (function () {
-  var STORAGE_KEY = 'theme';
+  var STORAGE_KEY = "theme";
 
   function stored() {
     try {
-      var v = localStorage.getItem(STORAGE_KEY);
-      return v === 'light' || v === 'dark' ? v : null;
-    } catch (e) { return null; }
+      const v = localStorage.getItem(STORAGE_KEY);
+      return v === "light" || v === "dark" ? v : null;
+    } catch {
+      return null;
+    }
   }
 
   function resolved() {
-    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    return document.documentElement.getAttribute("data-theme") === "dark"
+      ? "dark"
+      : "light";
   }
 
   function apply(theme, persist) {
-    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute("data-theme", theme);
     if (persist) {
-      try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) { /* ignore */ }
+      try {
+        localStorage.setItem(STORAGE_KEY, theme);
+      } catch {
+        /* ignore */
+      }
     }
     syncButtons(theme);
     syncThemeColor(theme);
@@ -37,26 +45,31 @@
   // early-init script inserts #theme-color-meta first so it wins; here we just
   // update its content. Colours are read from the media metas to avoid drift.
   function syncThemeColor(theme) {
-    var meta = document.getElementById('theme-color-meta');
+    var meta = document.getElementById("theme-color-meta");
     if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'theme-color');
-      meta.id = 'theme-color-meta';
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "theme-color");
+      meta.id = "theme-color-meta";
       document.head.insertBefore(meta, document.head.firstChild);
     }
     var pick = document.querySelector(
-      '[name="theme-color"][media*="' + (theme === 'dark' ? 'dark' : 'light') + '"]'
+      '[name="theme-color"][media*="' +
+        (theme === "dark" ? "dark" : "light") +
+        '"]',
     );
-    if (pick) meta.setAttribute('content', pick.getAttribute('content'));
+    if (pick) meta.setAttribute("content", pick.getAttribute("content"));
   }
 
   function syncButtons(theme) {
-    var btns = document.querySelectorAll('[data-theme-toggle]');
+    var btns = document.querySelectorAll("[data-theme-toggle]");
     for (var i = 0; i < btns.length; i++) {
       var b = btns[i];
-      var isDark = theme === 'dark';
-      b.setAttribute('aria-checked', isDark ? 'true' : 'false');
-      b.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+      var isDark = theme === "dark";
+      b.setAttribute("aria-checked", isDark ? "true" : "false");
+      b.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light theme" : "Switch to dark theme",
+      );
     }
   }
 
@@ -64,11 +77,11 @@
     syncButtons(resolved());
     syncThemeColor(resolved());
 
-    document.addEventListener('click', function (e) {
+    document.addEventListener("click", function (e) {
       var t = e.target;
       while (t && t !== document) {
-        if (t.hasAttribute && t.hasAttribute('data-theme-toggle')) {
-          apply(resolved() === 'dark' ? 'light' : 'dark', true);
+        if (t.hasAttribute && t.hasAttribute("data-theme-toggle")) {
+          apply(resolved() === "dark" ? "light" : "dark", true);
           return;
         }
         t = t.parentNode;
@@ -76,17 +89,17 @@
     });
 
     // Mirror live OS changes only while the user hasn't pinned a choice.
-    var mq = matchMedia('(prefers-color-scheme: dark)');
+    var mq = matchMedia("(prefers-color-scheme: dark)");
     var onChange = function (e) {
       if (stored()) return;
-      apply(e.matches ? 'dark' : 'light', false);
+      apply(e.matches ? "dark" : "light", false);
     };
-    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
     else if (mq.addListener) mq.addListener(onChange);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
     init();
   }

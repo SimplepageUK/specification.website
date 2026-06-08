@@ -76,7 +76,7 @@ details[open]::details-content { block-size: auto; }
 <button type="button" onclick="confirm.showModal()">Delete</button>
 ```
 
-`showModal()` opens it modally — focus is trapped, ESC dismisses, `::backdrop` styles the dim layer. Use `show()` for non-modal. For transient, non-blocking overlays (menus, tooltips, toasts) use the [Popover API](/spec/accessibility/popover-api/) instead.
+`showModal()` opens it modally — focus is trapped, ESC dismisses, `::backdrop` styles the dim layer. Use `show()` for non-modal. For transient, non-blocking overlays (menus, tooltips, toasts) use the [Popover API](/spec/foundations/popover-api/) instead.
 
 **Buttons and links.** A `<button>` does something on the current page; an `<a href>` goes somewhere. Inside a `<form>`, always set `type="button"` on buttons that are not the submit:
 
@@ -89,7 +89,7 @@ details[open]::details-content { block-size: auto; }
 - **`<div onclick>` as a button.** No keyboard activation, no focus, no accessible name, no role.
 - **`<a href="#" onclick>` as a button.** Pollutes browser history, breaks middle-click and "open in new tab", and announces as a link in screen readers.
 - **Rebuilding `<details>` in JavaScript "to control the animation".** Modern CSS — `interpolate-size`, `transition-behavior: allow-discrete`, `::details-content` — animates the native element.
-- **Using `<dialog>` for transient, non-blocking UI.** Reserve `<dialog>` for modal flows that require a decision. For menus, popovers, and toasts, use the [Popover API](/spec/accessibility/popover-api/).
+- **Using `<dialog>` for transient, non-blocking UI.** Reserve `<dialog>` for modal flows that require a decision. For menus, popovers, and toasts, use the [Popover API](/spec/foundations/popover-api/).
 - **Forgetting `type="button"` inside a `<form>`.** A bare `<button>` defaults to `type="submit"` and submits the form on click.
 
 ## Verification

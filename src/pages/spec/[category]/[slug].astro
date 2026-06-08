@@ -1,12 +1,11 @@
 ---
-import { getCollection, render } from 'astro:content';
-import SpecLayout from '~/layouts/SpecLayout.astro';
-import { categories } from '~/lib/site';
+import { getCollection, render } from "astro:content";
+import SpecLayout from "~/layouts/SpecLayout.astro";
 
 export async function getStaticPaths() {
-  const all = await getCollection('spec', ({ data }) => !data.draft);
+  const all = await getCollection("spec", ({ data }) => !data.draft);
   return all.map((entry) => {
-    const slug = entry.data.slug ?? entry.id.split('/').pop()!;
+    const slug = entry.data.slug ?? entry.id.split("/").pop()!;
     return {
       params: { category: entry.data.category, slug },
       props: { entry },
@@ -15,22 +14,24 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { Content } = await render(entry);
 
-const all = await getCollection('spec', ({ data }) => !data.draft);
+const all = await getCollection("spec", ({ data }) => !data.draft);
 const related = entry.data.relatedSlugs
   .map((rs: string) => {
-    const found = all.find((e) => (e.data.slug ?? e.id.split('/').pop()) === rs);
+    const found = all.find(
+      (e) => (e.data.slug ?? e.id.split("/").pop()) === rs,
+    );
     if (!found) return null;
     return {
       title: found.data.title,
-      href: `/spec/${found.data.category}/${found.data.slug ?? found.id.split('/').pop()}/`,
+      href: `/spec/${found.data.category}/${found.data.slug ?? found.id.split("/").pop()}/`,
       status: found.data.status,
     };
   })
   .filter(Boolean);
 
-const slug = entry.data.slug ?? entry.id.split('/').pop()!;
+const slug = entry.data.slug ?? entry.id.split("/").pop()!;
 ---
 
 <SpecLayout

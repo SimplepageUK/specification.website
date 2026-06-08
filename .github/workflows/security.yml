@@ -1,0 +1,30 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1" # Weekly on Monday at 06:00 UTC — catches newly disclosed CVEs
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: npm Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      # Fails only on high/critical advisories. Moderate findings in the build
+      # toolchain are surfaced but don't block (raise to --audit-level=moderate
+      # to tighten).
+      - name: npm audit
+        run: npm audit --audit-level=high

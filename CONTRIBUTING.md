@@ -16,7 +16,7 @@ Avoid blog posts, vendor marketing pages, and out-of-date Stack Overflow answers
 
 ## 2. Stay platform-agnostic
 
-The spec describes *outcomes*, not implementations. "Set `Content-Security-Policy`" is in scope. "Add this to your `next.config.mjs`" is not — link out to platform docs instead.
+The spec describes _outcomes_, not implementations. "Set `Content-Security-Policy`" is in scope. "Add this to your `next.config.mjs`" is not — link out to platform docs instead.
 
 If a topic only makes sense on a specific platform, it probably belongs in that platform's docs, not here.
 

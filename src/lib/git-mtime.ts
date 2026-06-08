@@ -1,5 +1,5 @@
-import { execFileSync } from 'node:child_process';
-import { statSync } from 'node:fs';
+import { execFileSync } from "node:child_process";
+import { statSync } from "node:fs";
 
 const cache = new Map<string, string | undefined>();
 
@@ -16,10 +16,14 @@ export function gitMtime(relPath: string): string | undefined {
 
   let date: string | undefined;
   try {
-    const iso = execFileSync('git', ['log', '-1', '--format=%cI', '--', relPath], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
+    const iso = execFileSync(
+      "git",
+      ["log", "-1", "--format=%cI", "--", relPath],
+      {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      },
+    ).trim();
     if (iso) date = iso.slice(0, 10);
   } catch {
     // git unavailable or path not tracked — fall through

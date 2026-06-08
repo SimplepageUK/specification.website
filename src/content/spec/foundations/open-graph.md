@@ -120,7 +120,7 @@ Generate the image per page when you can. A unique illustration or screenshot pe
 <meta property="og:locale:alternate" content="de_DE" />
 ```
 
-Without `og:locale`, social platforms guess from the crawler's `Accept-Language` and may render the wrong-language card. The full set of head changes for a translated page — title, description, OG, JSON-LD `inLanguage`, image alt — is covered in [localised-metadata](/i18n/localised-metadata).
+Without `og:locale`, social platforms guess from the crawler's `Accept-Language` and may render the wrong-language card. The full set of head changes for a translated page — title, description, OG, JSON-LD `inLanguage`, image alt — is covered in [localised-metadata](/spec/i18n/localised-metadata/).
 
 ## Common mistakes
 

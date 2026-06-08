@@ -1,15 +1,19 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import Breadcrumbs from '~/components/Breadcrumbs.astro';
-import StatusBadge from '~/components/StatusBadge.astro';
-import { categoryFor, site } from '~/lib/site';
+import BaseLayout from "./BaseLayout.astro";
+import Breadcrumbs from "~/components/Breadcrumbs.astro";
+import StatusBadge from "~/components/StatusBadge.astro";
+import { categoryFor, site } from "~/lib/site";
 
-interface Source { title: string; url: string; publisher?: string }
+interface Source {
+  title: string;
+  url: string;
+  publisher?: string;
+}
 interface Props {
   title: string;
   summary: string;
   category: string;
-  status: 'required' | 'recommended' | 'optional' | 'avoid';
+  status: "required" | "recommended" | "optional" | "avoid";
   sources?: Source[];
   related?: { title: string; href: string; status: string }[];
   updated?: string;
@@ -25,43 +29,58 @@ const {
   sources = [],
   related = [],
   updated,
-  appliesTo = ['all'],
+  appliesTo = ["all"],
   slug,
 } = Astro.props;
 
 const cat = categoryFor(category);
 const canonical = new URL(`/spec/${category}/${slug}/`, site.url).toString();
-const markdownUrl = new URL(`/spec/${category}/${slug}.md`, site.url).toString();
-const jsonldUrl = new URL(`/spec/${category}/${slug}.jsonld`, site.url).toString();
+const markdownUrl = new URL(
+  `/spec/${category}/${slug}.md`,
+  site.url,
+).toString();
+const jsonldUrl = new URL(
+  `/spec/${category}/${slug}.jsonld`,
+  site.url,
+).toString();
 const ogImage = `/og/spec/${category}/${slug}.png`;
 
 const articleJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'TechArticle',
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
   headline: title,
   description: summary,
   url: canonical,
-  inLanguage: 'en',
-  isPartOf: { '@type': 'WebSite', name: site.name, url: site.url },
-  author: { '@type': 'Person', name: site.author.name, url: site.author.url },
-  publisher: { '@type': 'Organization', name: site.name, url: site.url },
+  inLanguage: "en",
+  isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+  author: { "@type": "Person", name: site.author.name, url: site.author.url },
+  publisher: { "@type": "Organization", name: site.name, url: site.url },
   dateModified: updated,
-  citation: sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url })),
+  citation: sources.map((s) => ({
+    "@type": "CreativeWork",
+    name: s.title,
+    url: s.url,
+  })),
 };
 
 const breadcrumbJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url + '/' },
-    { '@type': 'ListItem', position: 2, name: 'Spec', item: site.url + '/spec/' },
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url + "/" },
     {
-      '@type': 'ListItem',
+      "@type": "ListItem",
+      position: 2,
+      name: "Spec",
+      item: site.url + "/spec/",
+    },
+    {
+      "@type": "ListItem",
       position: 3,
       name: cat?.title ?? category,
       item: `${site.url}/spec/${category}/`,
     },
-    { '@type': 'ListItem', position: 4, name: title, item: canonical },
+    { "@type": "ListItem", position: 4, name: title, item: canonical },
   ],
 };
 ---
@@ -83,8 +102,8 @@ const breadcrumbJsonLd = {
   >
     <Breadcrumbs
       crumbs={[
-        { label: 'Home', href: '/' },
-        { label: 'Spec', href: '/spec/' },
+        { label: "Home", href: "/" },
+        { label: "Spec", href: "/spec/" },
         { label: cat?.title ?? category, href: `/spec/${category}/` },
         { label: title },
       ]}
@@ -92,62 +111,113 @@ const breadcrumbJsonLd = {
 
     <header class="mt-5 border-b border-ink-200 pb-6">
       <div class="flex flex-wrap items-center gap-2 text-xs">
-        {cat && (
-          <a href={`/spec/${category}/`} class="rounded-full bg-accent-50 px-2.5 py-0.5 font-medium text-accent-800 no-underline hover:bg-accent-100">{cat.title}</a>
-        )}
+        {
+          cat && (
+            <a
+              href={`/spec/${category}/`}
+              class="rounded-full bg-accent-50 px-2.5 py-0.5 font-medium text-accent-800 no-underline hover:bg-accent-100"
+            >
+              {cat.title}
+            </a>
+          )
+        }
         <StatusBadge status={status} />
-        {updated && <span class="text-ink-500">Updated <time datetime={updated}>{updated.slice(0, 10)}</time></span>}
+        {
+          updated && (
+            <span class="text-ink-500">
+              Updated <time datetime={updated}>{updated.slice(0, 10)}</time>
+            </span>
+          )
+        }
       </div>
-      <h1 class="mt-3 text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">{title}</h1>
-      <p class="mt-3 max-w-3xl text-lg leading-relaxed text-ink-600">{summary}</p>
-      {appliesTo.length > 0 && appliesTo[0] !== 'all' && (
-        <p class="mt-3 text-sm text-ink-500">
-          <span class="font-medium text-ink-700">Applies to:</span> {appliesTo.join(', ')}
-        </p>
-      )}
+      <h1
+        class="mt-3 text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl"
+      >
+        {title}
+      </h1>
+      <p class="mt-3 max-w-3xl text-lg leading-relaxed text-ink-600">
+        {summary}
+      </p>
+      {
+        appliesTo.length > 0 && appliesTo[0] !== "all" && (
+          <p class="mt-3 text-sm text-ink-500">
+            <span class="font-medium text-ink-700">Applies to:</span>{" "}
+            {appliesTo.join(", ")}
+          </p>
+        )
+      }
     </header>
 
     <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_240px]">
       <div class="prose-spec min-w-0">
         <slot />
 
-        {related.length > 0 && (
-          <section class="not-prose mt-12 rounded-lg border border-ink-200 bg-ink-50 p-5">
-            <h2 class="mb-3 text-base font-semibold text-ink-900">Related topics</h2>
-            <ul class="space-y-1.5 text-sm">
-              {related.map((r) => (
-                <li><a class="text-accent-700 hover:text-accent-800" href={r.href}>{r.title}</a></li>
-              ))}
-            </ul>
-          </section>
-        )}
+        {
+          related.length > 0 && (
+            <section class="not-prose mt-12 rounded-lg border border-ink-200 bg-ink-50 p-5">
+              <h2 class="mb-3 text-base font-semibold text-ink-900">
+                Related topics
+              </h2>
+              <ul class="space-y-1.5 text-sm">
+                {related.map((r) => (
+                  <li>
+                    <a
+                      class="text-accent-700 hover:text-accent-800"
+                      href={r.href}
+                    >
+                      {r.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
 
-        {sources.length > 0 && (
-          <section class="mt-10 border-t border-ink-200 pt-6">
-            <h2 class="text-base font-semibold text-ink-900">Sources &amp; further reading</h2>
-            <ul class="mt-3 space-y-2 text-sm">
-              {sources.map((s) => (
-                <li>
-                  <a href={s.url} rel="external">{s.title}</a>
-                  {s.publisher && <span class="text-ink-500"> — {s.publisher}</span>}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        {
+          sources.length > 0 && (
+            <section class="mt-10 border-t border-ink-200 pt-6">
+              <h2 class="text-base font-semibold text-ink-900">
+                Sources &amp; further reading
+              </h2>
+              <ul class="mt-3 space-y-2 text-sm">
+                {sources.map((s) => (
+                  <li>
+                    <a href={s.url} rel="external">
+                      {s.title}
+                    </a>
+                    {s.publisher && (
+                      <span class="text-ink-500"> — {s.publisher}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
       </div>
 
       <aside class="lg:sticky lg:top-28 lg:self-start">
         <div class="rounded-lg border border-ink-200 bg-ink-50 p-4 text-sm">
-          <p class="text-xs font-semibold tracking-wide text-ink-500 uppercase">On this page</p>
+          <p class="text-xs font-semibold tracking-wide text-ink-500 uppercase">
+            On this page
+          </p>
           <div id="toc" class="mt-2 space-y-1 text-sm leading-snug"></div>
         </div>
-        <div class="mt-4 rounded-lg border border-ink-200 bg-ink-50 p-4 text-xs text-ink-600">
-          {/* Markdown source for agents is advertised in <head> (rel=alternate
+        <div
+          class="mt-4 rounded-lg border border-ink-200 bg-ink-50 p-4 text-xs text-ink-600"
+        >
+          {
+            /* Markdown source for agents is advertised in <head> (rel=alternate
               type=text/markdown) and via Accept: text/markdown content negotiation,
-              so it does not need a human-facing callout here. */}
+              so it does not need a human-facing callout here. */
+          }
           <p class="font-semibold text-ink-800">Spot a problem?</p>
-          <a class="mt-1 inline-block text-accent-700 underline" href={`${site.repo}/edit/main/src/content/spec/${category}/${slug}.md`} rel="external">
+          <a
+            class="mt-1 inline-block text-accent-700 underline"
+            href={`${site.repo}/edit/main/src/content/spec/${category}/${slug}.md`}
+            rel="external"
+          >
             Edit this page on GitHub →
           </a>
         </div>

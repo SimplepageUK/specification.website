@@ -3,6 +3,9 @@ dist/
 .astro/
 .output/
 
+# Lighthouse CI run artefacts
+.lighthouseci/
+
 # dependencies
 node_modules/
 

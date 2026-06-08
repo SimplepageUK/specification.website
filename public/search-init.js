@@ -7,55 +7,59 @@
   // it as type=text: type=search would add a *second*, native clear button on top
   // of Pagefind's. See /spec/accessibility/mobile-form-inputs/.
   function tuneSearchInput(scope) {
-    var input = scope.querySelector('input');
+    var input = scope.querySelector("input");
     if (!input) return;
-    input.setAttribute('inputmode', 'search');
-    input.setAttribute('enterkeyhint', 'search');
-    input.setAttribute('autocapitalize', 'none');
-    input.setAttribute('autocorrect', 'off');
-    input.setAttribute('spellcheck', 'false');
+    input.setAttribute("inputmode", "search");
+    input.setAttribute("enterkeyhint", "search");
+    input.setAttribute("autocapitalize", "none");
+    input.setAttribute("autocorrect", "off");
+    input.setAttribute("spellcheck", "false");
   }
   function init() {
-    var mount = document.getElementById('search');
+    var mount = document.getElementById("search");
     if (!mount) return;
-    if (typeof window.PagefindUI !== 'function') {
-      var p = document.createElement('p');
-      p.className = 'text-sm text-ink-600';
-      p.appendChild(document.createTextNode('Search index is built during '));
-      var code = document.createElement('code');
-      code.textContent = 'npm run build';
+    if (typeof window.PagefindUI !== "function") {
+      var p = document.createElement("p");
+      p.className = "text-sm text-ink-600";
+      p.appendChild(document.createTextNode("Search index is built during "));
+      var code = document.createElement("code");
+      code.textContent = "npm run build";
       p.appendChild(code);
-      p.appendChild(document.createTextNode(
-        '. It is unavailable on the dev server — try the deployed site.'
-      ));
+      p.appendChild(
+        document.createTextNode(
+          ". It is unavailable on the dev server — try the deployed site.",
+        ),
+      );
       mount.replaceChildren(p);
       return;
     }
     new window.PagefindUI({
-      element: '#search',
+      element: "#search",
       showSubResults: true,
       showImages: false,
       resetStyles: false,
       pageSize: 8,
       excerptLength: 24,
-      processTerm: function (term) { return term.toLowerCase(); },
+      processTerm: function (term) {
+        return term.toLowerCase();
+      },
     });
 
     tuneSearchInput(mount);
 
     // Pre-fill from ?q=
     var url = new URL(window.location.href);
-    var q = url.searchParams.get('q');
+    var q = url.searchParams.get("q");
     if (q) {
-      var input = mount.querySelector('input');
+      var input = mount.querySelector("input");
       if (input) {
         input.value = q;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event("input", { bubbles: true }));
       }
     }
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
     init();
   }

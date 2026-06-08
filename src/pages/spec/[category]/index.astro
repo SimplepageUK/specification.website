@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
-import Breadcrumbs from '~/components/Breadcrumbs.astro';
-import SpecCard from '~/components/SpecCard.astro';
-import { categories, categoryFor } from '~/lib/site';
-import { getCollection } from 'astro:content';
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Breadcrumbs from "~/components/Breadcrumbs.astro";
+import SpecCard from "~/components/SpecCard.astro";
+import { categories, categoryFor } from "~/lib/site";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   return categories.map((c) => ({ params: { category: c.slug } }));
@@ -11,10 +11,16 @@ export async function getStaticPaths() {
 
 const { category } = Astro.params;
 const cat = categoryFor(category!);
-if (!cat) return Astro.redirect('/spec/');
+if (!cat) return Astro.redirect("/spec/");
 
-const all = await getCollection('spec', ({ data }) => !data.draft && data.category === category);
-all.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+const all = await getCollection(
+  "spec",
+  ({ data }) => !data.draft && data.category === category,
+);
+all.sort(
+  (a, b) =>
+    a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+);
 ---
 
 <BaseLayout
@@ -25,28 +31,34 @@ all.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.d
   <div class="mx-auto max-w-6xl px-4 py-10">
     <Breadcrumbs
       crumbs={[
-        { label: 'Home', href: '/' },
-        { label: 'Spec', href: '/spec/' },
+        { label: "Home", href: "/" },
+        { label: "Spec", href: "/spec/" },
         { label: cat.title },
       ]}
     />
     <header class="mt-5 border-b border-ink-200 pb-6">
-      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">{cat.title}</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">
+        {cat.title}
+      </h1>
       <p class="mt-2 max-w-3xl text-ink-600">{cat.summary}</p>
-      <p class="mt-2 text-sm text-ink-500">{all.length} topic{all.length === 1 ? '' : 's'} in this category.</p>
+      <p class="mt-2 text-sm text-ink-500">
+        {all.length} topic{all.length === 1 ? "" : "s"} in this category.
+      </p>
     </header>
 
     <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {all.map((entry) => (
-        <li>
-          <SpecCard
-            href={`/spec/${entry.data.category}/${entry.data.slug ?? entry.id.split('/').pop()}/`}
-            title={entry.data.title}
-            summary={entry.data.summary}
-            status={entry.data.status}
-          />
-        </li>
-      ))}
+      {
+        all.map((entry) => (
+          <li>
+            <SpecCard
+              href={`/spec/${entry.data.category}/${entry.data.slug ?? entry.id.split("/").pop()}/`}
+              title={entry.data.title}
+              summary={entry.data.summary}
+              status={entry.data.status}
+            />
+          </li>
+        ))
+      }
     </ul>
   </div>
 </BaseLayout>

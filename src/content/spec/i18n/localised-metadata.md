@@ -29,7 +29,7 @@ Localised metadata means every audience-facing string outside the visible body i
 
 ## Why it matters
 
-[hreflang](/i18n/hreflang) tells search engines which URL to surface for which user, but it does not translate anything. A common real-world failure is a French page at `/fr/` that ranks correctly in `google.fr` and then appears in the SERP with an English title and English snippet, because the templating layer only swapped the body. The user sees a foreign-language result, distrusts it, and clicks the competitor.
+[hreflang](/spec/i18n/hreflang/) tells search engines which URL to surface for which user, but it does not translate anything. A common real-world failure is a French page at `/fr/` that ranks correctly in `google.fr` and then appears in the SERP with an English title and English snippet, because the templating layer only swapped the body. The user sees a foreign-language result, distrusts it, and clicks the competitor.
 
 The same applies to shared links. When someone in São Paulo pastes the Portuguese URL into WhatsApp and the unfurl card is in English, the link looks broken even though the landing page is fine. Screen readers reading `alt="Company logo"` in an otherwise Spanish page jar the listener in exactly the same way.
 

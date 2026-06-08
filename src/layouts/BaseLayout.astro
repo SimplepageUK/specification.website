@@ -1,15 +1,15 @@
 ---
-import '~/styles/global.css';
-import { site } from '~/lib/site';
-import HeadMeta from '~/components/HeadMeta.astro';
-import SiteHeader from '~/components/SiteHeader.astro';
-import SiteFooter from '~/components/SiteFooter.astro';
+import "~/styles/global.css";
+import { site } from "~/lib/site";
+import HeadMeta from "~/components/HeadMeta.astro";
+import SiteHeader from "~/components/SiteHeader.astro";
+import SiteFooter from "~/components/SiteFooter.astro";
 
 interface Props {
   title: string;
   description: string;
   canonical?: string;
-  type?: 'website' | 'article';
+  type?: "website" | "article";
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /** When true, suppress the default page header (for landing-style pages). */
@@ -26,7 +26,7 @@ const {
   title,
   description,
   canonical,
-  type = 'website',
+  type = "website",
   noindex = false,
   jsonLd,
   bare = false,
@@ -36,36 +36,40 @@ const {
 } = Astro.props;
 
 const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
+  "@context": "https://schema.org",
+  "@type": "WebSite",
   name: site.name,
   url: site.url,
   description: site.description,
-  inLanguage: 'en',
+  inLanguage: "en",
   potentialAction: {
-    '@type': 'SearchAction',
+    "@type": "SearchAction",
     target: {
-      '@type': 'EntryPoint',
+      "@type": "EntryPoint",
       urlTemplate: `${site.url}/search/?q={search_term_string}`,
     },
-    'query-input': 'required name=search_term_string',
+    "query-input": "required name=search_term_string",
   },
 };
 
 const finalJsonLd = jsonLd
-  ? Array.isArray(jsonLd) ? [websiteJsonLd, ...jsonLd] : [websiteJsonLd, jsonLd]
+  ? Array.isArray(jsonLd)
+    ? [websiteJsonLd, ...jsonLd]
+    : [websiteJsonLd, jsonLd]
   : websiteJsonLd;
 ---
 
 <!doctype html>
 <html lang="en-GB" dir="ltr">
   <head>
-    {/* Restore the stored theme override before paint to avoid FOUC, and set a
+    {
+      /* Restore the stored theme override before paint to avoid FOUC, and set a
         theme-color meta that tracks the resolved theme (not just the OS), so the
         browser chrome matches a manually toggled dark mode. theme-toggle.js keeps
         it in sync at runtime. Hash-allowed by _headers CSP — DO NOT edit this
         script's bytes (or whitespace) without recomputing the sha256. Source
-        pattern documented in /spec/foundations/color-scheme/. */}
+        pattern documented in /spec/foundations/color-scheme/. */
+    }
     <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);var m=document.createElement("meta");m.name="theme-color";m.id="theme-color-meta";m.content=t==="dark"?"#0e0e13":"#15803d";document.head.appendChild(m)}catch(e){}})();</script>
     <HeadMeta
       title={title}
@@ -78,49 +82,55 @@ const finalJsonLd = jsonLd
       jsonldUrl={jsonldUrl}
       ogImage={ogImage}
     />
-    {import.meta.env.PROD && (
-      <script
-        defer
-        data-domain={site.plausibleDomain}
-        src={`${site.plausibleHost}/js/script.js`}
-      />
-    )}
-    <script type="speculationrules" is:inline set:html={JSON.stringify({
-      prerender: [
-        {
-          source: 'document',
-          where: {
-            and: [
-              { href_matches: '/*' },
-              { not: { href_matches: '/admin/*' } },
-              { not: { href_matches: '/*.md' } },
-              { not: { href_matches: '/*.xml' } },
-              { not: { href_matches: '/*.txt' } },
-              { not: { href_matches: '/*.jsonld' } },
-              { not: { selector_matches: '[data-no-speculate]' } },
-              { not: { selector_matches: '[rel~=external]' } },
-              { not: { selector_matches: '[rel~=nofollow]' } },
-            ],
+    {
+      import.meta.env.PROD && (
+        <script
+          defer
+          data-domain={site.plausibleDomain}
+          src={`${site.plausibleHost}/js/script.js`}
+        />
+      )
+    }
+    <script
+      type="speculationrules"
+      is:inline
+      set:html={JSON.stringify({
+        prerender: [
+          {
+            source: "document",
+            where: {
+              and: [
+                { href_matches: "/*" },
+                { not: { href_matches: "/admin/*" } },
+                { not: { href_matches: "/*.md" } },
+                { not: { href_matches: "/*.xml" } },
+                { not: { href_matches: "/*.txt" } },
+                { not: { href_matches: "/*.jsonld" } },
+                { not: { selector_matches: "[data-no-speculate]" } },
+                { not: { selector_matches: "[rel~=external]" } },
+                { not: { selector_matches: "[rel~=nofollow]" } },
+              ],
+            },
+            eagerness: "moderate",
           },
-          eagerness: 'moderate',
-        },
-      ],
-      prefetch: [
-        {
-          source: 'document',
-          where: {
-            and: [
-              { href_matches: '/*' },
-              { not: { href_matches: '/admin/*' } },
-              { not: { selector_matches: '[data-no-speculate]' } },
-              { not: { selector_matches: '[rel~=external]' } },
-              { not: { selector_matches: '[rel~=nofollow]' } },
-            ],
+        ],
+        prefetch: [
+          {
+            source: "document",
+            where: {
+              and: [
+                { href_matches: "/*" },
+                { not: { href_matches: "/admin/*" } },
+                { not: { selector_matches: "[data-no-speculate]" } },
+                { not: { selector_matches: "[rel~=external]" } },
+                { not: { selector_matches: "[rel~=nofollow]" } },
+              ],
+            },
+            eagerness: "conservative",
           },
-          eagerness: 'conservative',
-        },
-      ],
-    })} />
+        ],
+      })}
+    />
     <slot name="head" />
   </head>
   <body class="bg-ink-50 text-ink-800">
@@ -131,17 +141,34 @@ const finalJsonLd = jsonLd
     </main>
     <SiteFooter />
 
-    <dialog id="search-overlay" class="search-overlay" aria-label="Search the specification">
+    <dialog
+      id="search-overlay"
+      class="search-overlay"
+      aria-label="Search the specification"
+    >
       <div class="search-overlay__inner">
         <div class="search-overlay__bar">
-          <span class="text-xs font-medium tracking-wide text-ink-500 uppercase">Search</span>
+          <span class="text-xs font-medium tracking-wide text-ink-500 uppercase"
+            >Search</span
+          >
           <button
             type="button"
             data-search-close
             class="rounded-md p-1 text-ink-500 hover:bg-ink-100 hover:text-ink-700"
             aria-label="Close search"
           >
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <svg
+              aria-hidden="true"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path d="M18 6 6 18M6 6l12 12"></path></svg
+            >
           </button>
         </div>
         <div id="search-overlay-mount"></div>

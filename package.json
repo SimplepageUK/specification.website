@@ -23,6 +23,9 @@
     "preview": "astro preview --port 31337 --host",
     "astro": "astro",
     "check": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "assets": "node scripts/generate-assets.mjs"
   },
   "dependencies": {
@@ -33,8 +36,18 @@
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@cloudflare/workers-types": "^4.20260608.1",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.19.20",
+    "eslint": "^10.4.1",
+    "eslint-plugin-astro": "^1.7.0",
+    "globals": "^17.6.0",
     "pagefind": "^1.5.2",
-    "sharp": "^0.34.5"
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "sharp": "^0.34.5",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0"
   }
 }

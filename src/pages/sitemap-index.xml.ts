@@ -1,6 +1,11 @@
-import type { APIRoute } from 'astro';
-import { categories } from '~/lib/site';
-import { loadSpecLastmod, renderSitemapIndex, siteOrigin, xmlResponse } from '~/lib/sitemap';
+import type { APIRoute } from "astro";
+import { categories } from "~/lib/site";
+import {
+  loadSpecLastmod,
+  renderSitemapIndex,
+  siteOrigin,
+  xmlResponse,
+} from "~/lib/sitemap";
 
 export const GET: APIRoute = async (context) => {
   const { perCategory, newest } = await loadSpecLastmod();

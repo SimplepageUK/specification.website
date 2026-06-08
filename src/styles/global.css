@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
 
   /* Ink scale resolves via light-dark() so it follows the used color-scheme.
      `50` is always the page surface, `900` the strongest text — semantic in
      both schemes. Toggling [data-theme] on <html> flips color-scheme below,
      which flips every utility that references one of these tokens. */
-  --color-ink-50:  light-dark(#f7f7f8, #0e0e13);
+  --color-ink-50: light-dark(#f7f7f8, #0e0e13);
   --color-ink-100: light-dark(#eeeef1, #1a1a20);
   --color-ink-200: light-dark(#d8d8df, #2a2a31);
   --color-ink-300: light-dark(#b4b4be, #3f3f48);
@@ -36,9 +38,15 @@
 
 /* Default = follow OS. Explicit toggle states force a single scheme, which
    in turn pins every light-dark() value above and below. */
-:root { color-scheme: light dark; }
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
+:root {
+  color-scheme: light dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
 
 html {
   -webkit-text-size-adjust: 100%;
@@ -47,12 +55,16 @@ html {
   scrollbar-gutter: stable;
 }
 @media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Cross-document View Transitions — animate between same-origin navigations
    on supporting browsers. Reduced-motion users get an instant swap. */
-@view-transition { navigation: auto; }
+@view-transition {
+  navigation: auto;
+}
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
@@ -125,7 +137,8 @@ body {
 .prose-spec p {
   margin-bottom: 1rem;
 }
-.prose-spec ul, .prose-spec ol {
+.prose-spec ul,
+.prose-spec ol {
   margin: 0.75rem 0 1rem 1.5rem;
   padding-left: 0;
 }
@@ -135,7 +148,10 @@ body {
 .prose-spec ol {
   list-style-type: decimal;
 }
-.prose-spec ul ul, .prose-spec ol ol, .prose-spec ul ol, .prose-spec ol ul {
+.prose-spec ul ul,
+.prose-spec ol ol,
+.prose-spec ul ol,
+.prose-spec ol ul {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
@@ -198,7 +214,8 @@ body {
   margin: 1.25rem 0;
   font-size: 0.95em;
 }
-.prose-spec th, .prose-spec td {
+.prose-spec th,
+.prose-spec td {
   text-align: left;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-ink-200);
@@ -236,8 +253,15 @@ body {
 
 /* Print */
 @media print {
-  header, footer, nav, .no-print { display: none; }
-  body { font-size: 11pt; }
+  header,
+  footer,
+  nav,
+  .no-print {
+    display: none;
+  }
+  body {
+    font-size: 11pt;
+  }
 }
 
 /* Mobile hamburger menu (native <details>) */
@@ -365,22 +389,37 @@ body {
 :root {
   /* Accent text: dark-mode value lifted from accent-700 (~3.5:1 on dark bg)
      to accent-400 (~10:1). */
-  --link-color:       light-dark(var(--color-accent-700), var(--color-accent-400));
-  --link-hover-color: light-dark(var(--color-accent-800), var(--color-accent-300));
+  --link-color: light-dark(var(--color-accent-700), var(--color-accent-400));
+  --link-hover-color: light-dark(
+    var(--color-accent-800),
+    var(--color-accent-300)
+  );
 
   /* Status pills — required (red), avoid (amber), recommended (accent). */
-  --pill-required-bg:     light-dark(var(--color-red-50),    rgb(220 38 38 / 0.15));
-  --pill-required-fg:     light-dark(var(--color-red-800),   #fca5a5);
-  --pill-required-border: light-dark(var(--color-red-200),   rgb(220 38 38 / 0.4));
+  --pill-required-bg: light-dark(var(--color-red-50), rgb(220 38 38 / 0.15));
+  --pill-required-fg: light-dark(var(--color-red-800), #fca5a5);
+  --pill-required-border: light-dark(
+    var(--color-red-200),
+    rgb(220 38 38 / 0.4)
+  );
 
-  --pill-avoid-bg:        light-dark(var(--color-amber-50),  rgb(217 119 6 / 0.15));
-  --pill-avoid-fg:        light-dark(var(--color-amber-800), #fcd34d);
+  --pill-avoid-bg: light-dark(var(--color-amber-50), rgb(217 119 6 / 0.15));
+  --pill-avoid-fg: light-dark(var(--color-amber-800), #fcd34d);
   --pill-avoid-fg-strong: light-dark(var(--color-amber-900), #fde68a);
-  --pill-avoid-border:    light-dark(var(--color-amber-200), rgb(217 119 6 / 0.4));
+  --pill-avoid-border: light-dark(var(--color-amber-200), rgb(217 119 6 / 0.4));
 
-  --pill-recommended-bg:     light-dark(var(--color-accent-50),  rgb(34 197 94 / 0.12));
-  --pill-recommended-border: light-dark(var(--color-accent-200), rgb(34 197 94 / 0.35));
-  --pill-recommended-ring:   light-dark(var(--color-accent-200), rgb(34 197 94 / 0.4));
+  --pill-recommended-bg: light-dark(
+    var(--color-accent-50),
+    rgb(34 197 94 / 0.12)
+  );
+  --pill-recommended-border: light-dark(
+    var(--color-accent-200),
+    rgb(34 197 94 / 0.35)
+  );
+  --pill-recommended-ring: light-dark(
+    var(--color-accent-200),
+    rgb(34 197 94 / 0.4)
+  );
 
   /* Hero / MCP card gradient tint. */
   --gradient-tint-from: light-dark(
@@ -389,30 +428,62 @@ body {
   );
 }
 
-.prose-spec a               { color: var(--link-color); }
-.prose-spec a:hover         { color: var(--link-hover-color); }
+.prose-spec a {
+  color: var(--link-color);
+}
+.prose-spec a:hover {
+  color: var(--link-hover-color);
+}
 
 .text-accent-700,
-.text-accent-800            { color: var(--link-color); }
+.text-accent-800 {
+  color: var(--link-color);
+}
 .hover\:text-accent-700:hover,
-.hover\:text-accent-800:hover { color: var(--link-hover-color); }
-.group:hover .group-hover\:text-accent-700 { color: var(--link-color); }
+.hover\:text-accent-800:hover {
+  color: var(--link-hover-color);
+}
+.group:hover .group-hover\:text-accent-700 {
+  color: var(--link-color);
+}
 
-.bg-red-50      { background-color: var(--pill-required-bg); }
-.text-red-800   { color: var(--pill-required-fg); }
-.border-red-200 { border-color: var(--pill-required-border); }
+.bg-red-50 {
+  background-color: var(--pill-required-bg);
+}
+.text-red-800 {
+  color: var(--pill-required-fg);
+}
+.border-red-200 {
+  border-color: var(--pill-required-border);
+}
 
-.bg-amber-50      { background-color: var(--pill-avoid-bg); }
-.text-amber-800   { color: var(--pill-avoid-fg); }
-.text-amber-900   { color: var(--pill-avoid-fg-strong); }
-.border-amber-200 { border-color: var(--pill-avoid-border); }
+.bg-amber-50 {
+  background-color: var(--pill-avoid-bg);
+}
+.text-amber-800 {
+  color: var(--pill-avoid-fg);
+}
+.text-amber-900 {
+  color: var(--pill-avoid-fg-strong);
+}
+.border-amber-200 {
+  border-color: var(--pill-avoid-border);
+}
 
-.bg-accent-50      { background-color: var(--pill-recommended-bg); }
-.border-accent-200 { border-color: var(--pill-recommended-border); }
-.ring-accent-200   { --tw-ring-color: var(--pill-recommended-ring); }
+.bg-accent-50 {
+  background-color: var(--pill-recommended-bg);
+}
+.border-accent-200 {
+  border-color: var(--pill-recommended-border);
+}
+.ring-accent-200 {
+  --tw-ring-color: var(--pill-recommended-ring);
+}
 
 .from-accent-50\/60,
-.from-accent-50\/70 { --tw-gradient-from: var(--gradient-tint-from); }
+.from-accent-50\/70 {
+  --tw-gradient-from: var(--gradient-tint-from);
+}
 
 /* Theme toggle — sliding-knob switch. Knob position is driven by
    :root[data-theme] so the CSS reflects the resolved theme even before
@@ -434,7 +505,9 @@ body {
   border-radius: 9999px;
   background: var(--color-ink-200);
   border: 1px solid var(--color-ink-300);
-  transition: background-color 200ms ease, border-color 200ms ease;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
 }
 :root[data-theme="dark"] .theme-toggle__track {
   background: var(--color-accent-700);
@@ -453,7 +526,9 @@ body {
   display: grid;
   place-items: center;
   color: var(--color-ink-700);
-  transition: left 200ms ease, background-color 200ms ease;
+  transition:
+    left 200ms ease,
+    background-color 200ms ease;
 }
 :root[data-theme="dark"] .theme-toggle__knob {
   left: calc(100% - 21px);
@@ -465,18 +540,30 @@ body {
   height: 12px;
   display: none;
 }
-.theme-toggle__icon--sun { display: block; }
-:root[data-theme="dark"] .theme-toggle__icon--sun { display: none; }
-:root[data-theme="dark"] .theme-toggle__icon--moon { display: block; }
+.theme-toggle__icon--sun {
+  display: block;
+}
+:root[data-theme="dark"] .theme-toggle__icon--sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle__icon--moon {
+  display: block;
+}
 .theme-toggle:focus-visible {
   outline: 2px solid var(--color-accent-500);
   outline-offset: 3px;
   border-radius: 9999px;
 }
-.theme-toggle:hover .theme-toggle__track { border-color: var(--color-ink-400); }
-:root[data-theme="dark"] .theme-toggle:hover .theme-toggle__track { border-color: var(--color-accent-600); }
+.theme-toggle:hover .theme-toggle__track {
+  border-color: var(--color-ink-400);
+}
+:root[data-theme="dark"] .theme-toggle:hover .theme-toggle__track {
+  border-color: var(--color-accent-600);
+}
 
 @media (prefers-reduced-motion: reduce) {
   .theme-toggle__track,
-  .theme-toggle__knob { transition: none; }
+  .theme-toggle__knob {
+    transition: none;
+  }
 }

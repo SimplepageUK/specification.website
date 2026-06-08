@@ -1,5 +1,5 @@
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
 const sourceSchema = z.object({
   title: z.string(),
@@ -8,27 +8,27 @@ const sourceSchema = z.object({
 });
 
 const spec = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/spec' }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/spec" }),
   schema: z.object({
     title: z.string(),
     slug: z.string().optional(),
     category: z.enum([
-      'foundations',
-      'seo',
-      'accessibility',
-      'security',
-      'well-known',
-      'agent-readiness',
-      'performance',
-      'privacy',
-      'resilience',
-      'i18n',
+      "foundations",
+      "seo",
+      "accessibility",
+      "security",
+      "well-known",
+      "agent-readiness",
+      "performance",
+      "privacy",
+      "resilience",
+      "i18n",
     ]),
     summary: z.string(),
     status: z
-      .enum(['required', 'recommended', 'optional', 'avoid'])
-      .default('recommended'),
-    appliesTo: z.array(z.string()).default(['all']),
+      .enum(["required", "recommended", "optional", "avoid"])
+      .default("recommended"),
+    appliesTo: z.array(z.string()).default(["all"]),
     relatedSlugs: z.array(z.string()).default([]),
     sources: z.array(sourceSchema).default([]),
     order: z.number().default(100),

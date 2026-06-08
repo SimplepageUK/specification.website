@@ -72,7 +72,7 @@ HTTP/2 429
 Retry-After: 60
 ```
 
-The distinction matters for crawlers and AI agents. A 429 with `Retry-After` says "you specifically are going too fast — slow down and come back"; a well-behaved bot backs off to the interval you name and keeps its place. A `503`, a silent connection drop, or a `200` with an error body all teach it the wrong lesson: that the whole site is down, or that the throttled response was real content. If you rate-limit crawlers (see [controlling AI crawlers](/spec/seo/robots-for-ai-crawlers/)), do it with 429 and an honest `Retry-After`, not a block that looks like an outage.
+The distinction matters for crawlers and AI agents. A 429 with `Retry-After` says "you specifically are going too fast — slow down and come back"; a well-behaved bot backs off to the interval you name and keeps its place. A `503`, a silent connection drop, or a `200` with an error body all teach it the wrong lesson: that the whole site is down, or that the throttled response was real content. If you rate-limit crawlers (see [controlling AI crawlers](/spec/agent-readiness/robots-for-ai-crawlers/)), do it with 429 and an honest `Retry-After`, not a block that looks like an outage.
 
 This is an edge or origin behaviour — a static host does not emit it on its own. Configure it where the throttling happens (your CDN's rate-limiting rules, a reverse proxy, or the application).
 

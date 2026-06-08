@@ -1,6 +1,6 @@
-import type { APIContext } from 'astro';
-import { getCollection } from 'astro:content';
-import { site } from '~/lib/site';
+import type { APIContext } from "astro";
+import { getCollection } from "astro:content";
+import { site } from "~/lib/site";
 
 export type SitemapEntry = { loc: string; lastmod?: string };
 
@@ -13,7 +13,7 @@ export const siteOrigin = (context: APIContext): string =>
   import.meta.env.DEV ? new URL(context.url).origin : site.url;
 
 export const xmlEscape = (s: string) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 /**
  * Normalise a frontmatter `updated` value (YYYY-MM-DD or full ISO 8601) to
@@ -43,33 +43,37 @@ export function renderUrlset(entries: SitemapEntry[]): string {
   const lines: string[] = [XML_DECL, STYLESHEET_PI];
   lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
   for (const e of entries) {
-    lines.push('  <url>');
+    lines.push("  <url>");
     lines.push(`    <loc>${xmlEscape(e.loc)}</loc>`);
-    if (e.lastmod) lines.push(`    <lastmod>${toIsoTimestamp(e.lastmod)}</lastmod>`);
-    lines.push('  </url>');
+    if (e.lastmod)
+      lines.push(`    <lastmod>${toIsoTimestamp(e.lastmod)}</lastmod>`);
+    lines.push("  </url>");
   }
-  lines.push('</urlset>');
-  return lines.join('\n');
+  lines.push("</urlset>");
+  return lines.join("\n");
 }
 
 export function renderSitemapIndex(entries: SitemapEntry[]): string {
   const lines: string[] = [XML_DECL, STYLESHEET_PI];
-  lines.push('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+  lines.push(
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  );
   for (const e of entries) {
-    lines.push('  <sitemap>');
+    lines.push("  <sitemap>");
     lines.push(`    <loc>${xmlEscape(e.loc)}</loc>`);
-    if (e.lastmod) lines.push(`    <lastmod>${toIsoTimestamp(e.lastmod)}</lastmod>`);
-    lines.push('  </sitemap>');
+    if (e.lastmod)
+      lines.push(`    <lastmod>${toIsoTimestamp(e.lastmod)}</lastmod>`);
+    lines.push("  </sitemap>");
   }
-  lines.push('</sitemapindex>');
-  return lines.join('\n');
+  lines.push("</sitemapindex>");
+  return lines.join("\n");
 }
 
 export const xmlResponse = (body: string) =>
   new Response(body, {
     headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
     },
   });
 
@@ -81,14 +85,14 @@ export type SpecLastmod = {
 };
 
 export async function loadSpecLastmod(): Promise<SpecLastmod> {
-  const entries = await getCollection('spec', ({ data }) => !data.draft);
+  const entries = await getCollection("spec", ({ data }) => !data.draft);
   const perCategory = new Map<string, string>();
-  let newest = '';
+  let newest = "";
 
   for (const e of entries) {
     const updated = clampLastmod(e.data.updated);
     if (!updated) continue;
-    if (updated > (perCategory.get(e.data.category) ?? '')) {
+    if (updated > (perCategory.get(e.data.category) ?? "")) {
       perCategory.set(e.data.category, updated);
     }
     if (updated > newest) newest = updated;
