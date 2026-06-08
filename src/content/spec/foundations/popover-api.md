@@ -7,7 +7,7 @@ status: recommended
 order: 130
 appliesTo: [all]
 relatedSlugs: [semantic-html, aria-usage, keyboard-navigation, focus-indicators]
-updated: "2026-05-29T16:40:22.000Z"
+updated: "2026-06-08T00:00:00.000Z"
 sources:
   - title: "HTML Standard — Popover"
     url: "https://html.spec.whatwg.org/multipage/popover.html"
@@ -45,7 +45,7 @@ The Popover API turns any element into a top-layer overlay using three HTML attr
 
 The `auto` value gives you light-dismiss (click outside to close) and auto-close on Escape. `manual` requires an explicit dismiss control. `hint` is for tooltip-style transient overlays that close when another `hint` opens.
 
-CSS hooks: `:popover-open` matches an open popover, `::backdrop` styles the layer behind it, and `position-anchor` (where supported) declaratively anchors a popover to its trigger.
+CSS hooks: `:popover-open` matches an open popover, `::backdrop` styles the layer behind it, and CSS **Anchor Positioning** (`position-anchor`, `anchor()`) can position a popover relative to its trigger where supported.
 
 ## Why it matters
 
