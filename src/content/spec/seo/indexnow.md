@@ -7,7 +7,7 @@ status: optional
 order: 120
 appliesTo: [all]
 relatedSlugs: [xml-sitemaps, sitemap-index, robots-txt]
-updated: "2026-05-29T09:13:20.000Z"
+updated: "2026-06-08T00:00:00.000Z"
 sources:
   - title: "IndexNow protocol"
     url: "https://www.indexnow.org/documentation"
@@ -62,7 +62,7 @@ The shape is straightforward:
 4. **Limit volume.** Up to 10,000 URLs per request. Do not send the entire sitemap on every cron tick — submit only what changed since the last call.
 5. **Send deletions too.** A 404 or 410 should also be submitted; that is how participating engines learn to drop URLs quickly.
 
-A small wrapper around your CMS publish hook is usually enough. Many SEO plugins (including Yoast) submit automatically.
+Trigger the submission from whatever fires on content change — the same event that rebuilds a page or invalidates its cache is the right hook.
 
 ## Common mistakes
 
