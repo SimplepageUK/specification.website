@@ -32,3 +32,7 @@ pnpm-debug.log*
 
 # Claude
 .claude/
+
+# Vendored agent skills installed via `npx … skills install` (e.g. impeccable).
+# Owned upstream, re-installable on demand — not vendored into the repo.
+.github/skills/
