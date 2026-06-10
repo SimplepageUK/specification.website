@@ -19,6 +19,11 @@
           "href": "https://specification.website/rss.xml",
           "type": "application/rss+xml",
           "title": "Feed of spec changes"
+        },
+        {
+          "href": "https://specification.website/changelog/rss.xml",
+          "type": "application/rss+xml",
+          "title": "Changelog feed"
         }
       ],
       "sitemap": [

@@ -40,6 +40,13 @@ for (const item of rendered) {
   description="What changed in The Website Specification — new topics, status changes, and removals, newest first."
   ogImage="/og/changelog.png"
 >
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/rss+xml"
+    title={`${site.name} — Changelog`}
+    href="/changelog/rss.xml"
+  />
   <div class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs
       crumbs={[{ label: "Home", href: "/" }, { label: "Changelog" }]}
@@ -52,7 +59,7 @@ for (const item of rendered) {
         What changed in the spec — new topics, status changes, and honest
         removals, newest first. Subscribe via <a
           class="underline hover:text-accent-700"
-          href="/rss.xml">RSS</a
+          href="/changelog/rss.xml">RSS</a
         >.
       </p>
     </header>
@@ -66,7 +73,7 @@ for (const item of rendered) {
             </h2>
             <ol class="mt-4 space-y-8 border-l border-ink-200 pl-6">
               {group.items.map(({ entry, Content }) => (
-                <li class="relative">
+                <li id={entry.id} class="relative scroll-mt-24">
                   <span
                     class="absolute top-1.5 -left-[1.6875rem] h-2.5 w-2.5 rounded-full border-2 border-ink-50 bg-accent-600"
                     aria-hidden="true"

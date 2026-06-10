@@ -38,7 +38,7 @@ When in doubt, default to `recommended`, not `required`. The bar for `required` 
 
 ## Changelog
 
-`/changelog/` is the human-readable history of the spec. Unlike the checklist or llms.txt, it is **not derived** — it is a hand-curated content collection (`src/content/changelog/<date>-<slug>.md`, schema in `src/content.config.ts`). The page (`src/pages/changelog.astro`) renders entries newest-first, grouped by month. Each entry has `title`, `date` (ISO `YYYY-MM-DD`), a `type` (`added` | `changed` | `status` | `removed`), optional `relatedSlugs`, and a one-to-three-sentence body.
+`/changelog/` is the human-readable history of the spec. Unlike the checklist or llms.txt, it is **not derived** — it is a hand-curated content collection (`src/content/changelog/<date>-<slug>.md`, schema in `src/content.config.ts`). The page (`src/pages/changelog.astro`) renders entries newest-first, grouped by month. Each entry has `title`, `date` (ISO `YYYY-MM-DD`), a `type` (`added` | `changed` | `status` | `removed`), optional `relatedSlugs`, and a one-to-three-sentence body. A dedicated RSS feed is **derived** from the collection at `/changelog/rss.xml` (`src/pages/changelog/rss.xml.ts`, advertised in `_headers`, the api-catalog, and the page's `<head>`); the `<li>` anchor ids match the feed's `#`-links, so don't change one without the other.
 
 **The changelog is about the spec's content — pages, not plumbing.** Whenever you make a larger change to what the spec *says*, propose a changelog entry in the same PR:
 
