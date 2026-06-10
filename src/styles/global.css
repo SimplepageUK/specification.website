@@ -204,8 +204,14 @@ body {
 .astro-code,
 .astro-code span {
   color: light-dark(var(--shiki-light), var(--shiki-dark));
-  font-style: light-dark(var(--shiki-light-font-style), var(--shiki-dark-font-style));
-  font-weight: light-dark(var(--shiki-light-font-weight), var(--shiki-dark-font-weight));
+  font-style: light-dark(
+    var(--shiki-light-font-style),
+    var(--shiki-dark-font-style)
+  );
+  font-weight: light-dark(
+    var(--shiki-light-font-weight),
+    var(--shiki-dark-font-weight)
+  );
   text-decoration: light-dark(
     var(--shiki-light-text-decoration),
     var(--shiki-dark-text-decoration)
@@ -437,7 +443,10 @@ body {
      status pills so it doesn't stay bright blue-50 in dark mode. */
   --pill-changed-bg: light-dark(var(--color-blue-50), rgb(37 99 235 / 0.15));
   --pill-changed-fg: light-dark(var(--color-blue-800), #93c5fd);
-  --pill-changed-border: light-dark(var(--color-blue-200), rgb(37 99 235 / 0.4));
+  --pill-changed-border: light-dark(
+    var(--color-blue-200),
+    rgb(37 99 235 / 0.4)
+  );
 
   /* Hero / MCP card gradient tint. */
   --gradient-tint-from: light-dark(

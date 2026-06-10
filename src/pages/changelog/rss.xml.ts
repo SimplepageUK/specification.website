@@ -26,7 +26,10 @@ export async function GET(context: APIContext) {
         /(href|src)="\//g,
         `$1="${base}/`,
       );
-      const description = html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+      const description = html
+        .replace(/<[^>]+>/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
       const id = entry.id.replace(/\.[^.]+$/, "");
       return {
         title: entry.data.title,

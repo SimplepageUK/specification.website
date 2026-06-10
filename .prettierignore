@@ -19,6 +19,11 @@ public/.well-known/
 # Separate package with its own toolchain.
 mcp/
 
+# Vendored third-party agent skill (impeccable) — installed via `npx impeccable
+# skills install`, owned by upstream, not formatter-owned. Mirrored under
+# .claude/ too, which is already git-ignored.
+.github/skills/
+
 # Contains the byte-frozen pre-paint theme <script is:inline> whose sha256 is
 # pinned in the CSP (public/_headers). Prettier must not reformat its bytes.
 src/layouts/BaseLayout.astro
