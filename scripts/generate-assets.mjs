@@ -582,6 +582,13 @@ const marketingPages = [
       "Read-only MCP server at mcp.specification.website. No auth, no cookies.",
   },
   {
+    slug: "changelog",
+    eyebrow: "CHANGELOG",
+    title: "What changed, and when.",
+    subtitle:
+      "New topics, status changes, and honest removals. Newest first, with sources.",
+  },
+  {
     slug: "privacy",
     eyebrow: "PRIVACY",
     title: "Almost nothing collected.",

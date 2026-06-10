@@ -106,3 +106,17 @@ export const statusColor: Record<string, string> = {
   optional: "bg-ink-100 text-ink-700 border-ink-200",
   avoid: "bg-amber-50 text-amber-800 border-amber-200",
 };
+
+export const changeTypeLabel: Record<string, string> = {
+  added: "Added",
+  changed: "Changed",
+  status: "Status",
+  removed: "Removed",
+};
+
+export const changeTypeColor: Record<string, string> = {
+  added: "bg-accent-50 text-accent-800 border-accent-200",
+  changed: "bg-blue-50 text-blue-800 border-blue-200",
+  status: "bg-amber-50 text-amber-800 border-amber-200",
+  removed: "bg-red-50 text-red-800 border-red-200",
+};

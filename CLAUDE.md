@@ -36,6 +36,23 @@ The status field is the user-facing contract. Use it precisely.
 
 When in doubt, default to `recommended`, not `required`. The bar for `required` is "the platform breaks without it", not "we strongly suggest it".
 
+## Changelog
+
+`/changelog/` is the human-readable history of the spec. Unlike the checklist or llms.txt, it is **not derived** — it is a hand-curated content collection (`src/content/changelog/<date>-<slug>.md`, schema in `src/content.config.ts`). The page (`src/pages/changelog.astro`) renders entries newest-first, grouped by month. Each entry has `title`, `date` (ISO `YYYY-MM-DD`), a `type` (`added` | `changed` | `status` | `removed`), optional `relatedSlugs`, and a one-to-three-sentence body.
+
+**The changelog is about the spec's content — pages, not plumbing.** Whenever you make a larger change to what the spec *says*, propose a changelog entry in the same PR:
+
+- **`added`** — one or more new spec pages, or a new category.
+- **`removed`** — a spec page (or matching `/.well-known/` asset) that was actually live and has now been deleted, e.g. because the convention turned out defunct.
+- **`status`** — a promotion or downgrade of a topic's status.
+- **`changed`** — a substantive rewrite of an existing page worth surfacing.
+
+**Always link to the page(s) inline.** An "added a page on X" entry must link X to its `/spec/<category>/<slug>/` URL *in the sentence* — never trail off with a link to the `/spec/` index. List every page added, each linked.
+
+Do **not** log: typo fixes, refactors, CI/tooling, dependency bumps, OG tweaks, new analytics events, header changes, or any site behaviour invisible on a spec page. Use real dates (British English in the body) and keep each entry to one-to-three sentences.
+
+**When you are unsure whether a change warrants an entry, ask the user — do not silently skip it.** The clear-cut cases decide themselves (a new page always gets one; a typo fix never does). For anything in between — a partial rewrite, a citation overhaul, a reworded summary, a status nuance that isn't a full promotion/downgrade — surface it: *"This change to X is borderline for the changelog — log it as a `changed` entry, or leave it out?"* and let them call it.
+
 ## Cardinal rules for content
 
 These mirror `CONTRIBUTING.md`. Enforce them in your own writing and when reviewing.
