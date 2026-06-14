@@ -11,11 +11,7 @@ name = "specification-website"
 compatibility_date = "2026-05-29"
 pages_build_output_dir = "./dist"
 
-# Analytics Engine datasets for the /admin/stats dashboard.
-# AGENT_LOG is written by functions/_shared/bot-detect.ts (crawler traffic);
-# MCP_LOG is written by mcp/src/index.ts in the separate Worker
-# (mcp.specification.website). The dashboard queries both at the account
-# level via the Cloudflare Analytics Engine SQL API.
-[[analytics_engine_datasets]]
-binding = "AGENT_LOG"
-dataset = "sw_agent_log"
+# Analytics Engine bindings removed on the SimplepageUK fork: AE writes from
+# Pages Functions require the Workers Paid plan. bot-detect.ts guards for the
+# missing binding and skips silently, so the site and MCP work without it.
+# Re-add the [[analytics_engine_datasets]] block if moving to Workers Paid.
