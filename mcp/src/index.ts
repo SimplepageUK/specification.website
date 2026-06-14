@@ -53,7 +53,7 @@ const JSON_HEADERS = {
 // Glama MCP connector ownership claim, served at /.well-known/glama.json so
 // glama.ai can verify the maintainer of this connector. Mirrored as a static
 // file on the Pages site; both origins are served because Glama checks the
-// connector's own origin (mcp.specification.website).
+// connector's own origin (mcp.auditmywebsite.co.uk).
 const GLAMA_CLAIM = {
   $schema: 'https://glama.ai/mcp/schemas/connector.json',
   maintainers: [{ email: 'joost@altha.nl' }],
@@ -86,7 +86,7 @@ function handleRpc(req: RpcRequest): RpcResponse | null {
           logging: {},
         },
         instructions:
-          'Read-only MCP server for The Website Specification at https://specification.website. ' +
+          'Read-only MCP server for The Website Specification at https://spec.auditmywebsite.co.uk. ' +
           'Use `search` for free-text queries, `list_topics` for filtered lists, `get_topic` to fetch ' +
           'a single page as Markdown, and `get_checklist` for audit-style output. ' +
           'Spec items have one of four statuses: `required` (platform contract breaks without it), ' +
@@ -155,7 +155,7 @@ function htmlLanding(): Response {
 <meta charset="utf-8">
 <title>specification.website — MCP server</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="canonical" href="https://mcp.specification.website/">
+<link rel="canonical" href="https://mcp.auditmywebsite.co.uk/">
 <style>
   body { font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     color: #1a1a20; background: #fff; max-width: 48rem; margin: 4rem auto; padding: 0 1.5rem; }
@@ -177,7 +177,7 @@ function htmlLanding(): Response {
   "mcpServers": {
     "specification-website": {
       "transport": "http",
-      "url": "https://mcp.specification.website/mcp"
+      "url": "https://mcp.auditmywebsite.co.uk/mcp"
     }
   }
 }</pre>
@@ -201,9 +201,9 @@ function htmlLanding(): Response {
 
 <h2>Discovery</h2>
 <ul>
-  <li>MCP server card: <a href="https://specification.website/.well-known/mcp/server-card.json">specification.website/.well-known/mcp/server-card.json</a></li>
-  <li>A2A agent card: <a href="https://specification.website/.well-known/agent-card.json">specification.website/.well-known/agent-card.json</a></li>
-  <li>Spec pages: <a href="https://specification.website/spec/agent-readiness/mcp-and-tool-discovery/">mcp-and-tool-discovery</a>, <a href="https://specification.website/spec/agent-readiness/a2a-agent-cards/">a2a-agent-cards</a></li>
+  <li>MCP server card: <a href="https://spec.auditmywebsite.co.uk/.well-known/mcp/server-card.json">spec.auditmywebsite.co.uk/.well-known/mcp/server-card.json</a></li>
+  <li>A2A agent card: <a href="https://spec.auditmywebsite.co.uk/.well-known/agent-card.json">spec.auditmywebsite.co.uk/.well-known/agent-card.json</a></li>
+  <li>Spec pages: <a href="https://spec.auditmywebsite.co.uk/spec/agent-readiness/mcp-and-tool-discovery/">mcp-and-tool-discovery</a>, <a href="https://spec.auditmywebsite.co.uk/spec/agent-readiness/a2a-agent-cards/">a2a-agent-cards</a></li>
   <li>Source: <a href="https://github.com/jdevalk/specification.website">github.com/jdevalk/specification.website</a></li>
 </ul>
 </body>
@@ -223,7 +223,7 @@ function metadata(): Response {
         version: SERVER_INFO.version,
         protocolVersion: PROTOCOL_VERSION,
         transport: 'http',
-        endpoint: 'https://mcp.specification.website/mcp',
+        endpoint: 'https://mcp.auditmywebsite.co.uk/mcp',
         capabilities: { tools: true, prompts: true },
         tools: TOOLS.map((t) => ({ name: t.name, description: t.description })),
         prompts: PROMPTS.map((p) => ({ name: p.name, description: p.description })),
@@ -233,9 +233,9 @@ function metadata(): Response {
           categories: manifest.categories.length,
         },
         sources: {
-          site: 'https://specification.website',
+          site: 'https://spec.auditmywebsite.co.uk',
           repo: 'https://github.com/jdevalk/specification.website',
-          spec: 'https://specification.website/spec/agent-readiness/mcp-and-tool-discovery/',
+          spec: 'https://spec.auditmywebsite.co.uk/spec/agent-readiness/mcp-and-tool-discovery/',
         },
       },
       null,

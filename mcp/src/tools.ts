@@ -651,7 +651,7 @@ export function buildAuditPrompt(m: Manifest, url: string, focus?: string) {
         type: 'text' as const,
         text:
           `You are auditing the website ${url} against The Website Specification ` +
-          `(https://specification.website). Focus on ${focusLine}. ` +
+          `(https://spec.auditmywebsite.co.uk). Focus on ${focusLine}. ` +
           `For each item below, decide PASS / FAIL / UNCLEAR by fetching the page (and headers) ` +
           `and citing the evidence. Where multiple items overlap, group them. ` +
           `Use the get_topic tool to load any page's full guidance before judging.\n\n` +

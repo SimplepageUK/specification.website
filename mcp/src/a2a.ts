@@ -127,15 +127,15 @@ export const AGENT_CARD = {
     'agent-readiness, performance, privacy, resilience, i18n) and returns the matching topics, ' +
     'each with status, canonical URL, and a body excerpt.',
   version: '0.1.0',
-  documentationUrl: 'https://specification.website/spec/agent-readiness/a2a-agent-cards/',
-  iconUrl: 'https://specification.website/icon-512.png',
+  documentationUrl: 'https://spec.auditmywebsite.co.uk/spec/agent-readiness/a2a-agent-cards/',
+  iconUrl: 'https://spec.auditmywebsite.co.uk/icon-512.png',
   provider: {
     organization: 'Joost de Valk',
     url: 'https://joost.blog',
   },
   supportedInterfaces: [
     {
-      url: 'https://mcp.specification.website/a2a/v1',
+      url: 'https://mcp.auditmywebsite.co.uk/a2a/v1',
       protocolBinding: 'JSONRPC',
       protocolVersion: A2A_PROTOCOL_VERSION,
     },
