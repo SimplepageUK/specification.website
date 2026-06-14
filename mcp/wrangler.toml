@@ -7,22 +7,14 @@
 
 name = "specification-website-mcp"
 main = "src/index.ts"
-account_id = "c53e64d218c83cb220b523a637ffd079"
 compatibility_date = "2026-05-29"
 compatibility_flags = ["nodejs_compat"]
 
 # Production: bind the public hostname.
 [[routes]]
-pattern = "mcp.specification.website"
+pattern = "mcp.auditmywebsite.co.uk"
 custom_domain = true
 
 # Observability — Workers Analytics + tail logs.
 [observability]
 enabled = true
-
-# Analytics Engine — per-call MCP/A2A usage log. Read by the Pages
-# /admin/stats dashboard via the Cloudflare Analytics Engine SQL API.
-# Same account, different binding namespace — datasets are account-scoped.
-[[analytics_engine_datasets]]
-binding = "MCP_LOG"
-dataset = "sw_mcp_log"
